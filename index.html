@@ -385,6 +385,12 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
     </div>
   </nav>
   <div class="ticker"><div class="tick-in" id="tickEl"></div></div>
+  <div id="routeBar" style="display:none;align-items:center;justify-content:center;gap:8px;padding:8px 12px;background:linear-gradient(135deg,#eef2ff,#f8faff);border-bottom:1px solid #d0d9f0;font-size:13px;font-weight:700;color:#1a3a9f;flex-wrap:wrap;">
+    <span style="font-size:16px;">&#127466;&#127482;</span>
+    <span id="routeOrigin" style="display:inline-flex;align-items:center;gap:4px;"></span>
+    <span style="color:#7a4500;font-weight:900;">&#8594;</span>
+    <span id="routeDest" style="display:inline-flex;align-items:center;gap:4px;"></span>
+  </div>
 
   <div class="page active" id="tab-guide">
     <div class="gw">
@@ -459,7 +465,12 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
     <div class="pay-card">
       <div class="pay-top">
         <div class="pay-flag" id="payFlag">&#127466;&#127482;</div>
-        <div class="pay-cn" id="payCN">---</div>
+        <div id="payRoute" style="display:none;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:800;color:#1a3a9f;flex-wrap:wrap;margin-bottom:4px;">
+          <span id="payRouteOrigin" style="display:inline-flex;align-items:center;gap:4px;"></span>
+          <span style="color:#7a4500;font-weight:900;">&#8594;</span>
+          <span id="payRouteDest" style="display:inline-flex;align-items:center;gap:4px;"></span>
+        </div>
+        <div class="pay-cn" id="payCN"></div>
         <div class="pay-motiv" id="payMotiv">
           <div class="pay-motiv-title" id="pmTitle">&#128274; To'lasangiz, shular ochiladi:</div>
           <div class="pay-motiv-list" id="pmList">
@@ -579,15 +590,15 @@ function getS(){
     if(t&&t.length>4){
       // Save with timestamp and hash
       var ts=Date.now();
-      localStorage.setItem("eg_paid_v2","1");
-      localStorage.setItem("eg_token_v2", _h(t));
-      localStorage.setItem("eg_ts_v2", ts.toString());
+      localStorage.setItem("eg_paid_v3","1");
+      localStorage.setItem("eg_token_v3", _h(t));
+      localStorage.setItem("eg_ts_v3", ts.toString());
       return true;
     }
     // LocalStorage check with expiry
-    var paid=localStorage.getItem("eg_paid_v2");
-    var savedToken=localStorage.getItem("eg_token_v2");
-    var savedTs=parseInt(localStorage.getItem("eg_ts_v2")||"0");
+    var paid=localStorage.getItem("eg_paid_v3");
+    var savedToken=localStorage.getItem("eg_token_v3");
+    var savedTs=parseInt(localStorage.getItem("eg_ts_v3")||"0");
     var now=Date.now();
     var EXPIRY=72*60*60*1000; // 72 soat
     if(paid==="1" && savedToken && savedToken.length>2 && (now-savedTs)<EXPIRY){
@@ -595,9 +606,9 @@ function getS(){
     }
     // Clear expired
     if(paid==="1" && (now-savedTs)>=EXPIRY){
-      localStorage.removeItem("eg_paid_v2");
-      localStorage.removeItem("eg_token_v2");
-      localStorage.removeItem("eg_ts_v2");
+      localStorage.removeItem("eg_paid_v3");
+      localStorage.removeItem("eg_token_v3");
+      localStorage.removeItem("eg_ts_v3");
     }
     return false;
   }catch(e){return false;}
@@ -607,9 +618,10 @@ function setS(){
   try{
     var p=new URLSearchParams(window.location.search);
     var t=p.get("token");
-    localStorage.setItem("eg_paid_v2","1");
-    localStorage.setItem("eg_token_v2", t?_h(t):"manual");
-    localStorage.setItem("eg_ts_v2", Date.now().toString());
+    if(!t||t.length<=4) return; // token bo'lmasa yozma
+    localStorage.setItem("eg_paid_v3","1");
+    localStorage.setItem("eg_token_v3", _h(t));
+    localStorage.setItem("eg_ts_v3", Date.now().toString());
   }catch(e){}
 }
 
@@ -625,6 +637,9 @@ function goScreen(id){
   document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
   document.getElementById(id).classList.add("active");
   window.scrollTo(0,0);
+  if(id==="sc-pay"){
+    try{updateRouteBar("payRoute","payRouteOrigin","payRouteDest");}catch(e){}
+  }
 }
 function showTab(id,btn){
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
@@ -937,17 +952,46 @@ function pickJob(id){selJ=id;try{localStorage.setItem("eg_selJ_v2",id);}catch(e)
 
 function goToGuide(){
   hasAccess=getS()||hasAccess;
-  // Freemium: bepul bo'limlari bilan sc-app ga o'tamiz
-  goScreen("sc-app");buildGuide();
+  // Freemium: yo'riqnomaga kiradi, qulf bo'limlar to'lovdan keyin ochiladi
+  goScreen("sc-app");
+  buildGuide();
+}
+
+var ORIG_DATA={
+  uz:{f:"&#127482;&#127487;",ru:"\u0423\u0437\u0431\u0435\u043a\u0438\u0441\u0442\u0430\u043d",uz:"O\u2018zbekiston",en:"Uzbekistan"},
+  kg:{f:"&#127472;&#127468;",ru:"\u041a\u044b\u0440\u0433\u044b\u0437\u0441\u0442\u0430\u043d",uz:"Qirg\u2018iziston",en:"Kyrgyzstan"},
+  tj:{f:"&#127481;&#127471;",ru:"\u0422\u0430\u0434\u0436\u0438\u043a\u0438\u0441\u0442\u0430\u043d",uz:"Tojikiston",en:"Tajikistan"},
+  kz:{f:"&#127472;&#127487;",ru:"\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d",uz:"Qozog\u2018iston",en:"Kazakhstan"},
+  tm:{f:"&#127481;&#127474;",ru:"\u0422\u0443\u0440\u043a\u043c\u0435\u043d\u0438\u0441\u0442\u0430\u043d",uz:"Turkmaniston",en:"Turkmenistan"},
+  az:{f:"&#127462;&#127487;",ru:"\u0410\u0437\u0435\u0440\u0431\u0430\u0439\u0434\u0436\u0430\u043d",uz:"Ozarbayjon",en:"Azerbaijan"},
+  other:{f:"&#127760;",ru:"\u0414\u0440\u0443\u0433\u0430\u044f",uz:"Boshqa",en:"Other"}
+};
+function updateRouteBar(barId,originId,destId){
+  var bar=document.getElementById(barId);
+  if(!bar)return;
+  var o=ORIG_DATA[userOrigin];
+  var cc=CC.find(function(c){return c.id===selC;});
+  if(o&&cc){
+    var on=lang==="ru"?o.ru:lang==="en"?o.en:o.uz;
+    var dn=lang==="ru"?cc.ru:lang==="en"?cc.en:cc.uz;
+    setEl(originId,"<span style='font-size:16px;'>"+o.f+"</span> "+on);
+    setEl(destId,"<span style='font-size:16px;'>"+cc.f+"</span> "+dn);
+    bar.style.display="flex";
+  } else {
+    bar.style.display="none";
+  }
 }
 
 function buildGuide(){
+  hasAccess=getS()||hasAccess;
   if(!selC)return;
   if(!selJ)selJ='b';
   var cc=CC.find(function(c){return c.id===selC;});
   if(!cc)return;
   var nm=lang==="ru"?cc.ru:lang==="en"?cc.en:cc.uz;
   setEl("gTitle",cc.f+" "+nm);
+  // Route bar: origin -> destination
+  updateRouteBar("routeBar","routeOrigin","routeDest");
   var embLabel=lang==="ru"?"\u041f\u043e\u0441\u043e\u043b\u044c\u0441\u0442\u0432\u043e":lang==="en"?"Embassy":"Elchi xona";
   setEl("gSub",embLabel);
   // Embassy
@@ -1163,7 +1207,7 @@ function getStages(cid,jid){
     {id:"s3",ico:"&#127973;",title:ru?"Страховка и здоровье":en?"Insurance & Health":"Sug\u2019urta va sog\u2019liq",free:false,docs:[medins,healthcert]},
     {id:"s4",ico:"&#127968;",title:ru?"Жильё и финансы":en?"Housing & Finances":"Turar joy va moliya",free:false,docs:[housing,bankst]},
     {id:"s5",ico:"&#9992;",title:ru?"Перелёт и въезд":en?"Flight & Entry":"Parvoz va kirish",free:false,docs:[ticket,crimrec]},
-    {id:"s6",ico:"&#127981;",title:(ru?"Документы страны: ":en?"Country docs: ":"Mamlakatga xos: ")+(CC.find(function(c){return c.id===cid;})?.[ru?"ru":en?"en":"uz"]||cid),free:true,docs:cDocs.length?cDocs:[{id:"cx1",name:ru?"Уточните в посольстве":en?"Check with embassy":"Elchixonada aniqlashtiring",desc:ru?"Конкретные требования уточняйте в посольстве страны назначения":en?"Check specific requirements at the destination country's embassy":"Maqsadli davlat elchixonasida aniq talablarni aniqlashtiring",tag:ru?"Информация":en?"Info":"Ma\u2019lumot"}]},
+    {id:"s6",ico:"&#127981;",title:(ru?"Документы страны: ":en?"Country docs: ":"Mamlakatga xos: ")+(CC.find(function(c){return c.id===cid;})?.[ru?"ru":en?"en":"uz"]||cid),free:false,docs:cDocs.length?cDocs:[{id:"cx1",name:ru?"Уточните в посольстве":en?"Check with embassy":"Elchixonada aniqlashtiring",desc:ru?"Конкретные требования уточняйте в посольстве страны назначения":en?"Check specific requirements at the destination country's embassy":"Maqsadli davlat elchixonasida aniq talablarni aniqlashtiring",tag:ru?"Информация":en?"Info":"Ma\u2019lumot"}]},
     {id:"s7",ico:"&#128196;",title:ru?"После въезда":en?"After Arrival":"Kirishdan keyin",free:false,docs:[taxid,nostrif]}
   ];
 }
@@ -1234,7 +1278,17 @@ function checkPaidRetry(orderId,tries){
   });
 }
 
-function activate(){setS();hasAccess=true;toast(lang==="ru"?"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!":lang==="en"?"Access opened!":"Kirish ochildi!");setTimeout(function(){goScreen("sc-app");buildGuide();},800);}
+function activate(){
+  // Faqat admin panel orqali chaqiriladi — to'lov tasdiqlangan
+  try{
+    localStorage.setItem("eg_paid_v3","1");
+    localStorage.setItem("eg_token_v3","admin_grant");
+    localStorage.setItem("eg_ts_v3",Date.now().toString());
+  }catch(e){}
+  hasAccess=true;
+  toast(lang==="ru"?"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!":lang==="en"?"Access opened!":"Kirish ochildi!");
+  setTimeout(function(){goScreen("sc-app");buildGuide();},800);
+}
 
 function checkAdmin(){
   if(_adminLocked){
@@ -1267,7 +1321,7 @@ function renderFirms(flt){
   var freeLbl=lang==="ru"?"\u0411\u0435\u0441\u043f\u043b.":lang==="en"?"Free":"Bepul";
   var paidLbl=lang==="ru"?"\u0424\u0438\u0440\u043c\u0430":lang==="en"?"Agency":"Firma";
   list.forEach(function(f,i){
-    if(!hasAccess&&i>=2){fb+="<div class='fcard' style='text-align:center;padding:20px;border-style:dashed;'><div style='font-size:24px;margin-bottom:8px;'>&#128274;</div><div style='font-size:13px;font-weight:700;margin-bottom:4px;'>"+f.n+"</div><div style='font-size:11px;color:var(--mt);margin-bottom:10px;'>"+f.cn+"</div><button style='background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#000;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;' onclick='goScreen(\"sc-pay\")'>"+openLbl+"</button></div>";return;}
+    if(!hasAccess&&i>=1){fb+="<div class='fcard' style='text-align:center;padding:20px;border-style:dashed;'><div style='font-size:24px;margin-bottom:8px;'>&#128274;</div><div style='font-size:13px;font-weight:700;margin-bottom:4px;'>"+f.n+"</div><div style='font-size:11px;color:var(--mt);margin-bottom:10px;'>"+f.cn+"</div><button style='background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#000;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;' onclick='goScreen(\"sc-pay\")'>"+openLbl+"</button></div>";return;}
     fb+="<div class='fcard'><div class='ftop'><div class='flogo'>"+f.i+"</div><div style='flex:1'><div class='fname'>"+f.n+"</div><div class='fcountry'>"+f.cn+"</div><div class='ftags'><span class='ftag'>"+(f.free?freeLbl:paidLbl)+"</span></div></div></div><div class='fdesc'>"+f.d+"</div><a class='flink' href='https://"+f.s+"' target='_blank'>"+f.s+" &#8599;</a></div>";
   });
   setEl("fb",fb);
@@ -1350,7 +1404,14 @@ try{
     goScreen("sc-pay");
     toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":"Tekshirilmoqda...");
     checkPaidRetry(_ord).then(function(paid){
-      if(paid){ setS(); hasAccess=true; goScreen("sc-app"); buildGuide();
+      if(paid){
+        // Server tasdiqladi — localStorage ga yozamiz
+        try{
+          localStorage.setItem("eg_paid_v3","1");
+          localStorage.setItem("eg_token_v3","click_"+_ord.slice(-8));
+          localStorage.setItem("eg_ts_v3",Date.now().toString());
+        }catch(e){}
+        hasAccess=true; goScreen("sc-app"); buildGuide();
         toast(lang==="uz"?"Kirish ochildi!":"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!"); }
       else { toast(lang==="uz"?"To'lov topilmadi. Birozdan keyin urinib ko'ring.":"\u041e\u043f\u043b\u0430\u0442\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."); }
     });
@@ -1377,6 +1438,14 @@ renderJobGrid();
 renderFirms("all");
 renderFaq();
 renderReviews();
+
+// === VERSION ===
+(function(){
+  var vEl=document.createElement("div");
+  vEl.style.cssText="position:fixed;bottom:4px;right:8px;font-size:10px;color:#aaa;pointer-events:none;z-index:9999;";
+  vEl.textContent="v2.7";
+  document.body.appendChild(vEl);
+})();
 </script>
 </body>
 </html>
