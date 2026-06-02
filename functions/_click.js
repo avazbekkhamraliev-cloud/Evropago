@@ -1,4 +1,3 @@
-// Umumiy yordamchi funksiyalar (Click SHOP API uchun)
 function md5(str) {
   function rl(n, c) { return (n << c) | (n >>> (32 - c)); }
   function au(x, y) {
@@ -58,4 +57,28 @@ function md5(str) {
     c = ii(c, d, a, b, x[i + 10], 15, -1051523); b = ii(b, c, d, a, x[i + 1], 21, -2054922799);
     a = ii(a, b, c, d, x[i + 8], 6, 1873313359); d = ii(d, a, b, c, x[i + 15], 10, -30611744);
     c = ii(c, d, a, b, x[i + 6], 15, -1560198380); b = ii(b, c, d, a, x[i + 13], 21, 1309151649);
-    a = ii(a, b, c, d, x[i + 4], 6, -14
+    a = ii(a, b, c, d, x[i + 4], 6, -145523070); d = ii(d, a, b, c, x[i + 11], 10, -1120210379);
+    c = ii(c, d, a, b, x[i + 2], 15, 718787259); b = ii(b, c, d, a, x[i + 9], 21, -343485551);
+    a = au(a, oa); b = au(b, ob); c = au(c, oc); d = au(d, od);
+  }
+  return th(a) + th(b) + th(c) + th(d);
+}
+
+export { md5 };
+
+export async function parseClickBody(request) {
+  const ct = request.headers.get('content-type') || '';
+  if (ct.includes('application/json')) {
+    return await request.json();
+  }
+  const form = await request.formData();
+  const obj = {};
+  for (const [k, v] of form.entries()) obj[k] = v;
+  return obj;
+}
+
+export function jsonResponse(obj) {
+  return new Response(JSON.stringify(obj), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+           }
