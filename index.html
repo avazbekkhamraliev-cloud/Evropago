@@ -8,6 +8,14 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-W7NJYYMH2W');
+  // Reklama manbasini kuzatish: ?ref=tg1, ?ref=ig1 va h.k.
+  try{
+    var _ref=new URLSearchParams(location.search).get('ref');
+    if(_ref){
+      gtag('event','campaign_visit',{source:_ref});
+      localStorage.setItem('eg_ref',_ref);
+    }
+  }catch(e){}
 </script>
 <meta charset="UTF-8">
 <meta name="google-site-verification" content="U1KvgUyFxfzu--iqvlaETE9yKVTbQPho0x4FPq6Rsas" />
@@ -483,10 +491,13 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
       </div>
       <div class="pay-body">
         <div class="pay-price-box">
+          <div id="payDiscBadge" style="display:inline-block;background:#fee2e2;color:#b91c1c;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:6px;">&#128293; <span id="payDiscTxt">50% CHEGIRMA</span></div>
+          <div style="font-size:13px;color:var(--mt);text-decoration:line-through;margin-bottom:2px;" id="payOldPrice">29 900 so'm</div>
           <div class="pay-price">14 900 so'm</div>
           <div class="pay-once" id="payOnce">&#10003; Bir martalik to'lov — umrbod kirish</div>
         </div>
         <div style="font-size:10px;color:var(--mt);text-transform:uppercase;font-weight:700;margin-bottom:6px;" id="pmLbl">To'lov usuli</div>
+        <div id="clickBlock">
         <div class="pmeths" style="grid-template-columns:repeat(3,1fr);">
           <div class="pm sel" id="pm1" onclick="selPm('pm1')"><div class="pm-i">&#128309;</div><div class="pm-n">Click</div></div>
           <div class="pm" id="pm3" onclick="selPm('pm3')"><div class="pm-i">&#127970;</div><div class="pm-n">UzCard</div></div>
@@ -494,8 +505,14 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
         </div>
         <div style="font-size:10px;color:var(--mt);text-align:center;margin-bottom:8px;" id="pmHint">UzCard va Humo kartalari Click orqali to'lanadi</div>
         <button class="act-btn" onclick="payClick()" id="payBtn" style="width:100%;background:linear-gradient(135deg,#00aaff,#0077cc);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;">&#128179; Click orqali to'lash</button>
-        <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--mt);font-size:11px;"><div style="flex:1;height:1px;background:var(--bd);"></div><span id="orLbl">yoki chet eldan</span><div style="flex:1;height:1px;background:var(--bd);"></div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--mt);font-size:11px;" id="orDivider"><div style="flex:1;height:1px;background:var(--bd);"></div><span id="orLbl">yoki chet eldan</span><div style="flex:1;height:1px;background:var(--bd);"></div></div>
+        <div id="tgBlock">
         <button class="act-btn" onclick="payTelegram()" id="tgBtn" style="width:100%;background:linear-gradient(135deg,#229ED9,#1c8bc0);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;">&#9993; Telegram orqali to'lash (Visa/MC, USDT)</button>
+        </div>
+        <div id="trustBox" style="margin-top:6px;margin-bottom:10px;">
+          <div style="text-align:center;font-size:12px;color:var(--mt);" id="socialTxt">&#128100; 600+ kishi allaqachon foydalanmoqda</div>
+        </div>
         <div class="act-box" id="actBox" style="display:none;">
           <p class="act-p" id="actNote">Havola oldingizmi?</p>
           <button class="act-btn" onclick="activate()" id="actBtn">&#10003; Havola bilan ochish</button>
@@ -639,6 +656,30 @@ function goScreen(id){
   window.scrollTo(0,0);
   if(id==="sc-pay"){
     try{updateRouteBar("payRoute","payRouteOrigin","payRouteDest");}catch(e){}
+    try{reorderPayMethods();}catch(e){}
+    try{
+      setEl("payDiscTxt",lang==="ru"?"Скидка 50%":lang==="en"?"50% OFF":"50% CHEGIRMA");
+      setEl("socialTxt",lang==="ru"?"\uD83D\uDC64 600+ человек уже пользуются":lang==="en"?"\uD83D\uDC64 600+ people already using it":"\uD83D\uDC64 600+ kishi allaqachon foydalanmoqda");
+    }catch(e){}
+  }
+}
+function reorderPayMethods(){
+  var clickBlock=document.getElementById("clickBlock");
+  var tgBlock=document.getElementById("tgBlock");
+  var divider=document.getElementById("orDivider");
+  var orLbl=document.getElementById("orLbl");
+  if(!clickBlock||!tgBlock||!divider)return;
+  var parent=clickBlock.parentNode;
+  if(userOrigin && userOrigin!=="uz"){
+    // Chet el: Telegram birinchi, Click keyin
+    parent.insertBefore(tgBlock,clickBlock);
+    parent.insertBefore(divider,clickBlock);
+    if(orLbl)setEl("orLbl",lang==="ru"?"или картой Узбекистана":lang==="en"?"or with Uzbek card":"yoki O'zbekiston kartasi");
+  } else {
+    // O'zbekiston: Click birinchi (asl tartib)
+    parent.insertBefore(clickBlock,tgBlock);
+    parent.insertBefore(divider,tgBlock);
+    if(orLbl)setEl("orLbl",lang==="ru"?"или из-за рубежа":lang==="en"?"or from abroad":"yoki chet eldan");
   }
 }
 function showTab(id,btn){
@@ -1242,6 +1283,8 @@ function payClick(){
   var orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
   try{localStorage.setItem("eg_order",orderId);}catch(e){}
   var amount=14900; // 1 davlat tarifi
+  // GA: to'lov boshlandi (Click)
+  try{gtag('event','begin_checkout',{currency:'UZS',value:amount,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   var ret=encodeURIComponent(location.origin+"/?order="+orderId);
   var url="https://my.click.uz/services/pay?service_id="+CLICK_SERVICE_ID+"&merchant_id="+CLICK_MERCHANT_ID+"&amount="+amount+"&transaction_param="+orderId+"&return_url="+ret;
   location.href=url;
@@ -1257,6 +1300,8 @@ function payTelegram(){
   else if(lang==="en") msg="Hello! I want to pay for EuropaGo access"+(ctry?" ("+ctry+")":"")+". I am outside Uzbekistan. How can I pay?";
   else msg="Assalomu alaykum! EuropaGo kirishini sotib olmoqchiman"+(ctry?" ("+ctry+")":"")+". Men O'zbekistondan tashqaridaman. Qanday to'lasam bo'ladi?";
   var url="https://t.me/"+TG_USERNAME+"?text="+encodeURIComponent(msg);
+  // GA: to'lov boshlandi (Telegram)
+  try{gtag('event','begin_checkout',{currency:'UZS',value:14900,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   window.open(url,"_blank");
 }
 // To'lovni serverdan tekshirish (bir necha marta urinish bilan)
@@ -1286,6 +1331,8 @@ function activate(){
     localStorage.setItem("eg_ts_v3",Date.now().toString());
   }catch(e){}
   hasAccess=true;
+  // GA: TO'LOV TASDIQLANDI (admin/Telegram orqali)
+  try{gtag('event','purchase',{transaction_id:'adm'+Date.now(),currency:'UZS',value:14900,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   toast(lang==="ru"?"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!":lang==="en"?"Access opened!":"Kirish ochildi!");
   setTimeout(function(){goScreen("sc-app");buildGuide();},800);
 }
@@ -1411,6 +1458,8 @@ try{
           localStorage.setItem("eg_token_v3","click_"+_ord.slice(-8));
           localStorage.setItem("eg_ts_v3",Date.now().toString());
         }catch(e){}
+        // GA: TO'LOV TASDIQLANDI (eng muhim event — daromad)
+        try{gtag('event','purchase',{transaction_id:_ord,currency:'UZS',value:14900,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
         hasAccess=true; goScreen("sc-app"); buildGuide();
         toast(lang==="uz"?"Kirish ochildi!":"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!"); }
       else { toast(lang==="uz"?"To'lov topilmadi. Birozdan keyin urinib ko'ring.":"\u041e\u043f\u043b\u0430\u0442\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."); }
@@ -1443,7 +1492,7 @@ renderReviews();
 (function(){
   var vEl=document.createElement("div");
   vEl.style.cssText="position:fixed;bottom:4px;right:8px;font-size:10px;color:#aaa;pointer-events:none;z-index:9999;";
-  vEl.textContent="v2.7";
+  vEl.textContent="v3.0";
   document.body.appendChild(vEl);
 })();
 </script>
