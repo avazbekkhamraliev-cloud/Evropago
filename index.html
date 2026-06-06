@@ -503,8 +503,22 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
           <div class="pm" id="pm3" onclick="selPm('pm3')"><div class="pm-i">&#127970;</div><div class="pm-n">UzCard</div></div>
           <div class="pm" id="pm4" onclick="selPm('pm4')"><div class="pm-i">&#128179;</div><div class="pm-n">Humo</div></div>
         </div>
-        <div style="font-size:10px;color:var(--mt);text-align:center;margin-bottom:8px;" id="pmHint">UzCard va Humo kartalari Click orqali to'lanadi</div>
+        <div style="font-size:10px;color:var(--mt);text-align:center;margin-bottom:8px;" id="pmHint">Click yo'qmi? UzCard yoki Humo'ni tanlang — kartaga o'tkazma orqali</div>
         <button class="act-btn" onclick="payClick()" id="payBtn" style="width:100%;background:linear-gradient(135deg,#00aaff,#0077cc);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;">&#128179; Click orqali to'lash</button>
+        </div>
+        <div id="cardBlock">
+        <div id="cardPanel" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;margin-bottom:12px;">
+          <div style="font-size:12px;color:#166534;font-weight:700;margin-bottom:8px;" id="cardStep1">1. Quyidagi kartaga <b><span id="cardAmt">14 900</span> so'm</b> o'tkazing:</div>
+          <div style="background:#fff;border:1px dashed #16a34a;border-radius:10px;padding:12px;margin-bottom:6px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div style="font-size:18px;font-weight:800;letter-spacing:1px;color:#111;font-family:monospace;" id="cardNum">9860 6004 0235 7294</div>
+              <button onclick="copyCard()" id="copyCardBtn" style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">Nusxa</button>
+            </div>
+            <div style="font-size:13px;color:#444;margin-top:6px;">Khamraliev Avazbek &middot; <span style="color:#16a34a;font-weight:700;">Humo</span></div>
+          </div>
+          <div style="font-size:12px;color:#166534;font-weight:700;margin:10px 0 8px;" id="cardStep2">2. To'lagach, chek rasmini Telegram'ga yuboring &mdash; havola beramiz:</div>
+          <a href="https://t.me/Evropagoo" target="_blank" style="display:block;text-align:center;background:#229ED9;color:#fff;text-decoration:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;" id="cardTgBtn">&#9993; Telegram: @Evropagoo</a>
+        </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--mt);font-size:11px;" id="orDivider"><div style="flex:1;height:1px;background:var(--bd);"></div><span id="orLbl">yoki chet eldan</span><div style="flex:1;height:1px;background:var(--bd);"></div></div>
         <div id="tgBlock">
@@ -660,6 +674,9 @@ function goScreen(id){
     try{
       setEl("payDiscTxt",lang==="ru"?"Скидка 50%":lang==="en"?"50% OFF":"50% CHEGIRMA");
       setEl("socialTxt",lang==="ru"?"\uD83D\uDC64 600+ человек уже пользуются":lang==="en"?"\uD83D\uDC64 600+ people already using it":"\uD83D\uDC64 600+ kishi allaqachon foydalanmoqda");
+      setEl("cardBtnTxt",lang==="ru"?"Оплата картой (Payme, Uzum...)":lang==="en"?"Pay by card (Payme, Uzum...)":"Karta orqali to'lash (Payme, Uzum...)");
+      setEl("cardStep1",lang==="ru"?"1. Переведите <b>14 900 сум</b> на карту:":lang==="en"?"1. Transfer <b>14,900 UZS</b> to this card:":"1. Quyidagi kartaga <b>14 900 so'm</b> o'tkazing:");
+      setEl("cardStep2",lang==="ru"?"2. После оплаты отправьте чек в Telegram — пришлём доступ:":lang==="en"?"2. After payment, send the receipt to Telegram — we'll send the link:":"2. To'lagach, chek rasmini Telegram'ga yuboring — havola beramiz:");
     }catch(e){}
   }
 }
@@ -912,7 +929,7 @@ function applyLang(){
   // Chet el / Telegram tugmasi tarjimalari
   setEl("orLbl",lang==="ru"?"или из-за рубежа":lang==="en"?"or from abroad":"yoki chet eldan");
   setEl("pmLbl",lang==="ru"?"Способ оплаты":lang==="en"?"Payment method":"To'lov usuli");
-  setEl("pmHint",lang==="ru"?"Карты UzCard и Humo оплачиваются через Click":lang==="en"?"UzCard and Humo cards are paid via Click":"UzCard va Humo kartalari Click orqali to'lanadi");
+  setEl("pmHint",lang==="ru"?"Нет Click? Выберите UzCard или Humo — оплата переводом на карту":lang==="en"?"No Click? Choose UzCard or Humo — pay by card transfer":"Click yo'qmi? UzCard yoki Humo'ni tanlang — kartaga o'tkazma orqali");
   setEl("tgBtn",lang==="ru"?"&#9993; Оплата через Telegram (Visa/MC, USDT)":lang==="en"?"&#9993; Pay via Telegram (Visa/MC, USDT)":"&#9993; Telegram orqali to'lash (Visa/MC, USDT)");
   setEl("firmH",t.firmH);setEl("firmP",t.firmP);
   setEl("faqH",t.faqH);setEl("faqP",t.faqP);
@@ -1275,7 +1292,26 @@ function selectTarif(n){
     if(desc)desc.textContent=d2;
   }
 }
-function selPm(id){document.querySelectorAll(".pm").forEach(function(p){p.classList.remove("sel");});document.getElementById(id).classList.add("sel");}
+function selPm(id){
+  document.querySelectorAll(".pm").forEach(function(p){p.classList.remove("sel");});
+  var el=document.getElementById(id);if(el)el.classList.add("sel");
+  // Click tab -> Click to'lov; UzCard/Humo tab -> to'g'ridan-to'g'ri karta o'tkazma
+  var payBtn=document.getElementById("payBtn");
+  var cardPanel=document.getElementById("cardPanel");
+  var pmHint=document.getElementById("pmHint");
+  if(id==="pm1"){
+    // Click tanlandi
+    if(payBtn)payBtn.style.display="block";
+    if(cardPanel)cardPanel.style.display="none";
+    if(pmHint)setEl("pmHint",lang==="ru"?"Оплата через приложение Click":lang==="en"?"Pay via Click app":"Click ilovasi orqali to'lov");
+  } else {
+    // UzCard yoki Humo -> karta o'tkazma panelini ko'rsat
+    if(payBtn)payBtn.style.display="none";
+    if(cardPanel)cardPanel.style.display="block";
+    if(pmHint)setEl("pmHint",lang==="ru"?"Переведите на карту, затем отправьте чек в Telegram":lang==="en"?"Transfer to card, then send receipt to Telegram":"Kartaga o'tkazing, keyin chekni Telegram'ga yuboring");
+    try{gtag('event','begin_checkout',{currency:'UZS',value:14900,payment_type:'card_transfer'});}catch(e){}
+  }
+}
 
 // === CLICK TO'LOV ===
 var CLICK_SERVICE_ID="104256", CLICK_MERCHANT_ID="61650";
@@ -1290,7 +1326,7 @@ function payClick(){
   location.href=url;
 }
 // Chet el mijozlar uchun — Telegram orqali (qo'lda to'lov)
-var TG_USERNAME="ovropago"; // @ siz
+var TG_USERNAME="Evropagoo"; // @ siz
 function payTelegram(){
   // Tanlangan davlat nomini olamiz (agar bor bo'lsa)
   var ctry="";
@@ -1304,7 +1340,36 @@ function payTelegram(){
   try{gtag('event','begin_checkout',{currency:'UZS',value:14900,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   window.open(url,"_blank");
 }
-// To'lovni serverdan tekshirish (bir necha marta urinish bilan)
+// Karta orqali to'lash panelini ochish/yopish
+function toggleCardPay(){
+  var p=document.getElementById("cardPanel");
+  if(!p)return;
+  var open=p.style.display==="none"||!p.style.display;
+  p.style.display=open?"block":"none";
+  if(open){
+    try{gtag('event','begin_checkout',{currency:'UZS',value:14900,payment_type:'card_transfer',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+  }
+}
+// Karta raqamini nusxalash
+function copyCard(){
+  var num="9860600402357294";
+  var done=function(){
+    var b=document.getElementById("copyCardBtn");
+    if(b){var t=b.textContent;b.textContent=lang==="ru"?"Скопировано":lang==="en"?"Copied":"Nusxalandi";setTimeout(function(){b.textContent=t;},1500);}
+  };
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(num).then(done,function(){fallbackCopy(num,done);});}
+    else{fallbackCopy(num,done);}
+  }catch(e){fallbackCopy(num,done);}
+}
+function fallbackCopy(text,cb){
+  try{
+    var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+    document.body.appendChild(ta);ta.focus();ta.select();
+    document.execCommand("copy");document.body.removeChild(ta);
+    if(cb)cb();
+  }catch(e){}
+}
 function checkPaid(orderId){
   return fetch("/api/verify?order="+encodeURIComponent(orderId))
     .then(function(r){return r.json();})
@@ -1492,7 +1557,7 @@ renderReviews();
 (function(){
   var vEl=document.createElement("div");
   vEl.style.cssText="position:fixed;bottom:4px;right:8px;font-size:10px;color:#aaa;pointer-events:none;z-index:9999;";
-  vEl.textContent="v3.0";
+  vEl.textContent="v3.1";
   document.body.appendChild(vEl);
 })();
 </script>
