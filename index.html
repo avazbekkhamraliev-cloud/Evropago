@@ -724,7 +724,7 @@ function getS(){
     var savedToken=localStorage.getItem("eg_token_v3");
     var savedTs=parseInt(localStorage.getItem("eg_ts_v3")||"0");
     var now=Date.now();
-    var EXPIRY=72*60*60*1000; // 72 soat
+    var EXPIRY=30*24*60*60*1000; // 30 kun
     if(paid==="1" && savedToken && savedToken.length>2 && (now-savedTs)<EXPIRY){
       return true;
     }
@@ -1767,7 +1767,7 @@ renderReviews();
 (function(){
   var vEl=document.createElement("div");
   vEl.style.cssText="position:fixed;bottom:4px;right:8px;font-size:10px;color:#aaa;pointer-events:none;z-index:9999;";
-  vEl.textContent="v5.1";
+  vEl.textContent="v5.2";
   document.body.appendChild(vEl);
 })();
 </script>
@@ -3632,7 +3632,7 @@ function getLifeS(){
     var paid=localStorage.getItem("el_paid_v1");
     var st=localStorage.getItem("el_token_v1");
     var ts=parseInt(localStorage.getItem("el_ts_v1")||"0");
-    var EXP=72*60*60*1000;
+    var EXP=30*24*60*60*1000;
     if(paid==="1"&&st&&st.length>2&&(Date.now()-ts)<EXP) return true;
     if(paid==="1"&&(Date.now()-ts)>=EXP){
       localStorage.removeItem("el_paid_v1");localStorage.removeItem("el_token_v1");localStorage.removeItem("el_ts_v1");
