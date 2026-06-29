@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>O'simlik Shifokori</title>
+<meta name="theme-color" content="#16201a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="O'simlik Shifokori">
+<link rel="manifest" href='data:application/manifest+json,{"name":"O%27simlik Shifokori","short_name":"Shifokor","start_url":".","display":"standalone","background_color":"%2316201a","theme_color":"%2316201a","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 fill=%27%2316201a%27/%3E%3Cpath d=%27M96 168C96 168 33 134 33 76C33 42 58 22 96 22C134 22 159 42 159 76C159 134 96 168 96 168Z%27 fill=%27%235f9d4a%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#16201a; --soil-2:#1f2c22; --leaf:#5f9d4a; --leaf-deep:#3f6e32;
+    --wheat:#d8a93f; --rust:#c0562f; --paper:#f4f0e4; --paper-2:#ece6d4;
+    --ink:#23301f; --ink-soft:#5c6655; --line:#d7cfb8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:'Inter',system-ui,sans-serif;background:var(--soil);
+    color:var(--ink);line-height:1.5;overflow-x:hidden;
+    -webkit-user-select:none;user-select:none;
+  }
+  .app{max-width:520px;margin:0 auto;min-height:100vh;min-height:100dvh;
+    background:var(--paper);display:flex;flex-direction:column;position:relative}
+
+  /* header */
+  header{background:var(--soil);color:var(--paper);
+    padding:calc(16px + env(safe-area-inset-top)) 20px 16px;
+    display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:10}
+  header .mark{width:30px;height:30px;flex:0 0 auto}
+  header h1{font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1}
+  header .sub{font-size:10.5px;color:var(--wheat);letter-spacing:.06em;
+    text-transform:uppercase;font-weight:700;margin-top:3px}
+
+  main{flex:1;padding:18px 18px 28px;display:flex;flex-direction:column}
+
+  /* hero / instruction */
+  .hero{text-align:center;padding:6px 4px 14px}
+  .hero h2{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:var(--ink);
+    line-height:1.2}
+  .hero h2 em{color:var(--leaf-deep);font-style:normal}
+  .hero p{font-size:14px;color:var(--ink-soft);margin-top:6px;max-width:30ch;
+    margin-left:auto;margin-right:auto}
+
+  /* step label */
+  .lbl{font-size:13px;font-weight:700;color:var(--ink);margin:4px 2px 9px;
+    display:flex;align-items:center;gap:9px}
+  .lbl .n{font-family:'Fraunces',serif;background:var(--leaf-deep);color:#fff;
+    width:23px;height:23px;border-radius:50%;display:grid;place-items:center;font-size:13px}
+
+  /* crops */
+  .crops{display:flex;gap:8px;overflow-x:auto;padding:1px 1px 8px;scrollbar-width:none}
+  .crops::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;border:2px solid var(--line);background:#fff;border-radius:15px;
+    padding:11px 8px 9px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:4px;min-width:72px;
+    transition:.12s;font-family:inherit}
+  .chip .emo{font-size:24px;line-height:1}
+  .chip[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf);color:#fff}
+
+  /* preview */
+  .preview{margin:14px 0 0;border-radius:18px;overflow:hidden;border:2px solid var(--leaf-deep);
+    display:none;position:relative;background:#000}
+  .preview.show{display:block}
+  .preview img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
+  .preview .x{position:absolute;top:10px;right:10px;background:rgba(22,32,26,.85);color:#fff;
+    border:none;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;
+    display:grid;place-items:center;backdrop-filter:blur(4px)}
+
+  /* capture buttons */
+  .cap-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .cap-btn{border:none;cursor:pointer;background:#fff;border:2px solid var(--line);
+    border-radius:16px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;
+    gap:8px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);transition:.12s}
+  .cap-btn:active{transform:scale(.97);border-color:var(--leaf)}
+  .cap-btn svg{width:30px;height:30px;color:var(--leaf-deep)}
+  .cap-btn.primary{background:var(--leaf-deep);border-color:var(--leaf-deep);color:#fff}
+  .cap-btn.primary svg{color:#fff}
+  input[type=file]{display:none}
+
+  /* tips */
+  .tips{margin-top:12px;background:var(--paper-2);border-radius:14px;padding:13px 15px;
+    font-size:13px;color:var(--ink-soft)}
+  .tips b{color:var(--ink)}
+  .tips div{display:flex;gap:8px;align-items:center;margin-top:6px}
+  .tips div::before{content:"✓";color:var(--leaf-deep);font-weight:700}
+
+  /* analyze */
+  .go{margin-top:16px;width:100%;border:none;cursor:pointer;background:var(--wheat);
+    color:var(--soil);border-radius:16px;padding:18px;font-family:'Fraunces',serif;
+    font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 6px 18px rgba(216,169,63,.4);transition:.12s}
+  .go:disabled{background:#cfcab9;color:#8a8678;box-shadow:none;cursor:not-allowed}
+  .go:not(:disabled):active{transform:translateY(1px)}
+  .free{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:11px}
+  .free b{color:var(--leaf-deep)}
+
+  /* scanning overlay (fullscreen, app-like) */
+  .scan{position:fixed;inset:0;background:var(--soil);z-index:40;display:none;
+    flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:30px}
+  .scan.show{display:flex}
+  .scan .frame{width:78%;max-width:300px;aspect-ratio:1;border-radius:20px;overflow:hidden;
+    position:relative;border:2px solid rgba(216,169,63,.4)}
+  .scan .frame img{width:100%;height:100%;object-fit:cover;filter:brightness(.7)}
+  .scan .bar{position:absolute;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--wheat),transparent);
+    box-shadow:0 0 16px 4px rgba(216,169,63,.7);animation:scan 1.6s ease-in-out infinite}
+  @keyframes scan{0%{top:4%}50%{top:94%}100%{top:4%}}
+  .scan h3{font-family:'Fraunces',serif;color:var(--paper);font-size:22px;font-weight:600}
+  .scan p{color:rgba(244,240,228,.65);font-size:14px;margin-top:-12px}
+
+  /* results — fullscreen sheet */
+  .sheet{position:fixed;inset:0;background:var(--paper);z-index:45;display:none;
+    flex-direction:column;animation:up .3s ease}
+  .sheet.show{display:flex}
+  @keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+  .sheet-head{background:var(--soil);color:var(--paper);
+    padding:calc(16px + env(safe-area-inset-top)) 20px 16px;display:flex;align-items:center;
+    justify-content:space-between;position:sticky;top:0}
+  .sheet-head h2{font-family:'Fraunces',serif;font-size:19px;font-weight:600}
+  .sheet-head .back{background:rgba(244,240,228,.14);border:none;color:#fff;border-radius:11px;
+    padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit}
+  .sheet-body{flex:1;overflow-y:auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling:touch}
+
+  .dx{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+  .dx.lead-dx{border:2px solid var(--leaf-deep);box-shadow:0 6px 20px rgba(63,110,50,.12)}
+  .dx-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+  .dx-name{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--ink)}
+  .dx-rank{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--leaf-deep);background:var(--paper-2);padding:4px 9px;border-radius:20px;white-space:nowrap}
+  .conf{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .conf-track{flex:1;height:9px;background:var(--paper-2);border-radius:20px;overflow:hidden}
+  .conf-fill{height:100%;border-radius:20px;width:0;transition:width .8s ease}
+  .conf-val{font-size:14px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+  .sec{margin-top:12px}
+  .sec .h{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:4px}
+  .sec p{font-size:14px;color:var(--ink);line-height:1.55}
+  .sec.treat .h{color:var(--leaf-deep)}
+
+  .warn{background:#fbf3e2;border:1px solid #e9d49a;border-radius:14px;padding:14px;
+    display:flex;gap:11px;margin-top:4px}
+  .warn svg{flex:0 0 auto;width:22px;height:22px;color:var(--rust);margin-top:1px}
+  .warn p{font-size:13px;color:#6b5a2e;line-height:1.5}
+  .warn b{color:#5a4a22}
+
+  .err{background:#fdeee8;border:1px solid #f0c4b2;border-radius:14px;padding:16px;
+    margin-top:14px;font-size:14px;color:#8a3c1f;display:none}
+  .err.show{display:block}
+  .err b{display:block;font-family:'Fraunces',serif;font-size:16px;margin-bottom:3px}
+
+  /* paywall */
+  .modal-bg{position:fixed;inset:0;background:rgba(22,32,26,.6);backdrop-filter:blur(3px);
+    display:none;align-items:flex-end;justify-content:center;z-index:60}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--paper);width:100%;max-width:520px;border-radius:24px 24px 0 0;
+    padding:26px 22px calc(24px + env(safe-area-inset-bottom));animation:up .3s ease}
+  .modal h3{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--ink)}
+  .modal p{font-size:14px;color:var(--ink-soft);margin:6px 0 18px}
+  .modal .pay{width:100%;background:var(--leaf-deep);color:#fff;border:none;border-radius:14px;
+    padding:16px;font-family:'Fraunces',serif;font-size:18px;font-weight:600;cursor:pointer}
+  .modal .close{width:100%;background:none;border:none;color:var(--ink-soft);padding:14px;
+    font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <svg class="mark" viewBox="0 0 40 40" fill="none">
+      <path d="M20 35C20 35 7 28 7 16C7 9 12 5 20 5C28 5 33 9 33 16C33 28 20 35 20 35Z" fill="#5f9d4a"/>
+      <path d="M20 34V14" stroke="#16201a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M20 22C20 22 14 21 12 16M20 27C20 27 26 26 28 21" stroke="#16201a" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="30" cy="11" r="4.5" fill="#d8a93f" stroke="#16201a" stroke-width="1.5"/>
+    </svg>
+    <div>
+      <h1>O'simlik Shifokori</h1>
+      <div class="sub">AI agro yordamchi</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h2>Kasal bargni <em>suratga oling</em></h2>
+      <p>AI kasallikni taniydi va davolash yo'lini aytadi</p>
+    </div>
+
+    <div class="lbl"><span class="n">1</span> Ekiningizni tanlang</div>
+    <div class="crops" id="crops">
+      <button class="chip" data-crop="Pomidor" aria-pressed="true"><span class="emo">🍅</span>Pomidor</button>
+      <button class="chip" data-crop="Olma"><span class="emo">🍎</span>Olma</button>
+      <button class="chip" data-crop="O'rik"><span class="emo">🟠</span>O'rik</button>
+      <button class="chip" data-crop="Uzum"><span class="emo">🍇</span>Uzum</button>
+      <button class="chip" data-crop="Kartoshka"><span class="emo">🥔</span>Kartoshka</button>
+      <button class="chip" data-crop="Bodring"><span class="emo">🥒</span>Bodring</button>
+      <button class="chip" data-crop="Boshqa"><span class="emo">🌱</span>Boshqa</button>
+    </div>
+
+    <div class="lbl" style="margin-top:18px"><span class="n">2</span> Surat oling yoki tanlang</div>
+
+    <div class="preview" id="preview">
+      <img id="previewImg" alt="Tanlangan barg">
+      <button class="x" id="removeImg" aria-label="O'chirish">×</button>
+    </div>
+
+    <div class="cap-row">
+      <button class="cap-btn primary" id="btnCam">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        Suratga olish
+      </button>
+      <button class="cap-btn" id="btnGal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+        Galereyadan
+      </button>
+    </div>
+    <input type="file" id="cam" accept="image/*" capture="environment">
+    <input type="file" id="gal" accept="image/*">
+
+    <div class="tips">
+      <b>Yaxshi surat uchun:</b>
+      <div>Bargni yaqindan, yorug'da oling</div>
+      <div>Dog' yoki sarg'aygan joy aniq ko'rinsin</div>
+    </div>
+
+    <button class="go" id="go" disabled>
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Tekshirish
+    </button>
+    <div class="free">Bugun qolgan bepul tekshiruv: <b id="freeCount">3</b></div>
+  </main>
+</div>
+
+<!-- scanning -->
+<div class="scan" id="scan">
+  <div class="frame"><img id="scanImg" alt=""><div class="bar"></div></div>
+  <h3>Tekshirilmoqda…</h3>
+  <p>Barg AI tomonidan o'rganilmoqda</p>
+</div>
+
+<!-- results sheet -->
+<div class="sheet" id="sheet">
+  <div class="sheet-head">
+    <h2>Tashxis</h2>
+    <button class="back" id="back">← Yangi surat</button>
+  </div>
+  <div class="sheet-body">
+    <div id="dxList"></div>
+    <div class="warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+      <p><b>Bu — AI maslahati, aniq tashxis emas.</b> Dori sepishdan oldin agronom yoki tajribali dehqonga ko'rsating.</p>
+    </div>
+    <div class="err" id="err"><b>Aniqlab bo'lmadi</b><span id="errmsg">Yaqinroq va yorug'roq surat oling.</span></div>
+  </div>
+</div>
+
+<!-- paywall -->
+<div class="modal-bg" id="paywall">
+  <div class="modal">
+    <h3>Bepul tekshiruvlar tugadi</h3>
+    <p>Cheksiz tekshiruv uchun to'liq kirishni oching. Click yoki Payme orqali.</p>
+    <button class="pay" id="payBtn">To'liq kirishni ochish</button>
+    <button class="close" id="payClose">Keyinroq</button>
+  </div>
+</div>
+
+<script>
+/* ===== SOZLAMALAR =====
+   DEMO_MODE=true → namuna javob (AI'siz, darhol sinash uchun).
+   Backend tayyor bo'lgach: DEMO_MODE=false + API_ENDPOINT'ni yozing. */
+const DEMO_MODE=true;
+const API_ENDPOINT="/api/diagnose";
+const FREE_PER_DAY=3;
+
+let crop="Pomidor", imgData=null;
+const $=id=>document.getElementById(id);
+
+/* free counter */
+const dayKey=()=>'osh_'+new Date().toISOString().slice(0,10);
+const used=()=>{try{return +(localStorage.getItem(dayKey())||0)}catch(e){return window._u||0}};
+const setUsed=n=>{try{localStorage.setItem(dayKey(),n)}catch(e){window._u=n}};
+const left=()=>Math.max(0,FREE_PER_DAY-used());
+const refreshFree=()=>$('freeCount').textContent=left();
+refreshFree();
+
+/* crop select */
+$('crops').addEventListener('click',e=>{
+  const c=e.target.closest('.chip'); if(!c)return;
+  [...$('crops').children].forEach(x=>x.setAttribute('aria-pressed','false'));
+  c.setAttribute('aria-pressed','true'); crop=c.dataset.crop;
+});
+
+/* capture buttons */
+$('btnCam').addEventListener('click',()=>$('cam').click());
+$('btnGal').addEventListener('click',()=>$('gal').click());
+['cam','gal'].forEach(id=>$(id).addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    imgData=ev.target.result;
+    $('previewImg').src=imgData;
+    $('preview').classList.add('show');
+    $('go').disabled=false;
+    $('preview').scrollIntoView({behavior:'smooth',block:'center'});
+  };
+  r.readAsDataURL(f);
+  e.target.value='';
+}));
+$('removeImg').addEventListener('click',resetImg);
+function resetImg(){
+  imgData=null; $('preview').classList.remove('show');
+  $('previewImg').src=''; $('go').disabled=true;
+}
+
+/* analyze */
+$('go').addEventListener('click',async()=>{
+  if(!imgData)return;
+  if(left()<=0){$('paywall').classList.add('show');return;}
+  $('scanImg').src=imgData;
+  $('scan').classList.add('show');
+  try{
+    const data=DEMO_MODE?await demo(crop):await real(imgData,crop);
+    setUsed(used()+1); refreshFree();
+    render(data);
+  }catch(err){
+    render(null,(err&&err.message)||"Internet aloqasini tekshiring.");
+  }finally{
+    $('scan').classList.remove('show');
+  }
+});
+
+$('back').addEventListener('click',()=>{
+  $('sheet').classList.remove('show');
+  resetImg();
+  window.scrollTo({top:0});
+});
+
+/* render results */
+function render(data,errText){
+  const list=(data&&data.diagnoses)||[];
+  $('err').classList.remove('show');
+  if(!list.length){
+    $('dxList').innerHTML='';
+    $('errmsg').textContent=errText||"Bu suratdan kasallikni aniqlab bo'lmadi. Yaqinroq va yorug'roq surat oling.";
+    $('err').classList.add('show');
+    $('sheet').classList.add('show');
+    return;
+  }
+  $('dxList').innerHTML=list.map((d,i)=>{
+    const c=Math.max(1,Math.min(99,Math.round(d.confidence||0)));
+    const rank=i===0?'Eng ehtimoli':(i===1?'2-ehtimol':'3-ehtimol');
+    const col=c>=70?'var(--leaf)':c>=45?'var(--wheat)':'var(--rust)';
+    return `<div class="dx ${i===0?'lead-dx':''}">
+      <div class="dx-top"><div class="dx-name">${esc(d.name)}</div><div class="dx-rank">${rank}</div></div>
+      <div class="conf"><div class="conf-track"><div class="conf-fill" data-w="${c}" style="background:${col}"></div></div><div class="conf-val">${c}%</div></div>
+      ${d.signs?`<div class="sec"><div class="h">Belgilari</div><p>${esc(d.signs)}</p></div>`:''}
+      ${d.treatment?`<div class="sec treat"><div class="h">⚕️ Davolash</div><p>${esc(d.treatment)}</p></div>`:''}
+      ${d.prevention?`<div class="sec"><div class="h">🛡 Oldini olish</div><p>${esc(d.prevention)}</p></div>`:''}
+    </div>`;
+  }).join('');
+  $('sheet').classList.add('show');
+  requestAnimationFrame(()=>$('dxList').querySelectorAll('.conf-fill').forEach(el=>el.style.width=el.dataset.w+'%'));
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+/* real backend */
+async function real(dataUrl,crop){
+  const res=await fetch(API_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({image:dataUrl.split(',')[1],crop})});
+  if(!res.ok)throw new Error("Server javob bermadi.");
+  return await res.json();
+}
+
+/* demo */
+function demo(crop){return new Promise(r=>setTimeout(()=>r(DEMO[crop]||DEMO['Boshqa']),2000))}
+const DEMO={
+ "Pomidor":{diagnoses:[
+  {name:"Fitoftoroz (kechki chirish)",confidence:78,signs:"Bargda jigarrang, suv shimgan dog'lar; pastida oqish g'ubor. Nam havoda tez tarqaladi.",treatment:"Kasal barg va mevalarni yulib, daladan chiqaring. Mis saqlovchi fungitsid (bordo suyuqligi) bilan purkang, 7–10 kunda takror.",prevention:"Tup oralig'ini kengaytiring, ertalab tomchilatib sug'oring, bargni ho'l qilmang."},
+  {name:"Septorioz (oq dog'lanish)",confidence:42,signs:"Mayda dumaloq, markazi kulrang dog'lar, avval pastki barglarda.",treatment:"Zararlangan barglarni oling, fungitsid bilan purkang.",prevention:"Almashlab ekish, qoldiqlarni yo'qotish."},
+  {name:"Azot yetishmovchiligi",confidence:21,signs:"Pastki barglar bir tekis sarg'ayadi, dog'siz.",treatment:"Azotli o'g'it bering.",prevention:"Muntazam oziqlantirish."}]},
+ "Olma":{diagnoses:[
+  {name:"Parsha (qoraqurum)",confidence:81,signs:"Barg va mevada zaytun-jigarrang baxmal dog'lar.",treatment:"Kasal qismlarni yig'ishtiring. Bahorda mis yoki oltingugurtli fungitsid bilan davolang.",prevention:"Tushgan barglarni kuzda yo'qoting, shoxlarni siyraklashtiring."},
+  {name:"Un-shudring",confidence:38,signs:"Barg va novdalarda oq unsimon g'ubor.",treatment:"Oltingugurtli preparat bilan purkang.",prevention:"Quyuq shoxlarni kesib siyraklashtirish."}]},
+ "O'rik":{diagnoses:[
+  {name:"Klyasterosporioz (teshiklilik)",confidence:74,signs:"Bargda qizg'ish-jigarrang dog'lar, keyin to'kilib teshik qoladi.",treatment:"Kasal shox-barglarni kesib yo'qoting. Mis fungitsid bilan kurtak yozilishidan oldin va keyin purkang.",prevention:"Daraxt tagini toza tuting, kesilgan joyni bog' malhami bilan yoping."},
+  {name:"Monilioz",confidence:35,signs:"Gul va novdalar birdan quriydi, meva chiriydi.",treatment:"Kasal qismlarni kesing, fungitsid qo'llang.",prevention:"Yiqilgan meva-bargni yo'qotish."}]},
+ "Uzum":{diagnoses:[
+  {name:"Mildyu (soxta un-shudring)",confidence:79,signs:"Barg ustida sarg'ish 'yog' dog'lari', ostida oq g'ubor.",treatment:"Mis saqlovchi yoki tizimli fungitsid bilan purkang, nam havoda takror.",prevention:"Barglarni siyraklashtiring, tokni ko'taring."},
+  {name:"Oidium (un-shudring)",confidence:44,signs:"Barg va boshlarda kulrang-oq un g'ubor.",treatment:"Oltingugurtli preparat bilan davolang.",prevention:"Quyosh va shamol tushishini ta'minlash."}]},
+ "Kartoshka":{diagnoses:[
+  {name:"Fitoftoroz (kechki chirish)",confidence:80,signs:"Bargda to'q jigarrang dog'lar, ostida oq g'ubor; tuganaklar chiriydi.",treatment:"Kasal poyalarni oling. Mis fungitsid bilan purkang, 7–10 kunda takror.",prevention:"Sog'lom urug'lik, almashlab ekish, baland pushta."},
+  {name:"Alternarioz",confidence:39,signs:"Halqali jigarrang dog'lar, avval keksa barglarda.",treatment:"Fungitsid qo'llang.",prevention:"Balanslangan o'g'itlash."}]},
+ "Bodring":{diagnoses:[
+  {name:"Un-shudring",confidence:77,signs:"Barg ustida oq unsimon g'ubor, keyin sarg'ayib quriydi.",treatment:"Oltingugurt yoki maxsus fungitsid bilan purkang.",prevention:"Havo aylanishi, ortiqcha namlikdan saqlanish."},
+  {name:"Peronosporoz",confidence:46,signs:"Barg ustida burchakli sariq dog'lar, ostida kulrang g'ubor.",treatment:"Mis fungitsid qo'llang.",prevention:"Tomchilatib sug'orish."}]},
+ "Boshqa":{diagnoses:[
+  {name:"Zamburug'li barg dog'lanishi",confidence:58,signs:"Bargda jigarrang/qora dog'lar, atrofi sarg'ish.",treatment:"Kasal barglarni oling. Keng ta'sirli fungitsid bilan purkang.",prevention:"Havo aylanishini yaxshilang, qoldiqlarni yo'qoting."},
+  {name:"Oziq yetishmovchiligi",confidence:33,signs:"Bir tekis sarg'ayish, dog'siz.",treatment:"Balanslangan o'g'it bering.",prevention:"Muntazam oziqlantirish."}]}
+};
+
+/* paywall */
+$('payClose').addEventListener('click',()=>$('paywall').classList.remove('show'));
+$('paywall').addEventListener('click',e=>{if(e.target===$('paywall'))$('paywall').classList.remove('show')});
+$('payBtn').addEventListener('click',()=>alert("To'lov keyingi bosqichda ulanadi (Click/Payme)."));
+</script>
+</body>
+</html>
