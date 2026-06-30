@@ -21,6 +21,7 @@
 <meta name="google-site-verification" content="U1KvgUyFxfzu--iqvlaETE9yKVTbQPho0x4FPq6Rsas" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>EuropaGo</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇪🇺</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--bg:#f8faff;--c:#f5f5f5;--c2:#ebebeb;--bd:#cccccc;--gold:#4a2800;--grn:#16a34a;--ind:#6b3a00;--tx:#111111;--mt:#444444;}
@@ -337,11 +338,11 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
         <span class="pb-role" id="pbGoT">Yevropaga KETMOQCHIMAN</span>
         <span class="pb-sub" id="pbGoS">Ish vizasi yo'l xaritasi: davlat, kasb, hujjatlar, elchixona, ish beruvchi firmalar</span>
       </button>
-      <button class="path-btn path-life" onclick="goScreen('sc-life');elGoHome();">
+      <button class="path-btn path-life" style="opacity:.92;cursor:default;position:relative;" onclick="return false;"><span style="position:absolute;top:10px;right:12px;background:#C9A227;color:#fff;font-size:.62rem;font-weight:800;padding:3px 9px;border-radius:20px;" id="lifeSoonBadge">🔜 TEZ KUNDA</span>
         <span class="pb-logo"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCAC0ALQDASIAAhEBAxEB/8QAHAAAAgIDAQEAAAAAAAAAAAAAAAIBBgQHCAMF/8QATBAAAQMDAQQDDQIJCQkAAAAAAQACAwQFEQYHEiExE0FRCBQiMlJhcYGRlKHR0hUWFyNTVVZygrHCGCUzQkNik7LBJDQ1VHOEkqLh/8QAGgEAAgMBAQAAAAAAAAAAAAAAAAECAwQFBv/EADIRAAIBAwQAAwcDAwUAAAAAAAABAgMEERIhMVEFE0EUImFxgZHBMqHRFULwUmKx4fH/2gAMAwEAAhEDEQA/AOl0IUjgsxYRhGUIQAZU5UYUgIECMKcKcIAjCFOFOEAKhNhGEAKjCbCMIATCE2EYQAuVGUxCXCABCEIGCEIQAIQhIAAQSpKhMAQAgJgEAGFOEAJsIEQApwpwjCeAIwpwvkXvVVpsHg1dRvT4yII/CefV1etU2r2nXOsl6G1W9kZPi7wMrz6hw/esNx4jb0HpnLfpbs0UrWpUWUtjZOELWQqNodf4bGVsYPZGyMfHCHfhEpPDIrnAfqSfDis/9WXKpTx8i32P/evubNwjC1lDtFv9rlEd1oWSdokjMT/l8Fc9PasotRNIhinglDS4tkZwIHMh3I81fb+JW9eWiLxLp7FVW1qU1qa2PsqMJ8KMLfgziYUEJyowkAhChOQlIQBCEIQMEIQgAKEFSECJAUgICYIAAFICAEwCkBACoOr9fSMmda7E7elzuPqGDJz5LO0+f2LL2jaodbKUWqjkxVVDcyuaeMcfzP7lOz/R7bXTR3SujzWytzGxw/oWn+I/Bce6r1bit7LbvGP1Pr4fM20qcKcPOq79Ls+dp7Zo+qxW3+SQOed7vdrvCP67v9B7VfKG20dsiEVFSxU7B1RtwT6TzKysErnvbh3Qdy01dZ9M6Yj72q6cjvitlaC5p57rWnlwxxPFdSw8Lp0/cox37fJjubuUvem9ujoNC5b2b7e9pN9uEFpjZY7qY2F0nfrxTyOjaMufv7wBwASeB9Cp+vdtGsazU9Wy2alutJSUrjTR9DUBvShrj4btzwS49rcAgBdWNhUctOUY3cxxqOz6mlgrYjDUwxzRnm2RocPivhVWjKVsLYrfiGPfeXRSue9ga5pDg1u8MZ4Hj1hcWfha1/8AplfPe3I/C1r/APTK+e9uUavgiqfrwEPENPGTsOm1U6wOhpLyyqBfFEGNFMB0fNricOPDgD28Vb2ObIxr2ODmOGWuHIhcGfha1/nP3xvnvbl0dsAv12Gnqat1Xe7hX1V/meaMVUxeIYo/BBweW+7e9gWSpYSs6eqrUTWUl3v8S+Fyq8sQjubmISkJyoIVZYIQoITpSosDzIwhMQlQMEIQgCVICgJggRITAKAmCaAkBLNNHTQyTyndjjaXuPYAMlMFX9f1ZpNKVpBwZQ2EftEZ+GVXWqeVTlUfomyUI6pKPZrGa4VVbWXXVRoJLgLew1rqVgJMgBw1gwCeX+VbI2d66/CBZpbqLHc7OxsvRsZXM3TKN0Hfb2jiR6libKaLoLFPVEYdUTkA/wB1owPiSvWu2hspNpFv0QbfMZqynfUipzloaByx1cQeJPDA4HPDN4LQxbamsyl7zZbfVM1sJ7LY8dqG1WzbMLU2eteJrhUNd3pRt4ukI/rO7GA4yfYuW9mtrrdS3jUuvK6mp7m2x081zqKaoaHtqZntfugg8N0EFxznxcda3vt52a0WrbjZr1dr2y12qmxSVAawulme9/4prOri5xHHkDlUfuYtIXC06u1FNW01Y5tCDQPDHf7NKd5weSeUhG63AHlkr0lBwhQlJc/5scqopSqJPg0LBQXZ1HJfaalq20sMoa6thYWxxyOzgBw4A8+AWA5xJLnEkniSeZVs2i6tdqa8v71luMNvYctt9QWtjppRkOEcbMNaPVnic5WVsa0rSat2gW6luU0ENtpnd91bp3hjXMYQQzjz3nbox2Erqa9MNcjHpzLSjYunO5NuV6sNBc6zUkVvnq4GzOpXUZeYt4ZDSd8ccEZ4L6X8jqp/TOH3A/WuiPvHY/zzbB/3TPmo+8dk/PNt96Z81xne188/sdBW9I54HcdVGRnWUWOvFAfrWxNd6VjsENmktTHthp4o6CKNvHcLB4GPOePrWzaWtpa+MyUlTBUxg7pdDIHgHsyOtYt9dAy21Ekro9+nYZ495wG69oO6fauX4qpXdB06suN/ka7PFCopQQ1oqKiqtdLNWQuhqXRjpWOGCHcj8VlYVQ2Y1vS6bMc0zS+KdzQ1zuIBwR7SSrgVXaVfNoQqL1ROrDRUcRCFBCYqCrysQpSE5SlRAVCMIQMYJgoUhAhgpCgJsJgSFUdqOfuwAOXfMefY5W5V3aFSOqtJVm4MuiLZfY4Z+BKzX8XK1qJdMttnitFvsx9FNqHaBa2h3TVGOcRbz9wdJl27l2DjjjjgrR2qdIa80i3TfedHNqXVNLXyXaruNM2WV0e8QBDvEYDCAcjA7QFuvZZWsfpyanc8A00zi7J5NcM5/eqX3R0Udx2eVN+tOqJ4u9DGx1PS1e9BUtc8NwWtPjeFz7AQVq8EqZoU0uGkvwU38MVJt9lE22d0F9qxnTVggopYWdDJU1hBk3Khjg4tjyACGuGN4jjxWsqzbNrqroKegjvstFTU4eGx0LG04dvZHhbgGcA4GeWB18VTqamnrJehpYZZ5cF25EwudgDJOB2BfQuembraLVbLtWUpZQXRjn0k7XBzZN04cOHJw7DxXp6dClBKODkSqTk2z5jnOe4uc4uc45JJySe1KQDzGVZdnGj5tea0tdgi3hHUSh072/2cLeLz7AQPOQuyhsK2ajh9z7d6w75qNe6jRaTHSoSqLKOEN1vkj2IDA4gNZkngABxK7v8AwF7Nf0Ptvsd8160uxTZ1RVMVTBpK3Mmhe2SN2647rgcg8T2hUPxKHTLfZJdmDs+03UbMtmdptVLbJa24vb0lRHFgfj5BvOLj1BvBufMFg1eh9TXgPr7zXwsMUJG6TvvLW5IB3eHPPHK2iviaruFVbrW59K2mBkPRvmqZAyOEEYye3sAC8t4jbwr5qV22l6Lg7FrVlTxGmlns1ppvRtyvVtju9trIYpGTYbHICMlpBBzxHPtCv+mKy+tc6gvlDKJW7z21YcHMfx8XhyIzw8wWDoGlulppzbpoqOaia5zhPBKHGN5wd1w68gg8OWVbyOKx+GWUadONSLcX6r0f0/KLru4cpOLw16ClKU5SldcxilKUxSlJgKhSUJAT1qQo60wQBITDmlCYKQEpamnjq6eWnlGY5WFjh5iMJgnUmsrDIrY0lT1dZpSW/Wgw9NPUUk9MyI5w+Tcd0fLjxJx+0udtFbNb5qPWVHpuotlzpQ6obFWu6Ag0zBgvLs8AQO3tC672l6XdVxC90bCZ4G4na3m5g5O9I/d6F9DQGsI75SChqngXCEcSf7do/rec9vtXO8IvH4fUnZT4e8X+DTe0FcxjXXpyPbNHxaN0xDRaXtND35SMbTwPqsOe+IyDe35AASS3eOOWcLXd80np7RtyuNtoK2hqdLzCauven6yIStoR0ZcJ4nDDosloaOJ4uGM9W8VojuqdQ10dho9MWqiqp57ielq5IIHP3YGHIYSB/Wfg4/uedd2g5Tnp7MFRJRz0ax2AbQdDbOKi7Xa+yVouFURBTMipzIIoM7xye0nH/j51ub+VTs4/L3X3M/Ncifd69fme5e6v+SPu9efzPcvdZPkurUtadSWqTMUK04rCR12e6p2cfl7r7mfmo/lU7OPy919zPzXIn3dvX5nuXur/AJL7GkNn961Rqi2WU22vp2VlQ2OSZ9O9rY2c3OJI6mglVOyoJZbJq4qN4wd4acv9JqmxUd7oGztpK2PpYemZuPLTyJHVnn6FRtqt8EktPZITvFpE0wHaeDW/vPrCtd/vlv0RY4YYo2AxxiGkph2NGB+yBhUrQdgn1DeH3+5ZkijkLw539rL8h8gvGeK1nVkrKjzLn4I7tnDQvPqcL92XvStn+wrBSUThiQN35P13cT7OXqX1HJioK6tOmqcFCPC2Mc5OTcn6ipSmKUpsFwKUpT9aQqLGQhCEgJUhKmCEAwTBKFIKkAyYckqZpUyI3AjBGQepa11doSpt1SbxYA8Na7pHQxePEfKZ5vN1ehbJCkHCy3lnTuoaZ8+j9UXUa8qTzEoWmNqEEzWUt8/EzDwRUtHgu/WHUfh6FfYKiGqibLTysljdyexwIPrCrmoNB2m/OdOGGkqnc5oR4x/vN5H96p0mhdV6flMtpqTK3nmml3CfS0//AFc+Ne9tfdqx8yPa5+q/z5mhwoVt4PS+nwbYypytTjU+vbeNyemqX465aPPxAR98dcVXgw0krSeuOiOfiCrP63S9YSz8hewT/wBS+5tZzw1pc4hrRxJJwAqfqTaVbbSHwUDm11Xyy0/i2Hzu6/QFVjpnW2pXD7QkmjiPPvmXdaP2B8lZbFsxtltLZrg/7QmHENcMRtPo6/X7FCV3eXPu0Kehdy/j/wBGqNClvUll9Iq9j01dtc3E3O7ySNpCeMp4F48lg6h5+S2pS0sFDTR01NE2KGJu6xjRwAXqAGNDWgAAYAA4AIWyysYWybTzJ8t8sor3Eqr6S4RBSu5pkh5raUAeSUqSoJ4qBIUpSmKUpMCEKChICUwSKg7erjVWvZNfp6Kd8EzmRxb7Dhwa+RrXAHqyCR61OnDXJRXqKT0psurr7aWOLXXW3tcOBBqWAj4r2bc6A07qkV1Kadp3TKJm7gPYXZxlcu6K0dsLqtKWyo1FqIR3eWBr6qM1jmdHIebd0N4YW69L7PtEVmzWr09p6U1enrv0rxMZTLl5w3faSObXMBHnC01aMIer+xVCpKXX3L/TzxVMTZYJY5Y3DLXxuDmu9BCSpr6ShLBVVdPT7/i9LI1m96MnitIdzpfa3Ttxvey6+HdrrRM+akzyfHnww3zcQ8eZ57F82jjbtz27y1z29NpjSeGR5GWTSB3D07zwT+qwdqfs+JSTey3z/wAC83KTXLOgam50FC9rKqupad7hlrZZWsJHaASop7xbaqQRU9xo5pDyZHO1xPqBXPHdA2igv+2nRFrup3aGrgZFO4P3CGGZ2fC6vSvPahsW2a6R0VcL3ZbtLSXOkaH0v84NkMsmRhgbzye0cRzU428Wo5e7+BF1ZZeFwdLrFrrvbbUGm4XCjow7xTUTNjz6MkLUlj2mXaydzjBrC5OdU3WOmdDDJNxMr+lMcb3dvDBPbjzqubNNg9v2gWCDWWv7hcrvcbu3vhjO+CwRxkndyRxJI44GAAQMKKoJZc3hJ4JOpnCijoamqoKyFs9NPFPE7xZInhzT6CF51dyoqDdFXWU1MX53emlaze9GSua9QWeq7mzXljuFguVXNpe8TdDU0M797dwQHeYkBwc12M8CDkLP7qiiguOqtBUdVxp6ieSKTBwdx0kQPHq4HmpRt05JJ7P8EXVaTyt0dAwXm21coip7jRzSHkyOdrifUCsormvansQ2daO0VcL5ZrpUUVzpGh9KTXB/Sv3hhgHPJ83Ec1srZnrqaLYlQas1RUPJpaSV808h8OZsb3NafO5wDR5yfOozorSpwed8EozedMjY7ZGPc5jXtLmYDmg8W5GePYolljhbvSSMjbyy4gD4rlvZPtOv1t2kNveqGyQWjXMjuhkefxbHsduRlvYG8I/QQVvnagM6UkB/Lx/6rNf5tacp84WS22arSUeMste8CAQcg8iF5ieFxe0Sxks8cBwy309i8bZ/w2k/6Ef+UKj2nhftZ4Az0Un8Sx17p09G36v4yXU6WvVvx/JeTXUn/NU/+I35oNXThoeaiENdnDi8YPoWsdLWnSVVaGS3eqZHWF7g5pnLMDPDgsnWNvtVHTaep6Z/82Ole7f397wHFpJz7Vz14lUdHztKxhf3b7tc7bGp2sdejL+3/ZsMVlK4hramAk8ABIOPxXoVSLbZ9Dy3CnbQ1PSVIeHRNEriS4cezzK7Erdb1pVU3LH0eTNVgoPbP1WCEKELSVklUHbxbau7bJ79TUUElRMGRy9GwZcWska52B14AJ9SvpUtKlTnokpdEZR1Jo5c0VrjYhR6VtlLqHTDZbtDA2OrlNB0nSSDm7e3uOVvrZhqbS2pdMNk0dTOpbTSTOp2QmHogx3Bxw3J4eFn1qwm1295LnW+jcTxJMDST8FkQU8NMwsghihYTndjYGjPbgLRWrRqLZP75K6dNx5x9jRXdJaTuNsqKDaHpp00FxgHeFW6nHhuZICxjv8A2LP2m9i2Nsd0EzZ1oaitb2NFfMO+a545mZwGW57GjDfV51cnsbI3dexr2nBw4ZHanSlcSlTVPoapJTcjnXb7ZqPUm2zQ1muAe6kroWQTBjt1xa6ZwOD1Kv7Ydilp2ZVtr1Ra7ZNc9NRysZcaKaZxc058sYIa4cM9RA7V1M+lp5ZWTSU8L5WeK9zAXN9B5heksUdRG6OWNkjHcHMe0EH0gq6neSjpS4X7lcqCeX2UDUVktG1jY5Jb9LPgjo6ukY63taA1kT4yC2MgeLgt3T2cVrvZrt5oNn+n4NHa+t1ytNxtDe92P73LhJGCd3I5ggcMjIIAOV0HDTxU0fRwQxwszndjaGjPoC8K210FzDRX0FJVhvi9PC2THoyCoxrRw4SWVz8RuDzqT3Oc79eavuk9d2OhsNtrINL2abpqmuqGbu9kgu8wJDQ1rck8SThZ/dT0cNy1XoKgn3hDVTyQP3Tg7rpImnB7cFdCQQw0sLYYIo4Ym+KyNoa0egBYzH266Syfi4KiSklMZL2BxjfgHhnlzCau1GccLCWcIXktxefU1hTdyxs5pqhsskF1qWsOejmrPBd6d0A/FVbbnWz6rv1i2M6QZBAPAkqms8GKFrW5Yx2OTWtG+f2etdCZJXkKOnZOahtNC2d3OURgPPrxlKNxLVqlvjgHSWMLY5u1nsU2pXPSFPb6+9afrqKxwmSjpKWExygMZjdY4RgkkDrPE461Z9M7QxtD2ORTVMwN0t88VLWgni5w8WT9ocfSHLd+OsrHZQ0cQcIqOnYH8XBsTRvenhxVF5L2m3lRls3w+sltCPlVVUXoVa37RrC2mpacvqekDGR/0XDOAO1fOtPg37WWTx6KT+JXrvSnHKnh/wAMJuijBcejZl3jHdHhentXKdpVnp8yaenpY9GuzZ50I50rn4/HJR9Cads9z05FU1VBDPKZHgvdnJAK89oTKO3SWCN0LRRwyOBjAyNwFuRj0K9tY2Ju6xjWDsaMBLJFHLjpI2Pxy3mg4UX4dH2fyY4T23x1gauX5ut8b7ZKdQ6l0Y2tgNHRNinc8Njc2mwQTw59XNXE81597QAgiCIEdYYE6029KdNNTa+ix+SqpKMn7ufq8ghHJC0FYJJYmzRlj97dPkuLT7RxToS52YGKLZT+VUe8SfUm+zKfyqj3iT6lkKQVHy4dD1Psxxa6fyqn3iT6lItdP5VT7xJ9SyQVIKPLh0GqXZjfZdP5VT7xJ9SkWum7an3iT6lkgqcp+XDoNUuzF+y6byqn3mT6kzbbTNcCDU5Bz/vEh/iWRlTlPRHoWpkVEUdRDJFLG2Rj2lpY7k7zKs6W0UNPVz6qWaKpdJHwO6QYnZ4hueYx1njwVnyjKhUoQqTjUkt48Eo1JRi4rhizwR1LNx5eBnPgPLT7QQsf7Lpu2p95k+pZWUZVkoxe7RFNrgxDa6byqn3mT6lH2XTeVU+8yfUsvKjKj5cOh6n2Yn2XT+VU+8SfUoNrpvKqfeJPqWXlRlLy4dBqfZifZdP5VT7xJ9Sg2yn8qo94k+pZZKgDeKPLj0Gp9mK23U7XBwNRkHPGd5/1WSgjHNCaio8ITbfIIQhPIEAqUqkHKQEoQhMABTZSoTAcFSCkDlOUANlTlJlTlADZQlyjKAGyjKXKMoETlRlRlQSgBspSVBOUIGCBw4oQlkAQoKjOUgJyhRlCAAIwhCAJClCEACEIUgBCEIAkIQhAE5QhCADKhCEAQhCEACEIQAIQhRAUoQhA0QhCEAf/2Q==" alt="EvropaLife"></span>
         <span class="pb-name" style="color:#101F4A;">Evropa<span style="color:#C9A227;">Life</span></span>
         <span class="pb-role" id="pbLifeT" style="color:#101F4A;background:rgba(242,193,78,.25);">Yevropaga BORIB BO'LDIM</span>
-        <span class="pb-sub" id="pbLifeS" style="color:#3a4a6b;">Birinchi 90 kun: uy ijarasi, bank, ro'yxatdan o'tish, mehnat huquqlari, sug'urta</span>
+        <span class="pb-sub" id="pbLifeS" style="color:#3a4a6b;">📋 Ichida: soliq qaytarish · ish topish · uy ijarasi · bank · yashash ruxsati · tibbiy sug'urta · haydovchilik guvohnomasi va boshqalar</span>
       </button>
     </div>
   </div>
@@ -599,7 +600,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
       </div>
       <div class="pay-body">
         <div class="pay-price-box">
-          <div class="pay-price">29 900 so'm</div>
+          <div class="pay-price">99 000 so'm</div>
           <div class="pay-once" id="payOnce">&#10003; Bir martalik to'lov — umrbod kirish</div>
         </div>
         <div style="font-size:10px;color:var(--mt);text-transform:uppercase;font-weight:700;margin-bottom:6px;" id="pmLbl">To'lov usuli</div>
@@ -614,7 +615,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
         </div>
         <div id="cardBlock">
         <div id="cardPanel" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;margin-bottom:12px;">
-          <div style="font-size:12px;color:#166534;font-weight:700;margin-bottom:8px;" id="cardStep1">1. Quyidagi kartaga <b><span id="cardAmt">29 900</span> so'm</b> o'tkazing:</div>
+          <div style="font-size:12px;color:#166534;font-weight:700;margin-bottom:8px;" id="cardStep1">1. Quyidagi kartaga <b><span id="cardAmt">99 000</span> so'm</b> o'tkazing:</div>
           <div style="background:#fff;border:1px dashed #16a34a;border-radius:10px;padding:12px;margin-bottom:6px;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
               <div style="font-size:18px;font-weight:800;letter-spacing:1px;color:#111;font-family:monospace;" id="cardNum">9860 6004 0235 7294</div>
@@ -789,7 +790,7 @@ function goScreen(id){
     try{
       setEl("socialTxt",lang==="ru"?"\uD83D\uDC64 600+ человек уже пользуются":lang==="en"?"\uD83D\uDC64 600+ people already using it":"\uD83D\uDC64 600+ kishi allaqachon foydalanmoqda");
       setEl("cardBtnTxt",lang==="ru"?"Оплата картой (Payme, Uzum...)":lang==="en"?"Pay by card (Payme, Uzum...)":"Karta orqali to'lash (Payme, Uzum...)");
-      setEl("cardStep1",lang==="ru"?"1. Переведите <b>29 900 сум</b> на карту:":lang==="en"?"1. Transfer <b>29,900 UZS</b> to this card:":"1. Quyidagi kartaga <b>29 900 so'm</b> o'tkazing:");
+      setEl("cardStep1",lang==="ru"?"1. Переведите <b>99 000 сум</b> на карту:":lang==="en"?"1. Transfer <b>29,900 UZS</b> to this card:":"1. Quyidagi kartaga <b>99 000 so'm</b> o'tkazing:");
       setEl("cardStep2",lang==="ru"?"2. После оплаты отправьте чек в Telegram — пришлём доступ:":lang==="en"?"2. After payment, send the receipt to Telegram — we'll send the link:":"2. To'lagach, chek rasmini Telegram'ga yuboring — havola beramiz:");
     }catch(e){}
   }
@@ -829,26 +830,26 @@ function toast(m){var t=document.getElementById("tst");t.textContent=m;t.classLi
 document.getElementById("logoEl").addEventListener("click",function(){lc++;if(lc>=5){lc=0;openModal("admOvl");}});
 
 var CC=[
-  {id:"de",f:"&#127465;&#127466;",ru:"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f",uz:"Germaniya",en:"Germany",s:"2500\u20ac"},
-  {id:"pl",f:"&#127477;&#127473;",ru:"\u041f\u043e\u043b\u044c\u0448\u0430",uz:"Polsha",en:"Poland",s:"1800\u20ac"},
-  {id:"cz",f:"&#127464;&#127487;",ru:"\u0427\u0435\u0445\u0438\u044f",uz:"Chexiya",en:"Czech Republic",s:"900\u20ac"},
-  {id:"hu",f:"&#127469;&#127482;",ru:"\u0412\u0435\u043d\u0433\u0440\u0438\u044f",uz:"Vengriya",en:"Hungary",s:"700\u20ac"},
-  {id:"nl",f:"&#127475;&#127473;",ru:"\u041d\u0438\u0434\u0435\u0440\u043b\u0430\u043d\u0434\u044b",uz:"Niderlandiya",en:"Netherlands",s:"2200\u20ac"},
-  {id:"at",f:"&#127462;&#127481;",ru:"\u0410\u0432\u0441\u0442\u0440\u0438\u044f",uz:"Avstriya",en:"Austria",s:"1800\u20ac"},
-  {id:"it",f:"&#127470;&#127481;",ru:"\u0418\u0442\u0430\u043b\u0438\u044f",uz:"Italiya",en:"Italy",s:"1000\u20ac"},
-  {id:"es",f:"&#127466;&#127480;",ru:"\u0418\u0441\u043f\u0430\u043d\u0438\u044f",uz:"Ispaniya",en:"Spain",s:"1000\u20ac"},
-  {id:"fr",f:"&#127467;&#127479;",ru:"\u0424\u0440\u0430\u043d\u0446\u0438\u044f",uz:"Fransiya",en:"France",s:"1700\u20ac"},
-  {id:"be",f:"&#127463;&#127466;",ru:"\u0411\u0435\u043b\u044c\u0433\u0438\u044f",uz:"Belgiya",en:"Belgium",s:"1900\u20ac"},
-  {id:"se",f:"&#127480;&#127466;",ru:"\u0428\u0432\u0435\u0446\u0438\u044f",uz:"Shvetsiya",en:"Sweden",s:"2800\u20ac"},
-  {id:"no",f:"&#127475;&#127476;",ru:"\u041d\u043e\u0440\u0432\u0435\u0433\u0438\u044f",uz:"Norvegiya",en:"Norway",s:"3200\u20ac"},
-  {id:"lt",f:"&#127473;&#127481;",ru:"\u041b\u0438\u0442\u0432\u0430",uz:"Litva",en:"Lithuania",s:"800\u20ac"},
-  {id:"fi",f:"&#127467;&#127470;",ru:"\u0424\u0438\u043d\u043b\u044f\u043d\u0434\u0438\u044f",uz:"Finlandiya",en:"Finland",s:"1800\u20ac"},
-  {id:"pt",f:"&#127477;&#127481;",ru:"\u041f\u043e\u0440\u0442\u0443\u0433\u0430\u043b\u0438\u044f",uz:"Portugaliya",en:"Portugal",s:"760\u20ac"},
-  {id:"gr",f:"&#127468;&#127479;",ru:"\u0413\u0440\u0435\u0446\u0438\u044f",uz:"Gretsiya",en:"Greece",s:"780\u20ac"},
-  {id:"ro",f:"&#127479;&#127476;",ru:"\u0420\u0443\u043c\u044b\u043d\u0438\u044f",uz:"Ruminiya",en:"Romania",s:"600\u20ac"},
-  {id:"sk",f:"&#127480;&#127472;",ru:"\u0421\u043b\u043e\u0432\u0430\u043a\u0438\u044f",uz:"Slovakiya",en:"Slovakia",s:"700\u20ac"},
-  {id:"hr",f:"&#127469;&#127479;",ru:"\u0425\u043e\u0440\u0432\u0430\u0442\u0438\u044f",uz:"Xorvatiya",en:"Croatia",s:"840\u20ac"},
-  {id:"si",f:"&#127480;&#127470;",ru:"\u0421\u043b\u043e\u0432\u0435\u043d\u0438\u044f",uz:"Sloveniya",en:"Slovenia",s:"1000\u20ac"}
+  {id:"de",f:"&#127465;&#127466;",ru:"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f",uz:"Germaniya",en:"Germany",s:"2300\u20ac"},
+  {id:"pl",f:"&#127477;&#127473;",ru:"\u041f\u043e\u043b\u044c\u0448\u0430",uz:"Polsha",en:"Poland",s:"1150\u20ac"},
+  {id:"cz",f:"&#127464;&#127487;",ru:"\u0427\u0435\u0445\u0438\u044f",uz:"Chexiya",en:"Czech Republic",s:"950\u20ac"},
+  {id:"hu",f:"&#127469;&#127482;",ru:"\u0412\u0435\u043d\u0433\u0440\u0438\u044f",uz:"Vengriya",en:"Hungary",s:"850\u20ac"},
+  {id:"nl",f:"&#127475;&#127473;",ru:"\u041d\u0438\u0434\u0435\u0440\u043b\u0430\u043d\u0434\u044b",uz:"Niderlandiya",en:"Netherlands",s:"2250\u20ac"},
+  {id:"at",f:"&#127462;&#127481;",ru:"\u0410\u0432\u0441\u0442\u0440\u0438\u044f",uz:"Avstriya",en:"Austria",s:"2000\u20ac"},
+  {id:"it",f:"&#127470;&#127481;",ru:"\u0418\u0442\u0430\u043b\u0438\u044f",uz:"Italiya",en:"Italy",s:"1300\u20ac"},
+  {id:"es",f:"&#127466;&#127480;",ru:"\u0418\u0441\u043f\u0430\u043d\u0438\u044f",uz:"Ispaniya",en:"Spain",s:"1200\u20ac"},
+  {id:"fr",f:"&#127467;&#127479;",ru:"\u0424\u0440\u0430\u043d\u0446\u0438\u044f",uz:"Fransiya",en:"France",s:"1800\u20ac"},
+  {id:"be",f:"&#127463;&#127466;",ru:"\u0411\u0435\u043b\u044c\u0433\u0438\u044f",uz:"Belgiya",en:"Belgium",s:"2070\u20ac"},
+  {id:"se",f:"&#127480;&#127466;",ru:"\u0428\u0432\u0435\u0446\u0438\u044f",uz:"Shvetsiya",en:"Sweden",s:"2400\u20ac"},
+  {id:"no",f:"&#127475;&#127476;",ru:"\u041d\u043e\u0440\u0432\u0435\u0433\u0438\u044f",uz:"Norvegiya",en:"Norway",s:"2800\u20ac"},
+  {id:"lt",f:"&#127473;&#127481;",ru:"\u041b\u0438\u0442\u0432\u0430",uz:"Litva",en:"Lithuania",s:"1150\u20ac"},
+  {id:"fi",f:"&#127467;&#127470;",ru:"\u0424\u0438\u043d\u043b\u044f\u043d\u0434\u0438\u044f",uz:"Finlandiya",en:"Finland",s:"2200\u20ac"},
+  {id:"pt",f:"&#127477;&#127481;",ru:"\u041f\u043e\u0440\u0442\u0443\u0433\u0430\u043b\u0438\u044f",uz:"Portugaliya",en:"Portugal",s:"1070\u20ac"},
+  {id:"gr",f:"&#127468;&#127479;",ru:"\u0413\u0440\u0435\u0446\u0438\u044f",uz:"Gretsiya",en:"Greece",s:"1030\u20ac"},
+  {id:"ro",f:"&#127479;&#127476;",ru:"\u0420\u0443\u043c\u044b\u043d\u0438\u044f",uz:"Ruminiya",en:"Romania",s:"800\u20ac"},
+  {id:"sk",f:"&#127480;&#127472;",ru:"\u0421\u043b\u043e\u0432\u0430\u043a\u0438\u044f",uz:"Slovakiya",en:"Slovakia",s:"915\u20ac"},
+  {id:"hr",f:"&#127469;&#127479;",ru:"\u0425\u043e\u0440\u0432\u0430\u0442\u0438\u044f",uz:"Xorvatiya",en:"Croatia",s:"1050\u20ac"},
+  {id:"si",f:"&#127480;&#127470;",ru:"\u0421\u043b\u043e\u0432\u0435\u043d\u0438\u044f",uz:"Sloveniya",en:"Slovenia",s:"1280\u20ac"}
 ];
 
 var EMB={
@@ -876,20 +877,20 @@ var EMB={
     lt:{n:{uz:"Litva — VFS (qaror Olmaotada)",ru:"Литва — VFS (решение в Алматы)",en:"Lithuania — VFS (decision in Almaty)"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"+998 71 202-55-02",site:"visa.vfsglobal.com/uzb/en/ltu"}
   },
   kg:{
-    de:{n:{uz:"Germaniya — TLScontact viza markazi",ru:"Германия — визовый центр TLScontact",en:"Germany — TLScontact VAC"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visas-de.tlscontact.com"},
+de:{n:{uz:"Germaniya — TLScontact / VisaMetric (Bishkek)",ru:"Германия — TLScontact / VisaMetric (Бишкек)",en:"Germany — TLScontact / VisaMetric (Bishkek)"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"+996 312 963230",site:"visas-de.tlscontact.com/kg/fru"},
     pl:{n:{uz:"Polsha — rasmiy saytdan tekshiring",ru:"Польша — уточните на офиц. сайте",en:"Poland — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"biszkek.msz.gov.pl"},
     cz:{n:{uz:"Chexiya — VFS Global",ru:"Чехия — VFS Global",en:"Czech Republic — VFS Global"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com"},
     hu:{n:{uz:"Vengriya — VFS Global",ru:"Венгрия — VFS Global",en:"Hungary — VFS Global"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com"},
     nl:{n:{uz:"Niderlandiya — rasmiy saytdan tekshiring",ru:"Нидерланды — уточните на офиц. сайте",en:"Netherlands — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"netherlandsworldwide.nl"},
-    at:{n:{uz:"Avstriya — VFS Global",ru:"Австрия — VFS Global",en:"Austria — VFS Global"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com"},
+at:{n:{uz:"Avstriya — VFS Global (Bishkek)",ru:"Австрия — VFS Global (Бишкек)",en:"Austria — VFS Global (Bishkek)"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com/kgz/en/aut"},
     it:{n:{uz:"Italiya — rasmiy saytdan tekshiring",ru:"Италия — уточните на офиц. сайте",en:"Italy — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"esteri.it"},
     es:{n:{uz:"Ispaniya — rasmiy saytdan tekshiring",ru:"Испания — уточните на офиц. сайте",en:"Spain — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"exteriores.gob.es"},
     fr:{n:{uz:"Fransiya — rasmiy saytdan tekshiring",ru:"Франция — уточните на офиц. сайте",en:"France — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"france-visas.gouv.fr"},
-    be:{n:{uz:"Belgiya — rasmiy saytdan tekshiring",ru:"Бельгия — уточните на офиц. сайте",en:"Belgium — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"dofi.ibz.be"},
-    se:{n:{uz:"Shvetsiya — Shveytsariya elchixonasi orqali",ru:"Швеция — через посольство Швейцарии",en:"Sweden — via Swiss Embassy"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"swedenabroad.se"},
-    no:{n:{uz:"Norvegiya — rasmiy saytdan tekshiring",ru:"Норвегия — уточните на офиц. сайте",en:"Norway — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"norway.no"},
-    fi:{n:{uz:"Finlandiya — VFS Global",ru:"Финляндия — VFS Global",en:"Finland — VFS Global"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com"},
-    pt:{n:{uz:"Portugaliya — rasmiy saytdan tekshiring",ru:"Португалия — уточните на офиц. сайте",en:"Portugal — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"vistos.mne.gov.pt"},
+be:{n:{uz:"Belgiya — Germaniya elchixonasi orqali (Bishkek)",ru:"Бельгия — через посольство Германии (Бишкек)",en:"Belgium — via German Embassy (Bishkek)"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visametric.com/kyrgyzstan"},
+se:{n:{uz:"Shvetsiya — Shveytsariya elchixonasi orqali (Bishkek)",ru:"Швеция — через посольство Швейцарии (Бишкек)",en:"Sweden — via Swiss Embassy (Bishkek)"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"+996 312 963230",site:"vfsglobal.com"},
+no:{n:{uz:"Norvegiya — Germaniya elchixonasi orqali (Bishkek)",ru:"Норвегия — через посольство Германии (Бишкек)",en:"Norway — via German Embassy (Bishkek)"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visametric.com/kyrgyzstan"},
+fi:{n:{uz:"Finlandiya — VFS Global (Bishkek)",ru:"Финляндия — VFS Global (Бишкек)",en:"Finland — VFS Global (Bishkek)"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com/kgz/en/fin"},
+pt:{n:{uz:"Portugaliya — Germaniya elchixonasi orqali (Bishkek)",ru:"Португалия — через посольство Германии (Бишкек)",en:"Portugal — via German Embassy (Bishkek)"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visametric.com/kyrgyzstan"},
     gr:{n:{uz:"Gretsiya — rasmiy saytdan tekshiring",ru:"Греция — уточните на офиц. сайте",en:"Greece — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mfa.gr"},
     ro:{n:{uz:"Ruminiya — rasmiy saytdan tekshiring",ru:"Румыния — уточните на офиц. сайте",en:"Romania — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"evisa.mae.ro"},
     sk:{n:{uz:"Slovakiya — rasmiy saytdan tekshiring",ru:"Словакия — уточните на офиц. сайте",en:"Slovakia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mzv.sk"},
@@ -899,21 +900,21 @@ var EMB={
     lt:{n:{uz:"Litva — VFS Global",ru:"Литва — VFS Global",en:"Lithuania — VFS Global"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com"}
   },
   tj:{
-    de:{n:{uz:"Germaniya — TLScontact viza markazi",ru:"Германия — визовый центр TLScontact",en:"Germany — TLScontact VAC"},city:{uz:"Dushanba",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visas-de.tlscontact.com"},
+de:{n:{uz:"Germaniya — TLScontact (Dushanbe)",ru:"Германия — TLScontact (Душанбе)",en:"Germany — TLScontact (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visas-de.tlscontact.com/tj/dyu"},
     pl:{n:{uz:"Polsha — Toshkent elchixonasi orqali",ru:"Польша — через посольство в Ташкенте",en:"Poland — via Embassy in Tashkent"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"+998 71 120-86-50",site:"taszkent.msz.gov.pl"},
     cz:{n:{uz:"Chexiya — VFS Global",ru:"Чехия — VFS Global",en:"Czech Republic — VFS Global"},city:{uz:"Dushanba",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visa.vfsglobal.com"},
     hu:{n:{uz:"Vengriya — Toshkent elchixonasi orqali",ru:"Венгрия — через посольство в Ташкенте",en:"Hungary — via Embassy in Tashkent"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"—",site:"taskent.mfa.gov.hu"},
-    nl:{n:{uz:"Niderlandiya — rasmiy saytdan tekshiring",ru:"Нидерланды — уточните на офиц. сайте",en:"Netherlands — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"netherlandsworldwide.nl"},
-    at:{n:{uz:"Avstriya — VFS (C); D uchun tekshiring",ru:"Австрия — VFS (C); D уточните",en:"Austria — VFS (C); check for D"},city:{uz:"Dushanba",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visa.vfsglobal.com"},
-    it:{n:{uz:"Italiya — rasmiy saytdan tekshiring",ru:"Италия — уточните на офиц. сайте",en:"Italy — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"esteri.it"},
-    es:{n:{uz:"Ispaniya — rasmiy saytdan tekshiring",ru:"Испания — уточните на офиц. сайте",en:"Spain — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"exteriores.gob.es"},
-    fr:{n:{uz:"Fransiya — uzoq muddat: Toshkent TLScontact",ru:"Франция — долгосрочная: TLScontact Ташкент",en:"France — long-stay: TLScontact Tashkent"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"—",site:"france-visas.gouv.fr"},
-    be:{n:{uz:"Belgiya — rasmiy saytdan tekshiring",ru:"Бельгия — уточните на офиц. сайте",en:"Belgium — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"dofi.ibz.be"},
-    se:{n:{uz:"Shvetsiya — rasmiy saytdan tekshiring",ru:"Швеция — уточните на офиц. сайте",en:"Sweden — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"swedenabroad.se"},
-    no:{n:{uz:"Norvegiya — rasmiy saytdan tekshiring",ru:"Норвегия — уточните на офиц. сайте",en:"Norway — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"norway.no"},
-    fi:{n:{uz:"Finlandiya — rasmiy saytdan tekshiring",ru:"Финляндия — уточните на офиц. сайте",en:"Finland — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"finlandabroad.fi"},
-    pt:{n:{uz:"Portugaliya — rasmiy saytdan tekshiring",ru:"Португалия — уточните на офиц. сайте",en:"Portugal — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"vistos.mne.gov.pt"},
-    gr:{n:{uz:"Gretsiya — rasmiy saytdan tekshiring",ru:"Греция — уточните на офиц. сайте",en:"Greece — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mfa.gr"},
+nl:{n:{uz:"Niderlandiya — Germaniya elchixonasi (Dushanbe)",ru:"Нидерланды — посольство Германии (Душанбе)",en:"Netherlands — German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+at:{n:{uz:"Avstriya — VFS Global (Dushanbe)",ru:"Австрия — VFS Global (Душанбе)",en:"Austria — VFS Global (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visa.vfsglobal.com/tjk/en/aut"},
+it:{n:{uz:"Italiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Италия — через посольство Германии (Душанбе)",en:"Italy — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+es:{n:{uz:"Ispaniya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Испания — через посольство Германии (Душанбе)",en:"Spain — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+fr:{n:{uz:"Fransiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Франция — через посольство Германии (Душанбе)",en:"France — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+be:{n:{uz:"Belgiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Бельгия — через посольство Германии (Душанбе)",en:"Belgium — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+se:{n:{uz:"Shvetsiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Швеция — через посольство Германии (Душанбе)",en:"Sweden — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+no:{n:{uz:"Norvegiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Норвегия — через посольство Германии (Душанбе)",en:"Norway — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+fi:{n:{uz:"Finlandiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Финляндия — через посольство Германии (Душанбе)",en:"Finland — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+pt:{n:{uz:"Portugaliya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Португалия — через посольство Германии (Душанбе)",en:"Portugal — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
+gr:{n:{uz:"Gretsiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Греция — через посольство Германии (Душанбе)",en:"Greece — via German Embassy (Dushanbe)"},city:{uz:"Dushanbe",ru:"Душанбе",en:"Dushanbe"},tel:"—",site:"visametric.com/tajikistan"},
     ro:{n:{uz:"Ruminiya — rasmiy saytdan tekshiring",ru:"Румыния — уточните на офиц. сайте",en:"Romania — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"evisa.mae.ro"},
     sk:{n:{uz:"Slovakiya — uchinchi davlat orqali",ru:"Словакия — через третью страну",en:"Slovakia — via third country"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mzv.sk"},
     hr:{n:{uz:"Xorvatiya — rasmiy saytdan tekshiring",ru:"Хорватия — уточните на офиц. сайте",en:"Croatia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mvep.gov.hr"},
@@ -968,27 +969,27 @@ var EMB={
     lt:{n:{uz:"Litva — uchinchi davlat orqali",ru:"Литва — через третью страну",en:"Lithuania — via third country"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"migration.lt"}
   },
   az:{
-    de:{n:{uz:"Germaniya — TLScontact viza markazi",ru:"Германия — визовый центр TLScontact",en:"Germany — TLScontact VAC"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 310-34-24",site:"visas-de.tlscontact.com"},
+de:{n:{uz:"Germaniya — TLScontact (Boku, iyuldan)",ru:"Германия — TLScontact (Баку, с июля)",en:"Germany — TLScontact (Baku, from July)"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"—",site:"visas-de.tlscontact.com"},
     pl:{n:{uz:"Polsha elchixonasi",ru:"Посольство Польши",en:"Embassy of Poland"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"—",site:"baku.msz.gov.pl"},
-    cz:{n:{uz:"Chexiya — VFS Global",ru:"Чехия — VFS Global",en:"Czech Republic — VFS Global"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze"},
+cz:{n:{uz:"Chexiya — VFS Global (Boku)",ru:"Чехия — VFS Global (Баку)",en:"Czech Republic — VFS Global (Baku)"},city:{uz:"Boku, Neftçiler 64",ru:"Баку, Нефтчиляр 64",en:"Baku, Neftchiler 64"},tel:"+994 12 210-87-60",site:"visa.vfsglobal.com/aze/en/cze"},
     hu:{n:{uz:"Vengriya — rasmiy saytdan tekshiring",ru:"Венгрия — уточните на офиц. сайте",en:"Hungary — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"baku.mfa.gov.hu"},
     nl:{n:{uz:"Niderlandiya — rasmiy saytdan tekshiring",ru:"Нидерланды — уточните на офиц. сайте",en:"Netherlands — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"netherlandsworldwide.nl"},
-    at:{n:{uz:"Avstriya — VFS (C); D uchun tekshiring",ru:"Австрия — VFS (C); D уточните",en:"Austria — VFS (C); check for D"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze"},
+at:{n:{uz:"Avstriya — VFS Global (Boku)",ru:"Австрия — VFS Global (Баку)",en:"Austria — VFS Global (Baku)"},city:{uz:"Boku, Neftçiler 64",ru:"Баку, Нефтчиляр 64",en:"Baku, Neftchiler 64"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze/en/aut"},
     it:{n:{uz:"Italiya — VFS Global",ru:"Италия — VFS Global",en:"Italy — VFS Global"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze"},
     es:{n:{uz:"Ispaniya — rasmiy saytdan tekshiring",ru:"Испания — уточните на офиц. сайте",en:"Spain — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"exteriores.gob.es"},
     fr:{n:{uz:"Fransiya — rasmiy saytdan tekshiring",ru:"Франция — уточните на офиц. сайте",en:"France — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"france-visas.gouv.fr"},
     be:{n:{uz:"Belgiya — rasmiy saytdan tekshiring",ru:"Бельгия — уточните на офиц. сайте",en:"Belgium — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"dofi.ibz.be"},
     se:{n:{uz:"Shvetsiya — rasmiy saytdan tekshiring",ru:"Швеция — уточните на офиц. сайте",en:"Sweden — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"swedenabroad.se"},
-    no:{n:{uz:"Norvegiya — VFS Global",ru:"Норвегия — VFS Global",en:"Norway — VFS Global"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze"},
-    fi:{n:{uz:"Finlandiya — rasmiy saytdan tekshiring",ru:"Финляндия — уточните на офиц. сайте",en:"Finland — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"finlandabroad.fi"},
+no:{n:{uz:"Norvegiya — VFS Global (Boku)",ru:"Норвегия — VFS Global (Баку)",en:"Norway — VFS Global (Baku)"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze/en/nor"},
+fi:{n:{uz:"Finlandiya — Litva elchixonasi orqali (Boku)",ru:"Финляндия — через посольство Литвы (Баку)",en:"Finland — via Lithuanian Embassy (Baku)"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 210-87-60",site:"visa.vfsglobal.com/aze/en/ltu"},
     pt:{n:{uz:"Portugaliya — rasmiy saytdan tekshiring",ru:"Португалия — уточните на офиц. сайте",en:"Portugal — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"vistos.mne.gov.pt"},
     gr:{n:{uz:"Gretsiya — rasmiy saytdan tekshiring",ru:"Греция — уточните на офиц. сайте",en:"Greece — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mfa.gr"},
     ro:{n:{uz:"Ruminiya — rasmiy saytdan tekshiring",ru:"Румыния — уточните на офиц. сайте",en:"Romania — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"evisa.mae.ro"},
     sk:{n:{uz:"Slovakiya — uchinchi davlat orqali",ru:"Словакия — через третью страну",en:"Slovakia — via third country"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mzv.sk"},
-    hr:{n:{uz:"Xorvatiya — VFS Global",ru:"Хорватия — VFS Global",en:"Croatia — VFS Global"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze"},
+hr:{n:{uz:"Xorvatiya — VFS Global (Boku)",ru:"Хорватия — VFS Global (Баку)",en:"Croatia — VFS Global (Baku)"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze/en/hrv"},
     si:{n:{uz:"Sloveniya — rasmiy saytdan tekshiring",ru:"Словения — уточните на офиц. сайте",en:"Slovenia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"gov.si"},
     dk:{n:{uz:"Daniya — rasmiy saytdan tekshiring",ru:"Дания — уточните на офиц. сайте",en:"Denmark — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"um.dk"},
-    lt:{n:{uz:"Litva — VFS Global",ru:"Литва — VFS Global",en:"Lithuania — VFS Global"},city:{uz:"Boku",ru:"Баку",en:"Baku"},tel:"+994 12 404-76-56",site:"visa.vfsglobal.com/aze"}
+lt:{n:{uz:"Litva — VFS Global (Boku)",ru:"Литва — VFS Global (Баку)",en:"Lithuania — VFS Global (Baku)"},city:{uz:"Boku, Neftçiler 64",ru:"Баку, Нефтчиляр 64",en:"Baku, Neftchiler 64"},tel:"+994 12 210-87-60",site:"visa.vfsglobal.com/aze/en/ltu"}
   }
 };
 var JJ=[
@@ -1044,8 +1045,8 @@ function T(){
   if(lang==="uz") return {
     startBtn:"&#128640; Boshlash &#8594;",
     wTitle:"EuropaGo",wSub:"Yevropa mamlakatlarida ishlang!",
-    ws1:"Davlat va kasb tanlang",ws2:"29 900 so\u2019m to\u2019lang",ws3:"Hujjatlar ro\u2019yxatini oling",ws4:"Evropaga boring! &#9992;&#65039;",
-    wNote:"29 900 so\u2019m — bir martalik to\u2019lov",
+    ws1:"Davlat va kasb tanlang",ws2:"99 000 so\u2019m to\u2019lang",ws3:"Hujjatlar ro\u2019yxatini oling",ws4:"Evropaga boring! &#9992;&#65039;",
+    wNote:"99 000 so\u2019m — bir martalik to\u2019lov",
     origTitle:"Qaysi davlatdansiz?",origSub:"Elchi xona ma\u2019lumotlari uchun",origNext:"Davom &#8594;",
     destTitle:"Qaysi davlatga?",destSub:"Ishlamoqchi bo\u2019lgan davlat",
     jobTitle:"Qaysi sohada?",jobSub:"Kasb-hunaringiz",
@@ -1068,8 +1069,8 @@ function T(){
   if(lang==="en") return {
     startBtn:"&#128640; Get Started &#8594;",
     wTitle:"EuropaGo",wSub:"Work in Europe — No Agency!",
-    ws1:"Choose country & profession",ws2:"Pay 29 900 UZS",ws3:"Get your document checklist",ws4:"Fly to Europe! &#9992;&#65039;",
-    wNote:"29 900 UZS — one-time payment, lifetime access",
+    ws1:"Choose country & profession",ws2:"Pay 99 000 UZS",ws3:"Get your document checklist",ws4:"Fly to Europe! &#9992;&#65039;",
+    wNote:"99 000 UZS — one-time payment, lifetime access",
     origTitle:"Where are you from?",origSub:"For embassy information",origNext:"Continue &#8594;",
     destTitle:"Which country?",destSub:"Where do you want to work",
     jobTitle:"Which field?",jobSub:"Select your profession",
@@ -1093,10 +1094,10 @@ function T(){
     startBtn:"&#128640; \u041d\u0430\u0447\u0430\u0442\u044c &#8594;",
     wTitle:"EuropaGo",wSub:"\u0420\u0430\u0431\u043e\u0442\u0430 \u0432 \u0415\u0432\u0440\u043e\u043f\u0435 \u0431\u0435\u0437 \u0444\u0438\u0440\u043c!",
     ws1:"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0442\u0440\u0430\u043d\u0443 \u0438 \u043f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u044e",
-    ws2:"\u041e\u043f\u043b\u0430\u0442\u0438\u0442\u0435 29 900 \u0441\u0443\u043c",
+    ws2:"\u041e\u043f\u043b\u0430\u0442\u0438\u0442\u0435 99 000 \u0441\u0443\u043c",
     ws3:"\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u044e",
     ws4:"\u0412 \u0415\u0432\u0440\u043e\u043f\u0443! &#9992;&#65039;",
-    wNote:"29 900 \u0441\u0443\u043c \u2014 \u0440\u0430\u0437\u043e\u0432\u0430\u044f \u043e\u043f\u043b\u0430\u0442\u0430",
+    wNote:"99 000 \u0441\u0443\u043c \u2014 \u0440\u0430\u0437\u043e\u0432\u0430\u044f \u043e\u043f\u043b\u0430\u0442\u0430",
     origTitle:"\u0418\u0437 \u043a\u0430\u043a\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u044b?",origSub:"\u0414\u043b\u044f \u0438\u043d\u0444\u043e \u043e \u043f\u043e\u0441\u043e\u043b\u044c\u0441\u0442\u0432\u0435",origNext:"\u0414\u0430\u043b\u0435\u0435 &#8594;",
     destTitle:"\u0412 \u043a\u0430\u043a\u0443\u044e \u0441\u0442\u0440\u0430\u043d\u0443?",destSub:"\u0413\u0434\u0435 \u0445\u043e\u0442\u0438\u0442\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0442\u044c",
     jobTitle:"\u041a\u0430\u043a\u0430\u044f \u0441\u0444\u0435\u0440\u0430?",jobSub:"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u044e",
@@ -1143,9 +1144,9 @@ function renderNews2026(){
     :"ETIAS <b>vizasiz davlatlar uchun</b>. O‘zbekiston Schengenga vizasiz emas, shuning uchun siz <b>baribir to‘liq Schengen (yoki milliy D) vizasi</b> olasiz.");
   box("plBox",
     ru?"⚠️ Польша: строго соблюдайте правила":en?"⚠️ Poland: follow the rules strictly":"⚠️ Polsha: qoidalarni qat‘iy tekshiring",
-    ru?"Польша ужесточила контроль в 2025–2026. <b>Трудовой договор должен быть зарегистрирован ДО начала работы</b>. Нелегальное пребывание — депортация + <b>запрет на въезд 6 мес–10 лет</b>."
-    :en?"Poland tightened enforcement in 2025–2026. <b>The employment contract must be registered BEFORE you start work</b>. Illegal stay — deportation + <b>re-entry ban 6 months–10 years</b>."
-    :"Polsha 2025–2026‘da nazoratni kuchaytirdi. <b>Mehnat shartnomasi ishni boshlashdan oldin ro‘yxatdan o‘tishi shart</b>. Noqonuniy yashash — deportatsiya + <b>6 oy–10 yil qayta kirish taqiqi</b>.");
+    ru?"Польша ужесточила контроль в 2025–2026. <b>Трудовой договор должен быть зарегистрирован ДО начала работы</b>. <b>Виза D с 2026 = 200€</b>. ВНЖ подаётся только онлайн через портал MOS (бумажные заявления не принимаются). Нелегальное пребывание — депортация + <b>запрет на въезд 6 мес–10 лет</b>."
+    :en?"Poland tightened enforcement in 2025–2026. <b>The employment contract must be registered BEFORE you start work</b>. <b>D visa from 2026 = €200</b>. Residence permits are filed online via the MOS portal only (paper applications rejected). Illegal stay — deportation + <b>re-entry ban 6 months–10 years</b>."
+    :"Polsha 2025–2026‘da nazoratni kuchaytirdi. <b>Mehnat shartnomasi ishni boshlashdan oldin ro‘yxatdan o‘tishi shart</b>. <b>D viza 2026‘dan = 200€</b>. Yashash ruxsati faqat MOS onlayn portali orqali topshiriladi (qog‘oz ariza qabul qilinmaydi). Noqonuniy yashash — deportatsiya + <b>6 oy–10 yil qayta kirish taqiqi</b>.");
   box("deBox",
     ru?"🇩🇪 Германия: мин. зарплата 2026":en?"🇩🇪 Germany: minimum wage 2026":"🇩🇪 Germaniya: minimal maosh 2026",
     ru?"С 1 января 2026 — <b>13.90 €/час</b>. С 2027 — <b>14.60 €/час</b>."
@@ -1184,7 +1185,8 @@ function applyLang(){
     setEl("pbGoT",lang==="ru"?"\u0425\u043e\u0447\u0443 \u0423\u0415\u0425\u0410\u0422\u042c \u0432 \u0415\u0432\u0440\u043e\u043f\u0443":lang==="en"?"I WANT TO GO to Europe":"Yevropaga KETMOQCHIMAN");
     setEl("pbGoS",lang==="ru"?"\u0414\u043e\u0440\u043e\u0436\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u0430 \u0440\u0430\u0431\u043e\u0447\u0435\u0439 \u0432\u0438\u0437\u044b: \u0441\u0442\u0440\u0430\u043d\u0430, \u043f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u044f, \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b, \u043f\u043e\u0441\u043e\u043b\u044c\u0441\u0442\u0432\u043e, \u0444\u0438\u0440\u043c\u044b-\u0440\u0430\u0431\u043e\u0442\u043e\u0434\u0430\u0442\u0435\u043b\u0438":lang==="en"?"Work visa roadmap: country, job, documents, embassy, employer agencies":"Ish vizasi yo'l xaritasi: davlat, kasb, hujjatlar, elchixona, ish beruvchi firmalar");
     setEl("pbLifeT",lang==="ru"?"\u0423\u0416\u0415 \u041f\u0420\u0418\u0415\u0425\u0410\u041b \u0432 \u0415\u0432\u0440\u043e\u043f\u0443":lang==="en"?"I HAVE ARRIVED in Europe":"Yevropaga BORIB BO'LDIM");
-    setEl("pbLifeS",lang==="ru"?"\u041f\u0435\u0440\u0432\u044b\u0435 90 \u0434\u043d\u0435\u0439: \u0430\u0440\u0435\u043d\u0434\u0430 \u0436\u0438\u043b\u044c\u044f, \u0431\u0430\u043d\u043a, \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f, \u0442\u0440\u0443\u0434\u043e\u0432\u044b\u0435 \u043f\u0440\u0430\u0432\u0430, \u0441\u0442\u0440\u0430\u0445\u043e\u0432\u043a\u0430":lang==="en"?"First 90 days: housing, bank, registration, labor rights, insurance":"Birinchi 90 kun: uy ijarasi, bank, ro'yxatdan o'tish, mehnat huquqlari, sug'urta");
+    setEl("pbLifeS",lang==="ru"?"📋 Внутри: возврат налога · поиск работы · аренда жилья · банк · ВНЖ · медстраховка · водит. права и др.":lang==="en"?"📋 Inside: tax refund · finding a job · renting a home · bank · residence permit · health insurance · driving licence & more":"📋 Ichida: soliq qaytarish · ish topish · uy ijarasi · bank · yashash ruxsati · tibbiy sug'urta · haydovchilik guvohnomasi va boshqalar");
+    setEl("lifeSoonBadge",lang==="ru"?"🔜 СКОРО":lang==="en"?"🔜 COMING SOON":"🔜 TEZ KUNDA");
   }catch(e){}
   setEl("ws1",t.ws1);setEl("ws2",t.ws2);setEl("ws3",t.ws3);setEl("ws4",t.ws4);
   setEl("wNote",t.wNote);
@@ -1226,9 +1228,9 @@ function applyLang(){
   setEl("embNoticeText",noticeMain+"<br><b style='color:#f59e0b;'>"+noticeYear+"</b><br><span id='embNoticeLink'></span>");
   // Ticker
   var tick;
-  if(lang==="uz") tick=[["Germaniya","2500\u20ac/oy"],["Polsha","1800\u20ac/oy"],["Avstriya","1800\u20ac/oy"],["Niderlandiya","2200\u20ac/oy"],["Norvegiya","3200\u20ac/oy"],["Fransiya","1700\u20ac/oy"]];
-  else if(lang==="en") tick=[["Germany","2500\u20ac/mo"],["Poland","1800\u20ac/mo"],["Austria","1800\u20ac/mo"],["Netherlands","2200\u20ac/mo"],["Norway","3200\u20ac/mo"],["France","1700\u20ac/mo"]];
-  else tick=[["\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f","2500\u20ac/\u043c\u0435\u0441"],["\u041f\u043e\u043b\u044c\u0448\u0430","1800\u20ac/\u043c\u0435\u0441"],["\u0410\u0432\u0441\u0442\u0440\u0438\u044f","1800\u20ac/\u043c\u0435\u0441"],["\u041d\u0438\u0434\u0435\u0440\u043b\u0430\u043d\u0434\u044b","2200\u20ac/\u043c\u0435\u0441"],["\u041d\u043e\u0440\u0432\u0435\u0433\u0438\u044f","3200\u20ac/\u043c\u0435\u0441"],["\u0424\u0440\u0430\u043d\u0446\u0438\u044f","1700\u20ac/\u043c\u0435\u0441"]];
+  if(lang==="uz") tick=[["Germaniya","2300\u20ac/oy"],["Norvegiya","2800\u20ac/oy"],["Shvetsiya","2400\u20ac/oy"],["Niderlandiya","2250\u20ac/oy"],["Finlandiya","2200\u20ac/oy"],["Belgiya","2070\u20ac/oy"]];
+  else if(lang==="en") tick=[["Germany","2300\u20ac/mo"],["Norway","2800\u20ac/mo"],["Sweden","2400\u20ac/mo"],["Netherlands","2250\u20ac/mo"],["Finland","2200\u20ac/mo"],["Belgium","2070\u20ac/mo"]];
+  else tick=[["\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f","2300\u20ac/\u043c\u0435\u0441"],["\u041d\u043e\u0440\u0432\u0435\u0433\u0438\u044f","2800\u20ac/\u043c\u0435\u0441"],["\u0428\u0432\u0435\u0446\u0438\u044f","2400\u20ac/\u043c\u0435\u0441"],["\u041d\u0438\u0434\u0435\u0440\u043b\u0430\u043d\u0434\u044b","2250\u20ac/\u043c\u0435\u0441"],["\u0424\u0438\u043d\u043b\u044f\u043d\u0434\u0438\u044f","2200\u20ac/\u043c\u0435\u0441"],["\u0411\u0435\u043b\u044c\u0433\u0438\u044f","2070\u20ac/\u043c\u0435\u0441"]];
   var h="";tick.forEach(function(x){h+="<div class='tchip'>"+x[0]+" <b>"+x[1]+"</b></div>";});
   h+=h;setEl("tickEl",h);
   // Rebuild guide if open
@@ -1358,7 +1360,7 @@ function buildGuide(){
   setEl("pt",done+"/"+total+docWord);
   setEl("pc",pct+"%");
   var sb="";
-  var payLbl=lang==="ru"?"&#128274; Разблокировать за 29 900 сум":lang==="en"?"&#128274; Unlock for 29 900 UZS":"&#128274; 29 900 so'm ga ochish";
+  var payLbl=lang==="ru"?"&#128274; Разблокировать за 99 000 сум":lang==="en"?"&#128274; Unlock for 99 000 UZS":"&#128274; 99 000 so'm ga ochish";
   stages.forEach(function(s){
     var isLocked=(!hasAccess&&!s.free);
     sb+="<div class='stage"+(isLocked?" locked-stage":"")+"' id='st-"+s.id+"'><div class='shead' onclick='"+(isLocked?"goScreen(\"sc-pay\")":"togS(\"st-"+s.id+"\")")+"'>"+
@@ -1391,7 +1393,7 @@ function getStages(cid,jid){
   var ru=lang==="ru";
   var en=lang==="en";
   // Common docs for all countries
-  var passport={id:"d1",name:ru?"Загранпаспорт":en?"International Passport":"Zagranpasport",desc:ru?"Действителен мин. 6 мес. после окончания визы. 2 копии всех страниц":en?"Valid min. 6 months after visa expiry. 2 copies of all pages":"Viza tugashidan keyin min. 6 oy amal qilishi kerak. Barcha sahifalar nusxasi",tag:ru?"Обязательно":en?"Required":"Majburiy",tip:ru?"Проверьте срок действия заранее!":en?"Check expiry date in advance!":"Muddatini oldindan tekshiring!"};
+  var passport={id:"d1",name:ru?"Загранпаспорт":en?"International Passport":"Zagranpasport",desc:ru?"Действителен мин. 3 мес. после окончания визы (лучше 6 мес.), не старше 10 лет, 2 пустые страницы. Копии всех страниц":en?"Valid min. 3 months after visa expiry (6 months better), not older than 10 years, 2 blank pages. Copies of all pages":"Viza tugagach kamida 3 oy amal qilishi (6 oy bo'lsa yaxshiroq), 10 yildan eski emas, 2 bo'sh sahifa. Barcha sahifalar nusxasi",tag:ru?"Обязательно":en?"Required":"Majburiy",tip:ru?"Проверьте срок действия заранее!":en?"Check expiry date in advance!":"Muddatini oldindan tekshiring!"};
   var photo={id:"d2",name:ru?"Фото 3.5x4.5см (2 шт)":en?"Photo 3.5x4.5cm (2 pcs)":"Foto 3.5x4.5sm (2 dona)",desc:ru?"Биометрические, цветные, белый фон, не старше 6 месяцев":en?"Biometric, color, white background, not older than 6 months":"Biometrik, rangli, oq fon, 6 oydan eski bo\u2019lmasin",tag:ru?"Обязательно":en?"Required":"Majburiy"};
   var anketa={id:"d3",name:ru?"Анкета/Заявление на визу":en?"Visa Application Form":"Viza uchun ariza",desc:ru?"Заполнить на официальном сайте посольства, распечатать и подписать":en?"Fill in on the official embassy website, print and sign":"Elchi xona rasmiy saytida to\u2019ldirish, chop etish va imzolash",tag:ru?"Обязательно":en?"Required":"Majburiy",tip:ru?"Заполнять латинскими буквами, как в паспорте":en?"Fill in Latin letters as in your passport":"Pasportdagidek lotin harflarda to\u2019ldiring"};
   var medins={id:"d4",name:ru?"Медицинская страховка":en?"Medical Insurance":"Tibbiy sug\u2019urta",desc:ru?"Мин. покрытие 30 000€, действует всё время нахождения в стране":en?"Min. coverage 30,000€, valid for the entire stay":"Min. qoplash 30 000€, butun muqim bo\u2019lish vaqtiga",tag:ru?"Обязательно":en?"Required":"Majburiy",tip:ru?"Allianz, AXA, ERV — онлайн дёшево":en?"Allianz, AXA, ERV — cheap online":"Onlayn arzon: Allianz, AXA, ERV"};
@@ -1408,8 +1410,8 @@ function getStages(cid,jid){
   var langcert={id:"d15",name:ru?"Языковой сертификат":en?"Language Certificate":"Til sertifikati",desc:ru?"A1-B1 уровень языка страны или английский. Для ряда специальностей":en?"A1-B1 level of country language or English. For some professions":"A1-B1 daraja. Ba\u2019zi kasblarda talab qilinadi",tag:ru?"По требованию":en?"If required":"Talabga ko\u2019ra"};
   var nostrif={id:"d16",name:ru?"Нострификация диплома":en?"Diploma Recognition":"Diplomni tan olish",desc:ru?"Признание диплома в стране назначения. Срок 2-4 месяца":en?"Recognition of diploma in destination country. Duration 2-4 months":"Maqsadli davlatda diplomni tan oldirish. Muddat 2-4 oy",tag:ru?"Для специалистов":en?"For specialists":"Mutaxassislar uchun"};
   var biometric={id:"d17",name:ru?"Биометрические данные":en?"Biometric Data":"Biometrik ma\u2019lumotlar",desc:ru?"Сдаётся в посольстве при подаче документов (отпечатки пальцев)":en?"Submitted at the embassy when applying (fingerprints)":"Hujjatlar topshirishda elchixonada olinadi (barmoq izi)",tag:ru?"На месте":en?"At embassy":"Joyida"};
-  var consulfee={id:"d18",name:ru?"Консульский сбор":en?"Consular Fee":"Konsullik yig\u2019imi",desc:ru?"Германия: 75€, Польша: 80€, Чехия: 50€, Австрия: 100€, Нидерланды: 90€":en?"Germany: 75€, Poland: 80€, Czech Rep: 50€, Austria: 100€, Netherlands: 90€":"Germaniya: 75€, Polsha: 80€, Chexiya: 50€, Avstriya: 100€, Niderlandiya: 90€",tag:ru?"Оплатить":en?"Pay":"To\u2019lash kerak",tip:ru?"Оплачивается в посольстве при подаче":en?"Paid at embassy when submitting":"Topshirishda elchixonada to\u2019lanadi"};
-  var eessys={id:"d19",name:ru?"\ud83c\udd95 EES — биометрия на границе (2026)":en?"\ud83c\udd95 EES — Border Biometrics (2026)":"\ud83c\udd95 EES — chegarada biometriya (2026)",desc:ru?"С 10 апреля 2026 вся Шенгенская зона перешла на цифровую систему EES. На границе снимают отпечатки пальцев и фото лица вместо штампа в паспорте":en?"From April 10, 2026 the entire Schengen area uses the digital EES system. At the border fingerprints and facial photo are taken instead of a passport stamp":"2026-yil 10-apreldan butun Shengen zonasi raqamli EES tizimiga o\u2019tdi. Chegarada pasportga muhr o\u2019rniga barmoq izi va yuz rasmi olinadi",tag:ru?"Важно знать 2026":en?"Important 2026":"2026 muhim",tip:ru?"Приложение 'Travel to Europe' позволяет заранее зарегистрировать данные. ETIAS запустится в конце 2026":en?"The 'Travel to Europe' app lets you pre-register. ETIAS launches late 2026":"'Travel to Europe' ilovasi orqali oldindan ro\u2019yxatdan o\u2019tish mumkin. ETIAS 2026 oxirida ishga tushadi"};
+  var consulfee={id:"d18",name:ru?"Консульский сбор":en?"Consular Fee":"Konsullik yig\u2019imi",desc:ru?"Нац. виза D (2026): Польша 200€, Германия ~75€, Чехия ~90-100€, Австрия ~150€, Нидерланды ~210€. Точную сумму уточните на сайте посольства":en?"National D visa (2026): Poland 200€, Germany ~75€, Czech ~90-100€, Austria ~150€, Netherlands ~210€. Confirm the exact amount on the embassy site":"Milliy D viza (2026): Polsha 200€, Germaniya ~75€, Chexiya ~90-100€, Avstriya ~150€, Niderlandiya ~210€. Aniq summani elchixona saytidan tasdiqlang",tag:ru?"Оплатить":en?"Pay":"To\u2019lash kerak",tip:ru?"Оплачивается в посольстве при подаче. При отказе НЕ возвращается":en?"Paid at embassy when submitting. NOT refunded if rejected":"Topshirishda elchixonada to\u2019lanadi"};
+  var eessys={id:"d19",name:ru?"\ud83c\udd95 EES — биометрия на границе (2026)":en?"\ud83c\udd95 EES — Border Biometrics (2026)":"\ud83c\udd95 EES — chegarada biometriya (2026)",desc:ru?"Шенген поэтапно переходит на цифровую систему EES (запуск с октября 2025, полное внедрение в течение 2026). На границе снимают отпечатки пальцев и фото лица вместо штампа в паспорте":en?"Schengen is gradually rolling out the digital EES system (launched October 2025, full rollout during 2026). At the border fingerprints and a facial photo are taken instead of a passport stamp":"Shengen bosqichma-bosqich raqamli EES tizimiga o\u2019tmoqda (2025-oktabrdan boshlangan, 2026 davomida to\u2019liq joriy etiladi). Chegarada pasportga muhr o\u2019rniga barmoq izi va yuz rasmi olinadi",tag:ru?"Важно знать 2026":en?"Important 2026":"2026 muhim",tip:ru?"Приложение 'Travel to Europe' позволяет заранее зарегистрировать данные. ETIAS запустится в конце 2026":en?"The 'Travel to Europe' app lets you pre-register. ETIAS launches late 2026":"'Travel to Europe' ilovasi orqali oldindan ro\u2019yxatdan o\u2019tish mumkin. ETIAS 2026 oxirida ishga tushadi"};
 
   // Country specific docs
   var countryDocs={
@@ -1587,7 +1589,7 @@ function selectTarif(n){
   if(n===1){
     t1.style.borderColor="#1a3a9f";t1.style.background="#f0f4ff";
     t2.style.borderColor="#ddd";t2.style.background="#fff";
-    if(pr)pr.textContent="29 900 so'm";
+    if(pr)pr.textContent="99 000 so'm";
     if(desc)desc.textContent=d1;
   } else {
     t2.style.borderColor="#bd8a00";t2.style.background="#fff8e1";
@@ -1613,7 +1615,7 @@ function selPm(id){
     if(payBtn)payBtn.style.display="none";
     if(cardPanel)cardPanel.style.display="block";
     if(pmHint)setEl("pmHint",lang==="ru"?"Переведите на карту, затем отправьте чек в Telegram":lang==="en"?"Transfer to card, then send receipt to Telegram":"Kartaga o'tkazing, keyin chekni Telegram'ga yuboring");
-    try{gtag('event','begin_checkout',{currency:'UZS',value:29900,payment_type:'card_transfer'});}catch(e){}
+    try{gtag('event','begin_checkout',{currency:'UZS',value:99000,payment_type:'card_transfer'});}catch(e){}
   }
 }
 
@@ -1622,7 +1624,7 @@ var CLICK_SERVICE_ID="104256", CLICK_MERCHANT_ID="61650";
 function payClick(){
   var orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
   try{localStorage.setItem("eg_order",orderId);}catch(e){}
-  var amount=29900; // 1 davlat tarifi
+  var amount=99000; // 1 davlat tarifi
   // GA: to'lov boshlandi (Click)
   try{gtag('event','begin_checkout',{currency:'UZS',value:amount,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   // return_url: origin aniq bo'lmasa (preview/null) evropago.uz ishlatamiz
@@ -1657,7 +1659,7 @@ function payTelegram(){
   else msg="Assalomu alaykum! \uD83D\uDE80 EuropaGo to'lovi"+(ctry?" ("+ctry+")":"")+".";
   var url="https://t.me/"+TG_USERNAME+"?text="+encodeURIComponent(msg);
   // GA: to'lov boshlandi (Telegram)
-  try{gtag('event','begin_checkout',{currency:'UZS',value:29900,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+  try{gtag('event','begin_checkout',{currency:'UZS',value:99000,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   window.open(url,"_blank");
 }
 // Karta orqali to'lash panelini ochish/yopish
@@ -1667,7 +1669,7 @@ function toggleCardPay(){
   var open=p.style.display==="none"||!p.style.display;
   p.style.display=open?"block":"none";
   if(open){
-    try{gtag('event','begin_checkout',{currency:'UZS',value:29900,payment_type:'card_transfer',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+    try{gtag('event','begin_checkout',{currency:'UZS',value:99000,payment_type:'card_transfer',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   }
 }
 // Karta raqamini nusxalash
@@ -1717,7 +1719,7 @@ function activate(){
   }catch(e){}
   hasAccess=true;
   // GA: TO'LOV TASDIQLANDI (admin/Telegram orqali)
-  try{gtag('event','purchase',{transaction_id:'adm'+Date.now(),currency:'UZS',value:29900,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+  try{gtag('event','purchase',{transaction_id:'adm'+Date.now(),currency:'UZS',value:99000,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   toast(lang==="ru"?"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!":lang==="en"?"Access opened!":"Kirish ochildi!");
   setTimeout(function(){goScreen("sc-app");buildGuide();},800);
 }
@@ -1844,7 +1846,7 @@ try{
           localStorage.setItem("eg_ts_v3",Date.now().toString());
         }catch(e){}
         // GA: TO'LOV TASDIQLANDI (eng muhim event — daromad)
-        try{gtag('event','purchase',{transaction_id:_ord,currency:'UZS',value:29900,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+        try{gtag('event','purchase',{transaction_id:_ord,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
         hasAccess=true; goScreen("sc-app"); buildGuide();
         toast(lang==="uz"?"Kirish ochildi!":"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!"); }
       else { toast(lang==="uz"?"To'lov topilmadi. Birozdan keyin urinib ko'ring.":"\u041e\u043f\u043b\u0430\u0442\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."); }
