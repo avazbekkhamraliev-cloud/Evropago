@@ -25,6 +25,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--bg:#f8faff;--c:#f5f5f5;--c2:#ebebeb;--bd:#cccccc;--gold:#4a2800;--grn:#16a34a;--ind:#6b3a00;--tx:#111111;--mt:#444444;}
+@media print{body *{visibility:hidden!important;}#cvSheet,#cvSheet *{visibility:visible!important;}#cvSheet{position:absolute!important;left:0!important;top:0!important;width:100%!important;margin:0!important;border-radius:0!important;box-shadow:none!important;}}
 html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 /* SCREEN SYSTEM */
 .screen{display:none;min-height:100vh;flex-direction:column;}
@@ -538,7 +539,25 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
     <div class="fw">
       <div class="sech"><h2 id="firmH">Ishonchli saytlar</h2><p id="firmP">To'g'ridan-to'g'ri</p></div>
       <div id="firmNote" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:var(--mt);"></div>
+      <div style="background:var(--c);border:1px solid var(--bd);border-radius:12px;margin-bottom:16px;overflow:hidden;">
+        <div onclick="toggleJobSteps()" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+          <div id="jobStepsH" style="font-size:14px;font-weight:700;">📌 Saytdan natija chiqishi uchun 5 qadam</div>
+          <div id="jobStepsArr" style="font-size:12px;color:var(--mt);transition:transform .2s;">▼</div>
+        </div>
+        <div id="jobStepsB" style="display:none;padding:0 16px 16px;font-size:13px;line-height:1.65;color:var(--mt);"></div>
+      </div>
       <div class="ffilt" id="ffilt"></div>
+      <div id="cvModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;overflow:auto;padding:14px;">
+        <div style="max-width:660px;margin:0 auto;">
+          <div id="cvHint" style="background:#fff;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5;color:#333;margin-bottom:8px;"></div>
+          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+            <button onclick="cvPdf()" id="cvPdfBtn" style="flex:1;background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;">📄 PDF saqlash</button>
+            <button onclick="cvCopy()" id="cvCopyBtn" style="flex:1;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;">📋 Nusxalash</button>
+            <button onclick="closeCv()" id="cvCloseBtn" style="background:#374151;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;">✕</button>
+          </div>
+          <div id="cvSheet" contenteditable="true" spellcheck="false" style="background:#ffffff;color:#000;border-radius:10px;padding:22px 20px;font-family:Arial,Helvetica,sans-serif;outline:none;"></div>
+        </div>
+      </div>
       <div id="fb"></div>
     </div>
   </div>
@@ -1121,6 +1140,7 @@ function T(){
 }
 
 function setEl(id,html){var e=document.getElementById(id);if(e)e.innerHTML=html;}
+function toggleJobSteps(){var b=document.getElementById("jobStepsB"),a=document.getElementById("jobStepsArr");if(!b)return;var open=b.style.display!=="none";b.style.display=open?"none":"block";if(a)a.style.transform=open?"rotate(0deg)":"rotate(180deg)";}
 function setTxt(id,txt){var e=document.getElementById(id);if(e)e.textContent=txt;}
 
 var news2026OpenLbl="📢 2026 yangiliklari";
@@ -1740,19 +1760,365 @@ function checkAdmin(){
 function exitAdmin(){isAdmin=false;document.getElementById("abar").classList.remove("on");}
 function genLink(){var t="token_"+Date.now();var url=window.location.href.split("?")[0]+"?token="+t;prompt(lang==="ru"?"\u0421\u0441\u044b\u043b\u043a\u0430:":lang==="en"?"Link:":"Havola:",url);}
 
+var JOBSTEPS_TXT={
+uz:{title:"Saytdan natija chiqishi uchun 5 qadam",
+s1h:"1-qadam: CV tayyorlang (busiz ariza ishlamaydi)",
+s1:"Yevropa formatida 1 sahifalik CV: ism, telefon, email, ish tajribasi (oxirgisidan boshlab), ko'nikmalar. ",
+s2h:"2-qadam: Har e'longa alohida ariza yuboring",
+s2:"Saytga ro'yxatdan o'tish yoki email olish — bu hali ariza emas. Har mos e'londa «{A}» tugmasini bosib, CV biriktiring. Kuniga 10–15 ta ariza — normal. 100 arizadan 5–10 javob kelsa, yaxshi natija.",
+s3h:"3-qadam: Arizaga qisqa xat qo'shing (tayyor shablon)",
+s3tr:"Tarjimasi: ",
+s4h:"4-qadam: Javob kelganda shuni so'rang",
+s4a:"✅ Oylik qancha (netto — qo'lga tegadigani)",
+s4c:"✅ Turar joy bormi, qancha turadi",
+s4d:"⛔ Agar sizdan «ruxsatnoma yoki viza uchun pul yuboring» deyishsa — bu firibgar. Haqiqiy ish beruvchi ishchidan pul so'ramaydi.",
+s5h:"5-qadam: Taklifnoma kelgach",
+s5:"Ish beruvchi hujjatni rasmiylashtirib sizga yuboradi — shu hujjat bilan elchixonaga viza topshirasiz. Hujjatlar cheklistiga qaytib, qolganini tayyorlang.",
+allHint:"👇 Quyidagi davlat tugmalaridan birini tanlasangiz, aynan o'sha davlat uchun tayyor xat shabloni va ruxsatnoma nomi chiqadi.",
+allPermits:"Ruxsatnoma nomi har davlatda boshqacha (Polsha — zezwolenie, Germaniya — Arbeitserlaubnis, Niderlandiya — TWV, Shvetsiya — arbetstillstånd), lekin qoida bir xil: uni har doim ish beruvchi rasmiylashtiradi.",
+cvBtn:"📄 Tayyor CV shabloni — ochish",
+cvHint:"Qavs [ ] ichidagi joylarni bosib, o'z ma'lumotingizni yozing — shu yerning o'zida tahrirlanadi. Tayyor bo'lgach «PDF saqlash»ni bosing: ochilgan oynada «PDF sifatida saqlash»ni tanlang. Yoki «Nusxalash» bilan matnni oling.",
+cvPdf:"📄 PDF saqlash",cvCopy:"📋 Nusxalash",cvCopied:"Nusxalandi ✓",
+lockD:"Ish topishning 5 qadami: CV shabloni (PDF), har davlat tilida tayyor ariza xati, ruxsatnoma yo'riqnomasi va firibgarlikdan himoya — 20 davlat uchun.",lockB:"Ochish"},
+ru:{title:"5 шагов, чтобы сайты дали результат",
+s1h:"Шаг 1: Подготовьте CV (без него отклики не работают)",
+s1:"CV на 1 страницу в европейском формате: имя, телефон, email, опыт работы (с последнего), навыки. ",
+s2h:"Шаг 2: Откликайтесь на каждую вакансию отдельно",
+s2:"Регистрация на сайте или письма на почту — это ещё не отклик. На каждой подходящей вакансии нажимайте «{A}» и прикрепляйте CV. 10–15 откликов в день — норма. 5–10 ответов на 100 откликов — хороший результат.",
+s3h:"Шаг 3: Добавьте короткое письмо (готовый шаблон)",
+s3tr:"Перевод: ",
+s4h:"Шаг 4: Когда пришёл ответ — спросите",
+s4a:"✅ Зарплата (netto — на руки)",
+s4c:"✅ Есть ли жильё и сколько стоит",
+s4d:"⛔ Если просят «отправить деньги за разрешение или визу» — это мошенник. Настоящий работодатель не берёт деньги с работника.",
+s5h:"Шаг 5: Когда пришёл оффер",
+s5:"Работодатель оформляет документ и отправляет вам — с ним подаёте на визу в посольстве. Вернитесь к чек-листу документов и подготовьте остальное.",
+allHint:"👇 Выберите страну ниже — появится готовый шаблон письма и название разрешения именно для неё.",
+allPermits:"Название разрешения в каждой стране своё (Польша — zezwolenie, Германия — Arbeitserlaubnis, Нидерланды — TWV, Швеция — arbetstillstånd), но правило одно: его всегда оформляет работодатель.",
+cvBtn:"📄 Готовый шаблон CV — открыть",
+cvHint:"Нажмите на места в скобках [ ] и впишите свои данные — редактируется прямо здесь. Затем нажмите «Сохранить PDF»: в открывшемся окне выберите «Сохранить как PDF». Или заберите текст кнопкой «Копировать».",
+cvPdf:"📄 Сохранить PDF",cvCopy:"📋 Копировать",cvCopied:"Скопировано ✓",
+lockD:"5 шагов поиска работы: шаблон CV (PDF), готовое письмо на языке каждой страны, инструкция по разрешению и защита от мошенников — для 20 стран.",lockB:"Открыть"},
+en:{title:"5 steps to get results from job sites",
+s1h:"Step 1: Prepare a CV (applications don't work without it)",
+s1:"A 1-page European-format CV: name, phone, email, work experience (most recent first), skills. ",
+s2h:"Step 2: Apply to each posting individually",
+s2:"Registering on a site or receiving emails is not an application. Click \"{A}\" on every suitable posting and attach your CV. 10–15 applications per day is normal. 5–10 replies per 100 applications is a good result.",
+s3h:"Step 3: Add a short cover note (ready template)",
+s3tr:"Meaning: ",
+s4h:"Step 4: When you get a reply, ask",
+s4a:"✅ Salary (netto — take-home)",
+s4c:"✅ Is housing provided, and at what cost",
+s4d:"⛔ If they ask you to \"send money for the permit or visa\" — it's a scam. A real employer never asks workers for money.",
+s5h:"Step 5: When the offer arrives",
+s5:"The employer issues the document and sends it to you — with it you apply for the visa at the embassy. Go back to the document checklist and prepare the rest.",
+allHint:"👇 Select a country below to see a ready letter template and the permit name for that country.",
+allPermits:"The permit name differs by country (Poland — zezwolenie, Germany — Arbeitserlaubnis, Netherlands — TWV, Sweden — arbetstillstånd), but the rule is the same: the employer always arranges it.",
+cvBtn:"📄 Ready CV template — open",
+cvHint:"Tap the parts in brackets [ ] and type your own details — editable right here. Then tap \"Save PDF\" and choose \"Save as PDF\" in the dialog. Or grab the text with \"Copy\".",
+cvPdf:"📄 Save PDF",cvCopy:"📋 Copy",cvCopied:"Copied ✓",
+lockD:"5 job-search steps: CV template (PDF), a ready application letter in each country's language, permit guidance and scam protection — for 20 countries.",lockB:"Unlock"}
+};
+var JOBSTEPS={
+pl:{name:{uz:"Polsha",ru:"Польша",en:"Poland"},A:"Aplikuj",
+cv:{uz:"Polsha uchun CV oxiriga shu jumla majburiy: «Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb rekrutacji» — busiz CV avtomatik chetga chiqariladi.",
+ru:"Для Польши в конце CV обязательна фраза: «Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb rekrutacji» — без неё CV отсеивается автоматически.",
+en:"For Poland this line at the end of the CV is mandatory: \"Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb rekrutacji\" — without it your CV is filtered out automatically."},
+letter:"Dzień dobry! Jestem z Uzbekistanu, szukam pracy w Polsce. Mam doświadczenie w [soha]. Potrzebuję zezwolenia na pracę. Jestem gotowy przyjechać w ciągu [X] miesięcy. CV w załączeniu.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Polshada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kelishga tayyorman. CV ilova qilingan.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Польше. Есть опыт в [сфера]. Нужно разрешение на работу. Готов приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Poland. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ruxsatnoma (zezwolenie na pracę)ni kim rasmiylashtiradi — buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто оформляет разрешение (zezwolenie na pracę) — это делает <b>работодатель</b>",
+en:"✅ Who arranges the permit (zezwolenie na pracę) — the <b>employer</b> does this"}},
+de:{name:{uz:"Germaniya",ru:"Германия",en:"Germany"},A:"Bewerben",
+cv:{uz:"Germaniyada CV «Lebenslauf» deyiladi: rasm bilan, aniq sanalar bilan, xatosiz nemischa yoki inglizcha bo'lsin.",
+ru:"В Германии CV называется «Lebenslauf»: с фото, с точными датами, на грамотном немецком или английском.",
+en:"In Germany the CV is called \"Lebenslauf\": with a photo, exact dates, in correct German or English."},
+letter:"Guten Tag! Ich komme aus Usbekistan und suche Arbeit in Deutschland. Ich habe Erfahrung im Bereich [Bereich]. Ich benötige ein Arbeitsvisum. Ich kann innerhalb von [X] Monaten anreisen. Mein Lebenslauf ist im Anhang.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Germaniyada ish qidiryapman. [Soha]da tajribam bor. Ish vizasi kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Германии. Есть опыт в [сфера]. Нужна рабочая виза. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Germany. I have experience in [field]. I need a work visa. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Mehnat shartnomasi (Arbeitsvertrag) qachon beriladi — viza uchun aynan shu hujjat kerak, uni <b>ish beruvchi</b> beradi",
+ru:"✅ Когда будет трудовой договор (Arbeitsvertrag) — именно он нужен для визы, его даёт <b>работодатель</b>",
+en:"✅ When will the work contract (Arbeitsvertrag) be issued — this is what you need for the visa, and the <b>employer</b> provides it"}},
+nl:{name:{uz:"Niderlandiya",ru:"Нидерланды",en:"Netherlands"},A:"Solliciteer",
+cv:{uz:"Niderlandiyada inglizcha CV ko'p joyda qabul qilinadi, rasm shart emas. Qisqa va aniq yozing.",
+ru:"В Нидерландах английское CV принимается почти везде, фото не обязательно. Пишите коротко и по делу.",
+en:"In the Netherlands an English CV is accepted almost everywhere, no photo needed. Keep it short and clear."},
+letter:"Goedendag! Ik kom uit Oezbekistan en zoek werk in Nederland. Ik heb ervaring in [vakgebied]. Ik heb een werkvergunning (TWV) nodig. Ik kan binnen [X] maanden komen. Mijn cv is bijgevoegd.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Niderlandiyada ish qidiryapman. [Soha]da tajribam bor. Ish ruxsatnomasi (TWV) kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Нидерландах. Есть опыт в [сфера]. Нужно разрешение на работу (TWV). Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in the Netherlands. I have experience in [field]. I need a work permit (TWV). I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish ruxsatnomasi (TWV)ni kim so'raydi — buni faqat <b>ish beruvchi</b> qila oladi",
+ru:"✅ Кто запрашивает разрешение (TWV) — это может сделать только <b>работодатель</b>",
+en:"✅ Who applies for the permit (TWV) — only the <b>employer</b> can do this"}},
+at:{name:{uz:"Avstriya",ru:"Австрия",en:"Austria"},A:"Bewerben",
+cv:{uz:"Avstriyada CV nemis uslubida («Lebenslauf»): rasm bilan, aniq sanalar bilan.",
+ru:"В Австрии CV в немецком стиле («Lebenslauf»): с фото и точными датами.",
+en:"In Austria the CV follows the German style (\"Lebenslauf\"): with a photo and exact dates."},
+letter:"Guten Tag! Ich komme aus Usbekistan und suche Arbeit in Österreich. Ich habe Erfahrung im Bereich [Bereich]. Ich benötige eine Beschäftigungsbewilligung. Ich kann innerhalb von [X] Monaten anreisen. Mein Lebenslauf ist im Anhang.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Avstriyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Австрии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Austria. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ruxsatnoma (Beschäftigungsbewilligung)ni kim so'raydi — buni <b>ish beruvchi</b> AMS orqali qiladi",
+ru:"✅ Кто запрашивает разрешение (Beschäftigungsbewilligung) — это делает <b>работодатель</b> через AMS",
+en:"✅ Who applies for the permit (Beschäftigungsbewilligung) — the <b>employer</b> does this via AMS"}},
+se:{name:{uz:"Shvetsiya",ru:"Швеция",en:"Sweden"},A:"Ansök",
+cv:{uz:"Shvetsiyada inglizcha CV bemalol qabul qilinadi. Qisqa motivatsion xat qo'shsangiz — ustunlik bo'ladi.",
+ru:"В Швеции английское CV принимается свободно. Короткое мотивационное письмо будет плюсом.",
+en:"In Sweden an English CV is widely accepted. A short cover letter is a plus."},
+letter:"Hej! Jag kommer från Uzbekistan och söker arbete i Sverige. Jag har erfarenhet inom [område]. Jag behöver arbetstillstånd. Jag kan komma inom [X] månader. CV bifogas.",
+ltr:{uz:"Salom! O'zbekistondanman, Shvetsiyada ish qidiryapman. [Soha]da tajribam bor. Ish ruxsati kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Швеции. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Sweden. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish taklifi rasmiy tizim orqali rasmiylashtiriladimi — buni <b>ish beruvchi</b> boshlaydi, keyin siz ish ruxsati (arbetstillstånd)ga onlayn ariza berasiz",
+ru:"✅ Оформляется ли оффер через официальную систему — это начинает <b>работодатель</b>, затем вы подаёте онлайн на разрешение (arbetstillstånd)",
+en:"✅ Is the offer registered through the official system — the <b>employer</b> starts this, then you apply online for the permit (arbetstillstånd)"}},
+cz:{name:{uz:"Chexiya",ru:"Чехия",en:"Czechia"},A:"Odpovědět",
+cv:{uz:"Chexiyada CV «životopis» deyiladi. Agentliklar inglizcha (ba'zan ruscha) CV ham qabul qiladi — quyidagi inglizcha shablon mos keladi.",
+ru:"В Чехии CV называется «životopis». Агентства принимают CV на английском (иногда на русском) — подойдёт английский шаблон ниже.",
+en:"In Czechia the CV is called \"životopis\". Agencies accept English (sometimes Russian) CVs — the English template below works."},
+letter:"Dobrý den! Jsem z Uzbekistánu a hledám práci v České republice. Mám zkušenosti v oboru [soha]. Potřebuji pracovní povolení. Mohu přijet do [X] měsíců. Životopis je v příloze.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Chexiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Чехии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Czechia. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish o'rni rasmiy reyestrga kiritilganmi — buni <b>ish beruvchi</b> qiladi, keyin siz elchixonada ish kartasi (zaměstnanecká karta)ga ariza berasiz",
+ru:"✅ Внесена ли вакансия в официальный реестр — это делает <b>работодатель</b>, затем вы подаёте в посольстве на карту (zaměstnanecká karta)",
+en:"✅ Is the vacancy registered officially — the <b>employer</b> does this, then you apply for the employee card (zaměstnanecká karta) at the embassy"}},
+sk:{name:{uz:"Slovakiya",ru:"Словакия",en:"Slovakia"},A:"Odpovedať",
+cv:{uz:"Slovakiyada agentliklar inglizcha (ba'zan ruscha) CV qabul qiladi — inglizcha shablon mos keladi.",
+ru:"В Словакии агентства принимают CV на английском (иногда на русском) — подойдёт английский шаблон.",
+en:"In Slovakia agencies accept English (sometimes Russian) CVs — the English template works."},
+letter:"Dobrý deň! Som z Uzbekistanu a hľadám prácu na Slovensku. Mám skúsenosti v oblasti [soha]. Potrebujem pracovné povolenie. Môžem prísť do [X] mesiacov. Životopis je v prílohe.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Slovakiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Словакии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Slovakia. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish taklifini rasmiy tasdiqlash — buni <b>ish beruvchi</b> qiladi, ruxsatnoma shu asosda beriladi",
+ru:"✅ Официальное подтверждение оффера — это делает <b>работодатель</b>, разрешение выдаётся на его основе",
+en:"✅ Official confirmation of the job offer — the <b>employer</b> does this, the permit is issued based on it"}},
+hu:{name:{uz:"Vengriya",ru:"Венгрия",en:"Hungary"},A:"Jelentkezem",
+cv:{uz:"Vengriyada xalqaro ish beruvchilar va agentliklar inglizcha CV qabul qiladi.",
+ru:"В Венгрии международные работодатели и агентства принимают английское CV.",
+en:"In Hungary international employers and agencies accept an English CV."},
+letter:"Jó napot kívánok! Üzbegisztánból származom, és Magyarországon keresek munkát. Tapasztalatom van a következő területen: [soha]. Munkavállalási engedélyre van szükségem. [X] hónapon belül tudok érkezni. Önéletrajzom mellékelve.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Vengriyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Венгрии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Hungary. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish ruxsatnomasi (munkavállalási engedély)ni kim boshlaydi — buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто инициирует разрешение (munkavállalási engedély) — это делает <b>работодатель</b>",
+en:"✅ Who initiates the permit (munkavállalási engedély) — the <b>employer</b> does this"}},
+it:{name:{uz:"Italiya",ru:"Италия",en:"Italy"},A:"Candidati",
+cv:{uz:"Italiyada Europass formati keng tarqalgan; inglizcha CV ko'p joyda qabul qilinadi.",
+ru:"В Италии широко распространён формат Europass; английское CV принимается во многих местах.",
+en:"In Italy the Europass format is widespread; an English CV is accepted in many places."},
+letter:"Buongiorno! Vengo dall'Uzbekistan e cerco lavoro in Italia. Ho esperienza nel settore [soha]. Ho bisogno del nulla osta al lavoro. Posso arrivare entro [X] mesi. CV in allegato.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Italiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Италии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Italy. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish ruxsati (nulla osta)ni kim so'raydi — buni <b>ish beruvchi</b> qiladi (yillik kvota tizimi bor)",
+ru:"✅ Кто запрашивает разрешение (nulla osta) — это делает <b>работодатель</b> (действует годовая квота)",
+en:"✅ Who requests the authorization (nulla osta) — the <b>employer</b> does this (an annual quota system applies)"}},
+es:{name:{uz:"Ispaniya",ru:"Испания",en:"Spain"},A:"Inscribirme",
+cv:{uz:"Ispaniyada Europass keng tarqalgan; inglizcha CV xalqaro ish beruvchilarda o'tadi.",
+ru:"В Испании распространён Europass; английское CV проходит у международных работодателей.",
+en:"In Spain Europass is common; an English CV works with international employers."},
+letter:"¡Buenos días! Soy de Uzbekistán y busco trabajo en España. Tengo experiencia en [soha]. Necesito una autorización de trabajo. Puedo llegar en [X] meses. CV adjunto.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Ispaniyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Испании. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Spain. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish ruxsati (autorización de trabajo)ni kim so'raydi — buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто запрашивает разрешение (autorización de trabajo) — это делает <b>работодатель</b>",
+en:"✅ Who applies for the authorization (autorización de trabajo) — the <b>employer</b> does this"}},
+fr:{name:{uz:"Fransiya",ru:"Франция",en:"France"},A:"Postuler",
+cv:{uz:"Fransiyada fransuzcha CV afzal, lekin xalqaro kompaniyalar inglizchani ham qabul qiladi. Rasm ixtiyoriy.",
+ru:"Во Франции предпочтительно CV на французском, но международные компании принимают и английское. Фото не обязательно.",
+en:"In France a French CV is preferred, but international companies also accept English. Photo optional."},
+letter:"Bonjour ! Je viens d'Ouzbékistan et je cherche un travail en France. J'ai de l'expérience dans le domaine [soha]. J'ai besoin d'une autorisation de travail. Je peux arriver dans [X] mois. CV en pièce jointe.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Fransiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу во Франции. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in France. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish ruxsati (autorisation de travail)ni kim so'raydi — buni <b>ish beruvchi</b> onlayn qiladi",
+ru:"✅ Кто запрашивает разрешение (autorisation de travail) — <b>работодатель</b> делает это онлайн",
+en:"✅ Who applies for the work authorization — the <b>employer</b> does this online"}},
+be:{name:{uz:"Belgiya",ru:"Бельгия",en:"Belgium"},A:"Postuler / Solliciteer",
+cv:{uz:"Belgiyada fransuzcha, gollandcha yoki inglizcha CV — uchchalasi ham qabul qilinadi.",
+ru:"В Бельгии принимаются CV на французском, нидерландском или английском.",
+en:"In Belgium a CV in French, Dutch or English is accepted."},
+letter:"Bonjour ! Je viens d'Ouzbékistan et je cherche un travail en Belgique. J'ai de l'expérience dans le domaine [soha]. J'ai besoin d'un permis unique. Je peux arriver dans [X] mois. CV en pièce jointe.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Belgiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Бельгии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Belgium. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Yagona ruxsatnoma (permis unique)ni kim so'raydi — buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто запрашивает единое разрешение (permis unique) — это делает <b>работодатель</b>",
+en:"✅ Who applies for the single permit (permis unique) — the <b>employer</b> does this"}},
+no:{name:{uz:"Norvegiya",ru:"Норвегия",en:"Norway"},A:"Søk",
+cv:{uz:"Norvegiyada inglizcha CV bemalol qabul qilinadi.",
+ru:"В Норвегии английское CV принимается свободно.",
+en:"In Norway an English CV is widely accepted."},
+letter:"Hei! Jeg kommer fra Usbekistan og søker jobb i Norge. Jeg har erfaring innen [soha]. Jeg trenger arbeidstillatelse. Jeg kan komme innen [X] måneder. CV er vedlagt.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Norvegiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Норвегии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Norway. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Rasmiy ish taklifi (job offer) shakli to'ldirilganmi — uni <b>ish beruvchi</b> to'ldiradi, keyin siz ish ruxsatiga (arbeidstillatelse) o'zingiz ariza berasiz",
+ru:"✅ Заполнена ли официальная форма оффера — её заполняет <b>работодатель</b>, затем вы сами подаёте на разрешение (arbeidstillatelse)",
+en:"✅ Is the official job offer form filled in — the <b>employer</b> fills it, then you apply for the permit (arbeidstillatelse) yourself"}},
+lt:{name:{uz:"Litva",ru:"Литва",en:"Lithuania"},A:"Kandidatuoti",
+cv:{uz:"Litvada inglizcha CV keng qabul qilinadi, agentliklar ruscha ham oladi.",
+ru:"В Литве английское CV принимается широко, агентства берут и русское.",
+en:"In Lithuania an English CV is widely accepted; agencies also take Russian."},
+letter:"Laba diena! Esu iš Uzbekistano, ieškau darbo Lietuvoje. Turiu patirties [soha] srityje. Man reikia leidimo dirbti. Galiu atvykti per [X] mėnesius. CV pridedamas.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Litvada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Литве. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Lithuania. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish ruxsati (leidimas dirbti)ni kim so'raydi — buni <b>ish beruvchi</b> Bandlik xizmati orqali qiladi",
+ru:"✅ Кто запрашивает разрешение (leidimas dirbti) — <b>работодатель</b> через Службу занятости",
+en:"✅ Who applies for the permit (leidimas dirbti) — the <b>employer</b> via the Employment Service"}},
+fi:{name:{uz:"Finlandiya",ru:"Финляндия",en:"Finland"},A:"Hae",
+cv:{uz:"Finlandiyada inglizcha CV bemalol qabul qilinadi.",
+ru:"В Финляндии английское CV принимается свободно.",
+en:"In Finland an English CV is widely accepted."},
+letter:"Hei! Olen Uzbekistanista ja etsin töitä Suomesta. Minulla on kokemusta alalta [soha]. Tarvitsen työntekijän oleskeluluvan. Voin tulla [X] kuukauden kuluessa. CV liitteenä.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Finlandiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Финляндии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Finland. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish beruvchi o'z qismini (ish sharoitlari shakli) to'ldirib berdimi — shundan keyin siz ishchi ruxsatnomasiga o'zingiz ariza berasiz",
+ru:"✅ Заполнил ли работодатель свою часть (форма условий работы) — после этого вы сами подаёте на разрешение",
+en:"✅ Has the employer filled in their part (terms of employment form) — after that you apply for the worker's permit yourself"}},
+pt:{name:{uz:"Portugaliya",ru:"Португалия",en:"Portugal"},A:"Candidatar",
+cv:{uz:"Portugaliyada Europass keng tarqalgan; inglizcha CV ko'p joyda o'tadi.",
+ru:"В Португалии распространён Europass; английское CV проходит во многих местах.",
+en:"In Portugal Europass is common; an English CV works in many places."},
+letter:"Bom dia! Sou do Uzbequistão e procuro trabalho em Portugal. Tenho experiência na área de [soha]. Preciso de um visto de trabalho. Posso chegar dentro de [X] meses. CV em anexo.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Portugaliyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Португалии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Portugal. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Mehnat shartnomasi yoki ish va'dasi qachon beriladi — viza uchun aynan shu kerak, uni <b>ish beruvchi</b> beradi",
+ru:"✅ Когда будет трудовой договор или обещание работы — именно это нужно для визы, его даёт <b>работодатель</b>",
+en:"✅ When will the work contract or promise of employment be issued — this is what the visa needs, and the <b>employer</b> provides it"}},
+gr:{name:{uz:"Gretsiya",ru:"Греция",en:"Greece"},A:"Αίτηση / Apply",
+cv:{uz:"Gretsiyada turizm va qishloq xo'jaligi sohalarida inglizcha CV qabul qilinadi.",
+ru:"В Греции в туризме и сельском хозяйстве принимается английское CV.",
+en:"In Greece an English CV is accepted in tourism and agriculture."},
+letter:"Καλημέρα! Είμαι από το Ουζμπεκιστάν και ψάχνω εργασία στην Ελλάδα. Έχω εμπειρία στον τομέα [soha]. Χρειάζομαι άδεια εργασίας. Μπορώ να έρθω μέσα σε [X] μήνες. Το βιογραφικό επισυνάπτεται.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Gretsiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Греции. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Greece. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Rasmiy taklif (metaklisi) jarayonini kim boshlaydi — buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто начинает процедуру официального приглашения (metaklisi) — это делает <b>работодатель</b>",
+en:"✅ Who starts the official invitation procedure (metaklisi) — the <b>employer</b> does this"}},
+ro:{name:{uz:"Ruminiya",ru:"Румыния",en:"Romania"},A:"Aplică",
+cv:{uz:"Ruminiyada inglizcha CV xalqaro ish beruvchilar va agentliklarda qabul qilinadi.",
+ru:"В Румынии английское CV принимается у международных работодателей и агентств.",
+en:"In Romania an English CV is accepted by international employers and agencies."},
+letter:"Bună ziua! Sunt din Uzbekistan și caut un loc de muncă în România. Am experiență în domeniul [soha]. Am nevoie de aviz de angajare. Pot ajunge în [X] luni. CV-ul este atașat.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Ruminiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Румынии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Romania. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Ish ruxsati (aviz de angajare)ni kim oladi — buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто получает разрешение (aviz de angajare) — это делает <b>работодатель</b>",
+en:"✅ Who obtains the permit (aviz de angajare) — the <b>employer</b> does this"}},
+hr:{name:{uz:"Xorvatiya",ru:"Хорватия",en:"Croatia"},A:"Prijavi se",
+cv:{uz:"Xorvatiyada turizm va qurilish sohalarida inglizcha CV bemalol o'tadi.",
+ru:"В Хорватии в туризме и строительстве английское CV проходит свободно.",
+en:"In Croatia an English CV works well in tourism and construction."},
+letter:"Dobar dan! Dolazim iz Uzbekistana i tražim posao u Hrvatskoj. Imam iskustva u području [soha]. Trebam dozvolu za boravak i rad. Mogu doći u roku od [X] mjeseci. Životopis je u prilogu.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Xorvatiyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Хорватии. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Croatia. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Yashash va ishlash ruxsati (dozvola za boravak i rad)ni kim so'raydi — buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто запрашивает разрешение (dozvola za boravak i rad) — это делает <b>работодатель</b>",
+en:"✅ Who applies for the permit (dozvola za boravak i rad) — the <b>employer</b> does this"}},
+si:{name:{uz:"Sloveniya",ru:"Словения",en:"Slovenia"},A:"Prijava",
+cv:{uz:"Sloveniyada inglizcha CV ko'p ish beruvchida qabul qilinadi.",
+ru:"В Словении английское CV принимается у многих работодателей.",
+en:"In Slovenia an English CV is accepted by many employers."},
+letter:"Dober dan! Prihajam iz Uzbekistana in iščem delo v Sloveniji. Imam izkušnje na področju [soha]. Potrebujem enotno dovoljenje za delo. Lahko pridem v [X] mesecih. Življenjepis je priložen.",
+ltr:{uz:"Assalomu alaykum! O'zbekistondanman, Sloveniyada ish qidiryapman. [Soha]da tajribam bor. Ishga ruxsatnoma kerak. [X] oy ichida kela olaman. CV ilovada.",
+ru:"Здравствуйте! Я из Узбекистана, ищу работу в Словении. Есть опыт в [сфера]. Нужно разрешение на работу. Могу приехать в течение [X] месяцев. CV во вложении.",
+en:"Hello! I'm from Uzbekistan, looking for work in Slovenia. I have experience in [field]. I need a work permit. I can arrive within [X] months. CV attached."},
+who:{uz:"✅ Yagona ruxsatnoma (enotno dovoljenje)ni kim so'raydi — odatda buni <b>ish beruvchi</b> qiladi",
+ru:"✅ Кто подаёт на единое разрешение (enotno dovoljenje) — обычно это делает <b>работодатель</b>",
+en:"✅ Who files for the single permit (enotno dovoljenje) — usually the <b>employer</b> does this"}}
+};
+function renderJobSteps(flt){
+  var hEl=document.getElementById("jobStepsH"),bEl=document.getElementById("jobStepsB");
+  if(!hEl||!bEl)return;
+  var T=JOBSTEPS_TXT[lang]||JOBSTEPS_TXT.uz;
+  if(!hasAccess){
+    hEl.innerHTML="🔒 "+T.title;
+    bEl.innerHTML="<div style='text-align:center;padding:8px 4px;'><div style='font-size:24px;margin-bottom:8px;'>&#128274;</div><div style='margin-bottom:12px;'>"+T.lockD+"</div><button style='background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#000;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;' onclick='goScreen(\"sc-pay\")'>"+T.lockB+"</button></div>";
+    return;
+  }
+  var c=JOBSTEPS[flt];
+  var H="<b style='color:var(--tx)'>",HE="</b><br>",BR="<br><br>";
+  var cvBtn="<button onclick=\"openCv('"+flt+"')\" style='display:block;width:100%;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;margin:6px 0 2px;'>"+T.cvBtn+"</button>";
+  if(!c){
+    hEl.innerHTML="📌 "+T.title;
+    bEl.innerHTML="<div style='background:rgba(99,102,241,.08);border-radius:8px;padding:10px 12px;margin-bottom:12px;'>"+T.allHint+"</div>"
+      +H+T.s1h+HE+T.s1+cvBtn+BR
+      +H+T.s2h+HE+T.s2.replace("{A}","Apply / Aplikuj / Bewerben")+BR
+      +H+T.s4h+HE+T.s4a+"<br>"+T.s4c+"<br>"+T.s4d+BR
+      +T.allPermits;
+    return;
+  }
+  hEl.innerHTML="📌 "+T.title+" — "+(c.name[lang]||c.name.uz);
+  bEl.innerHTML=H+T.s1h+HE+T.s1+(c.cv[lang]||c.cv.uz)+cvBtn+BR
+    +H+T.s2h+HE+T.s2.replace("{A}",c.A)+BR
+    +H+T.s3h+HE+"<i>«"+c.letter+"»</i><br>("+T.s3tr+(c.ltr[lang]||c.ltr.uz)+")"+BR
+    +H+T.s4h+HE+T.s4a+"<br>"+(c.who[lang]||c.who.uz)+"<br>"+T.s4c+"<br>"+T.s4d+BR
+    +H+T.s5h+HE+T.s5;
+}
+var CV_SEC="font-size:13px;font-weight:700;border-bottom:1px solid #999;margin:14px 0 6px;letter-spacing:.5px;";
+var CV_BODY="font-size:12px;line-height:1.65;";
+var CV_TPL={
+pl:"<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[IMIĘ I NAZWISKO — Ism familiya]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Tel.: [+998 90 123 45 67] | E-mail: [email@mail.com] | Data urodzenia: [01.01.1995]<br>Obywatelstwo: Uzbekistan | Miejsce zamieszkania: [Shahar], Uzbekistan</div></div>"
++"<div style='"+CV_SEC+"'>DOŚWIADCZENIE ZAWODOWE</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — [Lavozim], [Korxona nomi], [Shahar]<br>• [Nima ish qilganingiz — 1-2 jumla]<br><b>[2019 – 2022]</b> — [Lavozim], [Korxona nomi]<br>• [Vazifalaringiz]</div>"
++"<div style='"+CV_SEC+"'>WYKSZTAŁCENIE</div><div style='"+CV_BODY+"'>[Yil] — [Maktab / kollej / universitet], [Yo'nalish]</div>"
++"<div style='"+CV_SEC+"'>UMIEJĘTNOŚCI</div><div style='"+CV_BODY+"'>• Języki: uzbecki (ojczysty), rosyjski ([daraja]), polski / angielski ([daraja])<br>• [Haydovchilik guvohnomasi kat. B / texnika bilan ishlash / boshqa ko'nikma]</div>"
++"<div style='font-size:10px;color:#555;margin-top:16px;border-top:1px solid #ccc;padding-top:8px;'>Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niezbędnych do realizacji procesu rekrutacji.</div>",
+de:"<div style='text-align:center;font-size:14px;font-weight:700;letter-spacing:2px;margin-bottom:8px;'>LEBENSLAUF</div>"
++"<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[VORNAME NACHNAME — Ism familiya]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Telefon: [+998 90 123 45 67] | E-Mail: [email@mail.com] | Geburtsdatum: [01.01.1995]<br>Staatsangehörigkeit: Usbekistan | Wohnort: [Shahar], Usbekistan</div><div style='font-size:10px;color:#777;margin-top:4px;'>[Foto — o'ng yuqori burchakka 3,5×4,5 rasm qo'yish tavsiya etiladi]</div></div>"
++"<div style='"+CV_SEC+"'>BERUFSERFAHRUNG</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — [Lavozim], [Korxona nomi], [Shahar]<br>• [Nima ish qilganingiz — 1-2 jumla]<br><b>[2019 – 2022]</b> — [Lavozim], [Korxona nomi]<br>• [Vazifalaringiz]</div>"
++"<div style='"+CV_SEC+"'>AUSBILDUNG</div><div style='"+CV_BODY+"'>[Yil] — [Maktab / kollej / universitet], [Yo'nalish]</div>"
++"<div style='"+CV_SEC+"'>KENNTNISSE</div><div style='"+CV_BODY+"'>• Sprachen: Usbekisch (Muttersprache), Russisch ([daraja]), Deutsch / Englisch ([daraja])<br>• [Führerschein Klasse B / texnika bilan ishlash / boshqa ko'nikma]</div>"
++"<div style='font-size:11px;margin-top:16px;'>[Shahar], [Sana] &nbsp;&nbsp;&nbsp; [Imzo — Unterschrift]</div>",
+en:"<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[FULL NAME — Ism familiya]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Phone: [+998 90 123 45 67] | Email: [email@mail.com] | Date of birth: [01.01.1995]<br>Nationality: Uzbekistan | Location: [Shahar], Uzbekistan</div></div>"
++"<div style='"+CV_SEC+"'>WORK EXPERIENCE</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — [Lavozim], [Korxona nomi], [Shahar]<br>• [Nima ish qilganingiz — 1-2 jumla]<br><b>[2019 – 2022]</b> — [Lavozim], [Korxona nomi]<br>• [Vazifalaringiz]</div>"
++"<div style='"+CV_SEC+"'>EDUCATION</div><div style='"+CV_BODY+"'>[Yil] — [Maktab / kollej / universitet], [Yo'nalish]</div>"
++"<div style='"+CV_SEC+"'>SKILLS</div><div style='"+CV_BODY+"'>• Languages: Uzbek (native), Russian ([daraja]), English ([daraja])<br>• [Driving licence cat. B / texnika bilan ishlash / boshqa ko'nikma]</div>"
+};
+var CV_MAP={pl:"pl",de:"de",at:"de",nl:"en",se:"en",cz:"en",sk:"en",hu:"en",it:"en",es:"en",fr:"en",be:"en",no:"en",lt:"en",fi:"en",pt:"en",gr:"en",ro:"en",hr:"en",si:"en",all:"en"};
+function openCv(flt){
+  if(!hasAccess){goScreen("sc-pay");return;}
+  var m=document.getElementById("cvModal");if(!m)return;
+  var T=JOBSTEPS_TXT[lang]||JOBSTEPS_TXT.uz;
+  setEl("cvHint",T.cvHint);
+  setEl("cvPdfBtn",T.cvPdf);setEl("cvCopyBtn",T.cvCopy);
+  setEl("cvSheet",CV_TPL[CV_MAP[flt]||"en"]);
+  m.style.display="block";
+}
+function closeCv(){var m=document.getElementById("cvModal");if(m)m.style.display="none";}
+function cvPdf(){window.print();}
+function cvCopy(){
+  var s=document.getElementById("cvSheet"),b=document.getElementById("cvCopyBtn");if(!s)return;
+  var txt=s.innerText||s.textContent||"";
+  var done=function(){var T=JOBSTEPS_TXT[lang]||JOBSTEPS_TXT.uz;if(b){b.innerHTML=T.cvCopied;setTimeout(function(){b.innerHTML=T.cvCopy;},1500);}};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(function(){cvCopyFallback(txt);done();});}
+  else{cvCopyFallback(txt);done();}
+}
+function cvCopyFallback(txt){
+  var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";
+  document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);
+}
 function renderFirms(flt){
   ff2=flt;
-  var cats=["all","de","pl","nl","at","se"];
-  var cn={
-    all:lang==="ru"?"\u0412\u0441\u0435":lang==="en"?"All":"Barchasi",
-    de:lang==="ru"?"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f":lang==="en"?"Germany":"Germaniya",
-    pl:lang==="ru"?"\u041f\u043e\u043b\u044c\u0448\u0430":lang==="en"?"Poland":"Polsha",
-    nl:lang==="ru"?"\u041d\u0438\u0434\u0435\u0440\u043b.":lang==="en"?"Neth.":"Niderl.",
-    at:lang==="ru"?"\u0410\u0432\u0441\u0442\u0440\u0438\u044f":lang==="en"?"Austria":"Avstriya",
-    se:lang==="ru"?"\u0428\u0432\u0435\u0446\u0438\u044f":lang==="en"?"Sweden":"Shvetsiya"
-  };
+  var cats=["all","de","pl","cz","sk","hu","at","nl","be","fr","it","es","pt","gr","hr","si","ro","lt","se","no","fi"];
+  var cn={all:lang==="ru"?"\u0412\u0441\u0435":lang==="en"?"All":"Barchasi"};
+  cats.forEach(function(cc){if(cc!=="all"&&JOBSTEPS[cc])cn[cc]=JOBSTEPS[cc].name[lang]||JOBSTEPS[cc].name.uz;});
   var fh="";cats.forEach(function(c){fh+="<button class='fchip"+(flt===c?" act":"")+"' onclick='renderFirms(\""+c+"\")'>"+(cn[c]||c)+"</button>";});
   setEl("ffilt",fh);
+  renderJobSteps(flt);
   var list=FIRMS.filter(function(f){return flt==="all"||f.c===flt||f.c==="all";});
   var fb="";
   var openLbl=lang==="ru"?"\u041e\u0442\u043a\u0440\u044b\u0442\u044c":lang==="en"?"Unlock":"Ochish";
