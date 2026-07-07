@@ -319,7 +319,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
 
 <div class="abar" id="abar">
   <span>Admin</span>
-  <div><button onclick="genLink()" id="admLinkBtn">Havola</button><button onclick="genLifeLink()" id="admLifeLinkBtn">EL havola</button><button onclick="exitAdmin()" id="admExitBtn">Chiqish</button></div>
+  <div><button onclick="genLink()" id="admLinkBtn">Havola</button><button onclick="genLifeLink()" id="admLifeLinkBtn">EL havola</button><button onclick="resetTokenPrompt()" id="admResetBtn">Token tozalash</button><button onclick="exitAdmin()" id="admExitBtn">Chiqish</button></div>
 </div>
 
 <!-- SCREEN 1: WELCOME -->
@@ -791,6 +791,28 @@ function setS(){
     localStorage.setItem("eg_token_v3", _h(t));
     localStorage.setItem("eg_ts_v3", Date.now().toString());
   }catch(e){}
+}
+
+// 7. Device-lock: har bir qurilma uchun doimiy tasodifiy ID
+function getDeviceId(){
+  try{
+    var id=localStorage.getItem("eg_device_id");
+    if(!id){
+      id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));
+      localStorage.setItem("eg_device_id", id);
+    }
+    return id;
+  }catch(e){return "nodid_"+Date.now();}
+}
+
+// 8. Tokenni serverda faollashtirish: birinchi ochgan qurilmaga "bog'lanadi".
+// Boshqa qurilmadan xuddi shu token bilan kirishga urinsa - rad etiladi.
+function activateToken(token){
+  var dev=getDeviceId();
+  return fetch("/api/activate?token="+encodeURIComponent(token)+"&device="+encodeURIComponent(dev))
+    .then(function(r){return r.json();})
+    .then(function(d){return !!(d&&d.ok);})
+    .catch(function(){return false;});
 }
 
 var AP_HASH="mx5he4",isAdmin=false,hasAccess=false,lang="uz";
@@ -1781,6 +1803,30 @@ function checkAdmin(){
 function exitAdmin(){isAdmin=false;document.getElementById("abar").classList.remove("on");}
 function genLink(){var t="token_"+Date.now();var url=window.location.href.split("?")[0]+"?token="+t;prompt(lang==="ru"?"\u0421\u0441\u044b\u043b\u043a\u0430:":lang==="en"?"Link:":"Havola:",url);}
 
+// Admin: mijoz tokeni boshqa qurilmaga noto'g'ri bog'lanib qolsa, shu yerdan tozalanadi.
+function resetTokenPrompt(){
+  var full=prompt(lang==="ru"?"Полная ссылка или токен клиента:":lang==="en"?"Client's full link or token:":"Mijozning to'liq havolasi yoki tokeni:");
+  if(!full) return;
+  var token=full;
+  try{
+    if(full.indexOf("token=")>-1){
+      var qp=new URLSearchParams(full.split("?")[1]||full);
+      token=qp.get("token")||full;
+    }
+  }catch(e){}
+  token=token.trim();
+  if(!token||token.length<5){toast(lang==="uz"?"Noto'g'ri token":"Invalid token");return;}
+  var pw=prompt(lang==="uz"?"Admin parolni tasdiqlang:":lang==="ru"?"Подтвердите пароль:":"Confirm admin password:");
+  if(!pw){return;}
+  fetch("/api/reset-token?token="+encodeURIComponent(token)+"&pw="+encodeURIComponent(pw))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d&&d.ok){toast(lang==="uz"?"Token tozalandi \u2014 mijoz qayta ochishi mumkin":lang==="ru"?"Токен сброшен":"Token cleared");}
+      else{toast(lang==="uz"?"Xato: "+(d&&d.reason||"noma'lum"):"Error: "+(d&&d.reason||"unknown"));}
+    })
+    .catch(function(){toast(lang==="uz"?"Server bilan bog'lanib bo'lmadi":"Could not reach server");});
+}
+
 var ORIG_N={
 pl:{uz:"Uzbekistanu",kg:"Kirgistanu",tj:"Tad\u017cykistanu",kz:"Kazachstanu",tm:"Turkmenistanu",az:"Azerbejd\u017canu"},
 plN:{uz:"Uzbekistan",kg:"Kirgistan",tj:"Tad\u017cykistan",kz:"Kazachstan",tm:"Turkmenistan",az:"Azerbejd\u017can"},
@@ -2258,11 +2304,21 @@ try{
   var _ord=_tp.get("order");
   if(_tt&&_tt.length>4){
     tokenInUrl=true;
-    setS();
-    hasAccess=true;
-    var ab=document.getElementById("actBox");
-    if(ab) ab.classList.add("visible");
     goScreen("sc-pay");
+    toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
+    activateToken(_tt).then(function(ok){
+      if(ok){
+        setS();
+        hasAccess=true;
+        var ab=document.getElementById("actBox");
+        if(ab) ab.classList.add("visible");
+        goScreen("sc-app"); buildGuide();
+      } else {
+        var lockedMsg=lang==="ru"?"\u042d\u0442\u0430 \u0441\u0441\u044b\u043b\u043a\u0430 \u0443\u0436\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0430 \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u043c \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0435.":lang==="en"?"This link was already used on another device.":"Bu havola boshqa qurilmada allaqachon ishlatilgan.";
+        toast(lockedMsg);
+        goScreen("sc-pay");
+      }
+    });
   } else if(_ord){
     // Click to'lovidan qaytdi — serverdan tekshiramiz
     goScreen("sc-pay");
