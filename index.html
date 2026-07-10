@@ -647,7 +647,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
           <a href="https://t.me/Evropagoo" target="_blank" style="display:block;text-align:center;background:#229ED9;color:#fff;text-decoration:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;" id="cardTgBtn">&#9993; Telegram: @Evropagoo</a>
         </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--mt);font-size:11px;" id="orDivider"><div style="flex:1;height:1px;background:var(--bd);"></div><span id="orLbl">yoki chet eldan</span><div style="flex:1;height:1px;background:var(--bd);"></div></div>
+        <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--mt);font-size:11px;" id="orDivider"><div style="flex:1;height:1px;background:var(--bd);"></div><span id="orLbl">yoki tezkor to'lov</span><div style="flex:1;height:1px;background:var(--bd);"></div></div>
         <div id="tgBlock">
         <button class="act-btn" onclick="payTelegram()" id="tgBtn" style="width:100%;background:linear-gradient(135deg,#229ED9,#1c8bc0);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;">&#9993; Telegram orqali to'lash (Visa/MC, USDT)</button>
         </div>
@@ -854,7 +854,7 @@ function reorderPayMethods(){
     // O'zbekiston: Click birinchi (asl tartib)
     parent.insertBefore(clickBlock,tgBlock);
     parent.insertBefore(divider,tgBlock);
-    if(orLbl)setEl("orLbl",lang==="ru"?"или из-за рубежа":lang==="en"?"or from abroad":"yoki chet eldan");
+    if(orLbl)setEl("orLbl",lang==="ru"?"или быстрая оплата":lang==="en"?"or quick payment":"yoki tezkor to'lov");
   }
 }
 function showTab(id,btn){
@@ -1258,7 +1258,7 @@ function applyLang(){
   (function(){var L=document.getElementById("pmList");if(L&&t.pmR1){L.children[0].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR1;L.children[1].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR2;L.children[2].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR3;L.children[3].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR4;}})();
   setEl("actNote",t.actNote);setEl("actBtn",t.actBtn);setEl("payBack",t.payBack);
   // Chet el / Telegram tugmasi tarjimalari
-  setEl("orLbl",lang==="ru"?"или из-за рубежа":lang==="en"?"or from abroad":"yoki chet eldan");
+  setEl("orLbl",lang==="ru"?"или быстрая оплата":lang==="en"?"or quick payment":"yoki tezkor to'lov");
   setEl("pmLbl",lang==="ru"?"Способ оплаты":lang==="en"?"Payment method":"To'lov usuli");
   setEl("pmHint",lang==="ru"?"Нет Click? Выберите UzCard или Humo — оплата переводом на карту":lang==="en"?"No Click? Choose UzCard or Humo — pay by card transfer":"Click yo'qmi? UzCard yoki Humo'ni tanlang — kartaga o'tkazma orqali");
   setEl("tgBtn",lang==="ru"?"&#9993; Оплата через Telegram (Visa/MC, USDT)":lang==="en"?"&#9993; Pay via Telegram (Visa/MC, USDT)":"&#9993; Telegram orqali to'lash (Visa/MC, USDT)");
