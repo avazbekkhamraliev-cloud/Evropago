@@ -319,7 +319,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
 
 <div class="abar" id="abar">
   <span>Admin</span>
-  <div><button onclick="genLink()" id="admLinkBtn">Havola</button><button onclick="genLifeLink()" id="admLifeLinkBtn">EL havola</button><button onclick="resetTokenPrompt()" id="admResetBtn">Token tozalash</button><button onclick="resetLifeTokenPrompt()" id="admLifeResetBtn">EL token tozalash</button><button onclick="exitAdmin()" id="admExitBtn">Chiqish</button></div>
+  <div><button onclick="genLink()" id="admLinkBtn">Havola</button><button onclick="genLifeLink()" id="admLifeLinkBtn">EL havola</button><button onclick="resetTokenPrompt()" id="admResetBtn">Token tozalash</button><button onclick="resetLifeTokenPrompt()" id="admLifeResetBtn">EL token tozalash</button><button onclick="openReviewMod()" id="admRevBtn">Fikrlar</button><button onclick="exitAdmin()" id="admExitBtn">Chiqish</button></div>
 </div>
 
 <!-- SCREEN 1: WELCOME -->
@@ -721,6 +721,12 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
       <input class="fi2" type="text" id="linkOvlInput" readonly style="width:100%;box-sizing:border-box;font-family:monospace;font-size:12px;margin-bottom:10px;" onclick="this.select();">
       <button class="mbtn2" id="linkOvlCopyBtn" onclick="copyLinkOvl()">&#128203; Nusxalash</button>
     </div>
+  </div>
+</div>
+<div class="ovl" id="revModOvl">
+  <div class="mdl">
+    <div class="mhd"><h3>Kutilayotgan fikrlar</h3><button class="mcl" onclick="closeModal('revModOvl')">&#10005;</button></div>
+    <div class="mbd" id="revModList" style="max-height:70vh;overflow-y:auto;"></div>
   </div>
 </div>
 <div class="toast" id="tst"></div>
@@ -2304,20 +2310,79 @@ function submitRv(){
   var ctry=document.getElementById("rvCtry").value;
   var errMsg=lang==="ru"?"\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0432\u0441\u0451":lang==="en"?"Please fill in all fields":"Hammasini to\u2019ldiring!";
   if(!name||!txt||!selStar2){toast(errMsg);return;}
-  pendRv.push({id:Date.now(),name:name,country:ctry,stars:selStar2,text:txt});
   closeModal("rvOvl");
   var thxMsg=lang==="ru"?"\u0421\u043f\u0430\u0441\u0438\u0431\u043e! \u041d\u0430 \u043c\u043e\u0434\u0435\u0440\u0430\u0446\u0438\u0438":lang==="en"?"Thank you! Under moderation":"Rahmat! Moderatsiyada";
   toast(thxMsg);
+  // Admin panelida ko'rinishi uchun serverga yuboramiz (tasdiqlanmaguncha saytda ko'rinmaydi)
+  try{
+    fetch("/api/submit-review",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name:name,country:ctry,stars:selStar2,text:txt})
+    }).catch(function(){});
+  }catch(e){}
 }
 function renderReviews(){
-  var list=isAdmin?RVS.concat(pendRv):RVS;
-  var total=list.reduce(function(s,r){return s+r.stars;},0);
-  var avg=list.length?Math.round(total/list.length*10)/10:0;
-  var bars="";for(var s=5;s>=1;s--){var cnt=list.filter(function(r){return r.stars===s;}).length;bars+="<div class='rbbr'><div class='rbl'>"+s+"</div><div class='rbbg'><div class='rbf' style='width:"+(list.length?Math.round(cnt/list.length*100):0)+"%'></div></div><div class='rbc'>"+cnt+"</div></div>";}
+  var list=RVS.slice();
   var rvWord=lang==="ru"?" \u043e\u0442\u0437.":lang==="en"?" reviews":"ta fikr";
-  setEl("rvStats","<div><div class='rvbig'>"+avg+"</div><div class='rvstars'>"+"&#11088;".repeat(Math.round(avg))+"</div><div class='rvcnt'>"+list.length+rvWord+"</div></div><div class='rvbars'>"+bars+"</div>");
-  var h="";list.forEach(function(r){h+="<div class='rvcard'><div class='rvtop'><div class='rvav'>"+r.name[0]+"</div><div><div class='rvname'>"+r.name+"</div><div class='rvloc'>"+r.country+"</div></div><div style='margin-left:auto;'><div class='rvstars2'>"+"&#11088;".repeat(r.stars)+"</div></div></div><div class='rvtext'>"+r.text+"</div></div>";});
-  setEl("rvList",h);
+  function draw(){
+    var total=list.reduce(function(s,r){return s+r.stars;},0);
+    var avg=list.length?Math.round(total/list.length*10)/10:0;
+    var bars="";for(var s=5;s>=1;s--){var cnt=list.filter(function(r){return r.stars===s;}).length;bars+="<div class='rbbr'><div class='rbl'>"+s+"</div><div class='rbbg'><div class='rbf' style='width:"+(list.length?Math.round(cnt/list.length*100):0)+"%'></div></div><div class='rbc'>"+cnt+"</div></div>";}
+    setEl("rvStats","<div><div class='rvbig'>"+avg+"</div><div class='rvstars'>"+"&#11088;".repeat(Math.round(avg))+"</div><div class='rvcnt'>"+list.length+rvWord+"</div></div><div class='rvbars'>"+bars+"</div>");
+    var h="";list.forEach(function(r){h+="<div class='rvcard'><div class='rvtop'><div class='rvav'>"+r.name[0]+"</div><div><div class='rvname'>"+r.name+"</div><div class='rvloc'>"+r.country+"</div></div><div style='margin-left:auto;'><div class='rvstars2'>"+"&#11088;".repeat(r.stars)+"</div></div></div><div class='rvtext'>"+r.text+"</div></div>";});
+    setEl("rvList",h);
+  }
+  draw();
+  fetch("/api/reviews").then(function(r){return r.json();}).then(function(d){
+    if(d&&d.ok&&d.reviews&&d.reviews.length){
+      list=RVS.concat(d.reviews);
+      list.sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+      draw();
+    }
+  }).catch(function(){});
+}
+
+/* ===== Admin: fikrlarni moderatsiya qilish ===== */
+var _revPw=null;
+function openReviewMod(){
+  if(!_revPw){
+    _revPw=prompt(lang==="uz"?"Admin parolni tasdiqlang:":lang==="ru"?"\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u0435 \u043f\u0430\u0440\u043e\u043b\u044c:":"Confirm admin password:");
+    if(!_revPw){_revPw=null;return;}
+  }
+  openModal("revModOvl");
+  loadPendingReviews();
+}
+function loadPendingReviews(){
+  setEl("revModList",lang==="uz"?"Yuklanmoqda...":lang==="ru"?"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430...":"Loading...");
+  fetch("/api/reviews?pw="+encodeURIComponent(_revPw)).then(function(r){return r.json();}).then(function(d){
+    if(!d||!d.ok){_revPw=null;toast(lang==="uz"?"Xato parol":"Wrong password");closeModal("revModOvl");return;}
+    var list=d.reviews||[];
+    if(!list.length){setEl("revModList","<p style='text-align:center;color:#9ca3af;padding:20px;'>"+(lang==="uz"?"Yangi fikr yo'q":lang==="ru"?"\u041d\u043e\u0432\u044b\u0445 \u043e\u0442\u0437\u044b\u0432\u043e\u0432 \u043d\u0435\u0442":"No new reviews")+"</p>");return;}
+    var h="";
+    list.forEach(function(r){
+      h+="<div style='border:1px solid #d0d9f0;border-radius:10px;padding:12px;margin-bottom:10px;'>"
+        +"<div style='font-weight:800;'>"+r.name+" <span style='font-weight:400;color:#6b7280;font-size:12px;'>("+(r.country||"-")+")</span></div>"
+        +"<div style='color:#F2C14E;margin:4px 0;'>"+"\u2b50".repeat(r.stars)+"</div>"
+        +"<div style='font-size:14px;margin-bottom:10px;'>"+r.text+"</div>"
+        +"<button onclick=\"moderateReview('"+r.id+"','approve')\" style='background:#2E8B57;color:#fff;border:none;border-radius:6px;padding:6px 14px;margin-right:8px;cursor:pointer;'>\u2713 Tasdiqlash</button>"
+        +"<button onclick=\"moderateReview('"+r.id+"','reject')\" style='background:#dc2626;color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;'>\u2715 O'chirish</button>"
+        +"</div>";
+    });
+    setEl("revModList",h);
+  }).catch(function(){toast(lang==="uz"?"Server bilan bog'lanib bo'lmadi":"Could not reach server");});
+}
+function moderateReview(id,action){
+  fetch("/api/moderate-review?id="+encodeURIComponent(id)+"&action="+action+"&pw="+encodeURIComponent(_revPw))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d&&d.ok){
+        toast(action==="approve"?(lang==="uz"?"Tasdiqlandi!":"Approved!"):(lang==="uz"?"O'chirildi!":"Deleted!"));
+        loadPendingReviews();
+      } else {
+        toast(lang==="uz"?"Xato":"Error");
+      }
+    }).catch(function(){toast(lang==="uz"?"Server bilan bog'lanib bo'lmadi":"Could not reach server");});
 }
 
 // INIT
