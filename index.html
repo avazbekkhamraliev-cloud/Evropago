@@ -319,7 +319,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
 
 <div class="abar" id="abar">
   <span>Admin</span>
-  <div><button onclick="genLink()" id="admLinkBtn">Havola</button><button onclick="genLifeLink()" id="admLifeLinkBtn">EL havola</button><button onclick="resetTokenPrompt()" id="admResetBtn">Token tozalash</button><button onclick="exitAdmin()" id="admExitBtn">Chiqish</button></div>
+  <div><button onclick="genLink()" id="admLinkBtn">Havola</button><button onclick="genLifeLink()" id="admLifeLinkBtn">EL havola</button><button onclick="resetTokenPrompt()" id="admResetBtn">Token tozalash</button><button onclick="resetLifeTokenPrompt()" id="admLifeResetBtn">EL token tozalash</button><button onclick="exitAdmin()" id="admExitBtn">Chiqish</button></div>
 </div>
 
 <!-- SCREEN 1: WELCOME -->
@@ -340,7 +340,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
         <span class="pb-role" id="pbGoT">Yevropaga KETMOQCHIMAN</span>
         <span class="pb-sub" id="pbGoS">Ish vizasi yo'l xaritasi: davlat, kasb, hujjatlar, elchixona, ish beruvchi firmalar</span>
       </button>
-      <button class="path-btn path-life" style="opacity:.92;cursor:default;position:relative;" onclick="return false;"><span style="position:absolute;top:10px;right:12px;background:#C9A227;color:#fff;font-size:.62rem;font-weight:800;padding:3px 9px;border-radius:20px;" id="lifeSoonBadge">🔜 TEZ KUNDA</span>
+      <button class="path-btn path-life" style="position:relative;" onclick="goScreen('sc-life')">
         <span class="pb-logo"><img src="data:image/jpeg;base64,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" alt="EvropaLife"></span>
         <span class="pb-name" style="color:#101F4A;">Evropa<span style="color:#C9A227;">Life</span></span>
         <span class="pb-role" id="pbLifeT" style="color:#101F4A;background:rgba(242,193,78,.25);">Yevropaga BORIB BO'LDIM</span>
@@ -714,6 +714,15 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
     </div>
   </div>
 </div>
+<div class="ovl" id="linkOvl">
+  <div class="mdl">
+    <div class="mhd"><h3 id="linkOvlTitle">Havola</h3><button class="mcl" onclick="closeModal('linkOvl')">&#10005;</button></div>
+    <div class="mbd">
+      <input class="fi2" type="text" id="linkOvlInput" readonly style="width:100%;box-sizing:border-box;font-family:monospace;font-size:12px;margin-bottom:10px;" onclick="this.select();">
+      <button class="mbtn2" id="linkOvlCopyBtn" onclick="copyLinkOvl()">&#128203; Nusxalash</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="tst"></div>
 
 <script>
@@ -749,7 +758,7 @@ var _adminAttempts = 0;
 var _adminLocked = false;
 var _adminLockTime = 0;
 
-// 6. Secure token validation with expiry (72 hours)
+// 6. Secure token validation — kirish umrbod (muddatsiz)
 function getS(){
   try{
     // URL token check
@@ -763,20 +772,11 @@ function getS(){
       localStorage.setItem("eg_ts_v3", ts.toString());
       return true;
     }
-    // LocalStorage check with expiry
+    // LocalStorage check — muddatsiz, bir marta to'lansa doim ochiq
     var paid=localStorage.getItem("eg_paid_v3");
     var savedToken=localStorage.getItem("eg_token_v3");
-    var savedTs=parseInt(localStorage.getItem("eg_ts_v3")||"0");
-    var now=Date.now();
-    var EXPIRY=30*24*60*60*1000; // 30 kun
-    if(paid==="1" && savedToken && savedToken.length>2 && (now-savedTs)<EXPIRY){
+    if(paid==="1" && savedToken && savedToken.length>2){
       return true;
-    }
-    // Clear expired
-    if(paid==="1" && (now-savedTs)>=EXPIRY){
-      localStorage.removeItem("eg_paid_v3");
-      localStorage.removeItem("eg_token_v3");
-      localStorage.removeItem("eg_ts_v3");
     }
     return false;
   }catch(e){return false;}
@@ -1801,7 +1801,31 @@ function checkAdmin(){
   if(_h(p)===AP_HASH){
     _adminAttempts=0;isAdmin=true;document.getElementById("abar").classList.add("on");closeModal("admOvl");toast("Admin!");}else{toast(lang==="ru"?"\u041d\u0435\u0432\u0435\u0440\u043d\u043e":lang==="en"?"Wrong password!":"Xato parol!");}}
 function exitAdmin(){isAdmin=false;document.getElementById("abar").classList.remove("on");}
-function genLink(){var t="token_"+Date.now();var url=window.location.href.split("?")[0]+"?token="+t;prompt(lang==="ru"?"\u0421\u0441\u044b\u043b\u043a\u0430:":lang==="en"?"Link:":"Havola:",url);}
+function showLinkOvl(title,url){
+  document.getElementById("linkOvlTitle").textContent=title;
+  var inp=document.getElementById("linkOvlInput");
+  inp.value=url;
+  openModal("linkOvl");
+  setTimeout(function(){inp.focus();inp.select();},100);
+}
+function copyLinkOvl(){
+  var url=document.getElementById("linkOvlInput").value;
+  var btn=document.getElementById("linkOvlCopyBtn");
+  var done=function(){
+    var t=btn.innerHTML;
+    btn.innerHTML=lang==="ru"?"\u2713 \u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e":lang==="en"?"\u2713 Copied":"\u2713 Nusxalandi";
+    setTimeout(function(){btn.innerHTML=t;},1500);
+  };
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){fallbackCopy(url,done);});}
+    else{fallbackCopy(url,done);}
+  }catch(e){fallbackCopy(url,done);}
+}
+function genLink(){
+  var t="token_"+Date.now();
+  var url=window.location.href.split("?")[0]+"?token="+t;
+  showLinkOvl(lang==="ru"?"EuropaGo \u0441\u0441\u044b\u043b\u043a\u0430":lang==="en"?"EuropaGo link":"EuropaGo havola",url);
+}
 
 // Admin: mijoz tokeni boshqa qurilmaga noto'g'ri bog'lanib qolsa, shu yerdan tozalanadi.
 function resetTokenPrompt(){
@@ -2382,10 +2406,10 @@ heroS:"Birinchi 90 kun uchun amaliy qo'llanma: uy, bank, ro'yxatdan o'tish, ish 
 back:"Bosh", backC:"\u2190 Davlatlar", open:"Ochish", soon:"Tez orada", free:"Bepul", pro:"\uD83D\uDD12 PRO", unlocked:"Ochiq",
 sub:"Birinchi 90 kun qo'llanmasi",
 pwT:"\uD83D\uDD13 Barcha bo'limlarni ochish", pwS:"to'liq qo'llanma \u2014 bir martalik to'lov",
-pwBtn:"Sotib olish \u2014 3 \u20AC", pwSmall:"To'lov: Visa/MC, USDT yoki UzCard/Humo \u00B7 Telegram orqali \u00B7 ~40 000 so'm",cardLbl:"Visa karta (xalqaro o'tkazma)",copyLbl:"Nusxalash",orLbl:"yoki",tgLbl:"\u2709 Telegram orqali to'lash",copied:"Karta raqami nusxalandi!",
+pwBtn:"Sotib olish \u2014 15 \u20AC", pwSmall:"To'lov: Visa/MC, USDT yoki UzCard/Humo \u00B7 Telegram orqali \u00B7 ~205 000 so'm \u00B7 \u2139\ufe0f Ma'lumot xizmati \u2014 hammasini o'zingiz bepul bajarishingiz mumkin",cardLbl:"Visa karta (xalqaro o'tkazma)",copyLbl:"Nusxalash",orLbl:"yoki",tgLbl:"\u2709 Telegram orqali to'lash",copied:"Karta raqami nusxalandi!",
 pwHave:"Havolam bor", note:"", admBtn:"\u2713 EuropaLife ochish (admin)",
 foot:"EuropaLife \u00B7 EuropaGo oilasidan",
-disc:"Asosiy raqamlar rasmiy manbalar asosida tekshirilgan: 2026-yil iyun holatiga. Qoidalar o'zgarishi mumkin \u2014 muhim qarorlardan oldin rasmiy saytlarni ham ko'ring.",
+disc:"\u2139\ufe0f Bu \u2014 ma'lumot xizmati: barcha qadamlarni siz o'zingiz bepul bajarishingiz mumkin, bu yuridik xizmat yoki maslahat emas. Asosiy raqamlar rasmiy manbalar asosida tekshirilgan: 2026-yil iyun holatiga. Qoidalar o'zgarishi mumkin \u2014 muhim qarorlardan oldin rasmiy saytlarni ham ko'ring.",
 cs:{pl:"Meldunek, karta pobytu, PESEL",de:"Anmeldung, bank, sug'urta",hu:"Yashash kartasi, ish ruxsati",cz:"Zaměstnanecká karta, OAMP",fi:"Henkilötunnus, Migri, TES",lt:"MIGRIS, SODRA, deklaratsiya",lv:"PMLP, deklaratsiya, bank",nl:"BSN, zorgverzekering, IND",at:"Meldezettel, KV, e-card",it:"Permesso, codice fiscale",es:"NIE/TIE, empadronamiento",fr:"OFII/ANEF, CPAM, CAF",be:"Commune, mutualité",se:"Personnummer, kollektivavtal",no:"UDI, D-nummer, skattekort",pt:"NIF, AIMA, SNS",gr:"AFM, AMKA, EFKA",ro:"IGI, CNP, REVISAL",sk:"Cudzinecká polícia, ubytovňa",hr:"OIB, MUP, HZZO",si:"EMŠO, upravna enota"},
 cn:{pl:"Polsha",de:"Germaniya",hu:"Vengriya",cz:"Chexiya",fi:"Finlyandiya",lt:"Litva",lv:"Latviya",nl:"Niderlandiya",at:"Avstriya",it:"Italiya",es:"Ispaniya",fr:"Fransiya",be:"Belgiya",se:"Shvetsiya",no:"Norvegiya",pt:"Portugaliya",gr:"Gretsiya",ro:"Ruminiya",sk:"Slovakiya",hr:"Xorvatiya",si:"Sloveniya"},
 st:{s1:"Birinchi 24 soat", s2:"SIM-karta va internet", s3:"Uy ijaralash", s4:"Bank hisobi ochish", s5:"Ro'yxatdan o'tish", s6:"Mehnat huquqlari", s7:"Tibbiy sug'urta", s8:"Yashash kartasini uzaytirish",s9:"Soliq qaytarish",s10:"Uyga pul jo'natish",s11:"Ish izlash va almashtirish",s12:"Haydovchilik guvohnomasi",s13:"Doimiy yashash va fuqarolik",s14:"Oilani olib kelish",s15:"Muammoli vaziyatlar (SOS)",s16:"Til o'rganish"}},
@@ -2394,10 +2418,10 @@ heroS:"\u041F\u0440\u0430\u043A\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439 
 back:"\u0413\u043B\u0430\u0432\u043D\u0430\u044F", backC:"\u2190 \u0421\u0442\u0440\u0430\u043D\u044B", open:"\u041E\u0442\u043A\u0440\u044B\u0442\u044C", soon:"\u0421\u043A\u043E\u0440\u043E", free:"\u0411\u0435\u0441\u043F\u043B.", pro:"\uD83D\uDD12 PRO", unlocked:"\u041E\u0442\u043A\u0440\u044B\u0442\u043E",
 sub:"\u0413\u0438\u0434 \u043D\u0430 \u043F\u0435\u0440\u0432\u044B\u0435 90 \u0434\u043D\u0435\u0439",
 pwT:"\uD83D\uDD13 \u041E\u0442\u043A\u0440\u044B\u0442\u044C \u0432\u0441\u0435 \u0440\u0430\u0437\u0434\u0435\u043B\u044B", pwS:"\u043F\u043E\u043B\u043D\u044B\u0439 \u0433\u0438\u0434 \u2014 \u0440\u0430\u0437\u043E\u0432\u044B\u0439 \u043F\u043B\u0430\u0442\u0451\u0436",
-pwBtn:"\u041A\u0443\u043F\u0438\u0442\u044C \u2014 3 \u20AC", pwSmall:"\u041E\u043F\u043B\u0430\u0442\u0430: Visa/MC, USDT \u0438\u043B\u0438 UzCard/Humo \u00B7 \u0447\u0435\u0440\u0435\u0437 Telegram",cardLbl:"Visa \u043a\u0430\u0440\u0442\u0430 (\u043c\u0435\u0436\u0434\u0443\u043d\u0430\u0440\u043e\u0434\u043d\u044b\u0439 \u043f\u0435\u0440\u0435\u0432\u043e\u0434)",copyLbl:"\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c",orLbl:"\u0438\u043b\u0438",tgLbl:"\u2709 \u041e\u043f\u043b\u0430\u0442\u0438\u0442\u044c \u0447\u0435\u0440\u0435\u0437 Telegram",copied:"\u041d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u044b \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d!",
+pwBtn:"\u041A\u0443\u043F\u0438\u0442\u044C \u2014 15 \u20AC", pwSmall:"\u041E\u043F\u043B\u0430\u0442\u0430: Visa/MC, USDT \u0438\u043B\u0438 UzCard/Humo \u00B7 \u0447\u0435\u0440\u0435\u0437 Telegram \u00B7 \u2139\ufe0f \u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u043E\u043D\u043D\u044B\u0439 \u0441\u0435\u0440\u0432\u0438\u0441 \u2014 \u0432\u0441\u0451 \u043C\u043E\u0436\u043D\u043E \u0441\u0434\u0435\u043B\u0430\u0442\u044C \u0441\u0430\u043C\u043E\u043C\u0443 \u0431\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E",cardLbl:"Visa \u043a\u0430\u0440\u0442\u0430 (\u043c\u0435\u0436\u0434\u0443\u043d\u0430\u0440\u043e\u0434\u043d\u044b\u0439 \u043f\u0435\u0440\u0435\u0432\u043e\u0434)",copyLbl:"\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c",orLbl:"\u0438\u043b\u0438",tgLbl:"\u2709 \u041e\u043f\u043b\u0430\u0442\u0438\u0442\u044c \u0447\u0435\u0440\u0435\u0437 Telegram",copied:"\u041d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u044b \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d!",
 pwHave:"\u0423 \u043C\u0435\u043D\u044F \u0435\u0441\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0430", note:"\u26A0\uFE0F \u0422\u0435\u043A\u0441\u0442 \u0440\u0430\u0437\u0434\u0435\u043B\u043E\u0432 \u043F\u043E\u043A\u0430 \u043D\u0430 \u0443\u0437\u0431\u0435\u043A\u0441\u043A\u043E\u043C \u044F\u0437\u044B\u043A\u0435.", admBtn:"\u2713 \u041E\u0442\u043A\u0440\u044B\u0442\u044C EuropaLife (admin)",
 foot:"EuropaLife \u00B7 \u0438\u0437 \u0441\u0435\u043C\u044C\u0438 EuropaGo",
-disc:"\u041A\u043B\u044E\u0447\u0435\u0432\u044B\u0435 \u0446\u0438\u0444\u0440\u044B \u043F\u0440\u043E\u0432\u0435\u0440\u0435\u043D\u044B \u043F\u043E \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u044B\u043C \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0430\u043C \u043D\u0430 \u0438\u044E\u043D\u044C 2026. \u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u043C\u043E\u0433\u0443\u0442 \u043C\u0435\u043D\u044F\u0442\u044C\u0441\u044F \u2014 \u043F\u0440\u043E\u0432\u0435\u0440\u044F\u0439\u0442\u0435 \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u044B\u0435 \u0441\u0430\u0439\u0442\u044B.",
+disc:"\u2139\ufe0f \u042d\u0442\u043e \u2014 \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0439 \u0441\u0435\u0440\u0432\u0438\u0441: \u0432\u0441\u0435 \u0448\u0430\u0433\u0438 \u0432\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u0441\u0430\u043c\u0438 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e, \u044d\u0442\u043e \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0443\u0441\u043b\u0443\u0433\u0430 \u0438\u043b\u0438 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044f. \u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u0446\u0438\u0444\u0440\u044b \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u044b \u043f\u043e \u043e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u043c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430\u043c \u043d\u0430 \u0438\u044e\u043d\u044c 2026. \u041f\u0440\u0430\u0432\u0438\u043b\u0430 \u043c\u043e\u0433\u0443\u0442 \u043c\u0435\u043d\u044f\u0442\u044c\u0441\u044f \u2014 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0439\u0442\u0435 \u043e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u0430\u0439\u0442\u044b.",
 cs:{pl:"Мелдунек, карта побыту, PESEL",de:"Anmeldung, банк, страховка",hu:"ВНЖ, разрешение на работу",cz:"Рабочая карта, OAMP",fi:"Henkilötunnus, Migri, TES",lt:"MIGRIS, SODRA, декларация",lv:"PMLP, декларация, банк",nl:"BSN, страховка, IND",at:"Meldezettel, KV, e-card",it:"Permesso, codice fiscale",es:"NIE/TIE, регистрация",fr:"OFII/ANEF, CPAM, CAF",be:"Коммуна, mutualité",se:"Personnummer, коллдоговор",no:"UDI, D-nummer, налоговая",pt:"NIF, AIMA, SNS",gr:"AFM, AMKA, EFKA",ro:"IGI, CNP, REVISAL",sk:"Полиция, общежитие",hr:"OIB, MUP, HZZO",si:"EMŠO, управна енота"},
 cn:{pl:"Польша",de:"Германия",hu:"Венгрия",cz:"Чехия",fi:"Финляндия",lt:"Литва",lv:"Латвия",nl:"Нидерланды",at:"Австрия",it:"Италия",es:"Испания",fr:"Франция",be:"Бельгия",se:"Швеция",no:"Норвегия",pt:"Португалия",gr:"Греция",ro:"Румыния",sk:"Словакия",hr:"Хорватия",si:"Словения"},
 st:{s1:"\u041F\u0435\u0440\u0432\u044B\u0435 24 \u0447\u0430\u0441\u0430", s2:"SIM-\u043A\u0430\u0440\u0442\u0430 \u0438 \u0438\u043D\u0442\u0435\u0440\u043D\u0435\u0442", s3:"\u0410\u0440\u0435\u043D\u0434\u0430 \u0436\u0438\u043B\u044C\u044F", s4:"\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0439 \u0441\u0447\u0451\u0442", s5:"\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F", s6:"\u0422\u0440\u0443\u0434\u043E\u0432\u044B\u0435 \u043F\u0440\u0430\u0432\u0430", s7:"\u041C\u0435\u0434\u0441\u0442\u0440\u0430\u0445\u043E\u0432\u043A\u0430", s8:"\u041F\u0440\u043E\u0434\u043B\u0435\u043D\u0438\u0435 \u0412\u041D\u0416",s9:"\u0412\u043e\u0437\u0432\u0440\u0430\u0442 \u043d\u0430\u043b\u043e\u0433\u043e\u0432",s10:"\u041f\u0435\u0440\u0435\u0432\u043e\u0434 \u0434\u0435\u043d\u0435\u0433 \u0434\u043e\u043c\u043e\u0439",s11:"\u041f\u043e\u0438\u0441\u043a \u0438 \u0441\u043c\u0435\u043d\u0430 \u0440\u0430\u0431\u043e\u0442\u044b",s12:"\u0412\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u0441\u043a\u0438\u0435 \u043f\u0440\u0430\u0432\u0430",s13:"\u041f\u041c\u0416 \u0438 \u0433\u0440\u0430\u0436\u0434\u0430\u043d\u0441\u0442\u0432\u043e",s14:"\u0412\u043e\u0441\u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u0435 \u0441\u0435\u043c\u044c\u0438",s15:"\u041f\u0440\u043e\u0431\u043b\u0435\u043c\u043d\u044b\u0435 \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u0438 (SOS)",s16:"\u0418\u0437\u0443\u0447\u0435\u043d\u0438\u0435 \u044f\u0437\u044b\u043a\u0430"}},
@@ -2406,10 +2430,10 @@ heroS:"A practical guide for your first 90 days: housing, banking, registration,
 back:"Home", backC:"\u2190 Countries", open:"Open", soon:"Coming soon", free:"Free", pro:"\uD83D\uDD12 PRO", unlocked:"Unlocked",
 sub:"First 90 days guide",
 pwT:"\uD83D\uDD13 Unlock all sections", pwS:"full guide \u2014 one-time payment",
-pwBtn:"Buy \u2014 3 \u20AC", pwSmall:"Payment: Visa/MC, USDT or UzCard/Humo \u00B7 via Telegram",cardLbl:"Visa card (international transfer)",copyLbl:"Copy",orLbl:"or",tgLbl:"\u2709 Pay via Telegram",copied:"Card number copied!",
+pwBtn:"Buy \u2014 15 \u20AC", pwSmall:"Payment: Visa/MC, USDT or UzCard/Humo \u00B7 via Telegram \u00B7 \u2139\ufe0f Information service \u2014 you can do all of this yourself for free",cardLbl:"Visa card (international transfer)",copyLbl:"Copy",orLbl:"or",tgLbl:"\u2709 Pay via Telegram",copied:"Card number copied!",
 pwHave:"I have a link", note:"\u26A0\uFE0F This section is in Uzbek for now \u2014 translation in progress.", admBtn:"\u2713 Unlock EuropaLife (admin)",
 foot:"EuropaLife \u00B7 part of EuropaGo",
-disc:"Key figures verified against official sources as of June 2026. Rules may change \u2014 check official websites before important decisions.",
+disc:"\u2139\ufe0f This is an information service: you can complete every step yourself for free \u2014 it is not legal service or advice. Key figures verified against official sources as of June 2026. Rules may change \u2014 check official websites before important decisions.",
 cs:{pl:"Meldunek, karta pobytu, PESEL",de:"Anmeldung, bank, insurance",hu:"Residence card, work permit",cz:"Employee card, OAMP",fi:"Henkilötunnus, Migri, TES",lt:"MIGRIS, SODRA, declaration",lv:"PMLP, declaration, bank",nl:"BSN, health insurance, IND",at:"Meldezettel, KV, e-card",it:"Permesso, codice fiscale",es:"NIE/TIE, empadronamiento",fr:"OFII/ANEF, CPAM, CAF",be:"Commune, mutualité",se:"Personnummer, collective agreement",no:"UDI, D-number, tax card",pt:"NIF, AIMA, SNS",gr:"AFM, AMKA, EFKA",ro:"IGI, CNP, REVISAL",sk:"Foreign police, dormitory",hr:"OIB, MUP, HZZO",si:"EMŠO, admin unit"},
 cn:{pl:"Poland",de:"Germany",hu:"Hungary",cz:"Czechia",fi:"Finland",lt:"Lithuania",lv:"Latvia",nl:"Netherlands",at:"Austria",it:"Italy",es:"Spain",fr:"France",be:"Belgium",se:"Sweden",no:"Norway",pt:"Portugal",gr:"Greece",ro:"Romania",sk:"Slovakia",hr:"Croatia",si:"Slovenia"},
 st:{s1:"First 24 hours", s2:"SIM card & internet", s3:"Renting a home", s4:"Opening a bank account", s5:"Registration", s6:"Labor rights", s7:"Health insurance", s8:"Residence permit renewal",s9:"Tax refund",s10:"Sending money home",s11:"Finding & changing jobs",s12:"Driving license",s13:"Permanent residence & citizenship",s14:"Family reunification",s15:"Emergencies (SOS)",s16:"Learning the language"}}
@@ -2826,7 +2850,7 @@ s8: `<p><b>Zaměstnanecká karta (ishchi kartasi)</b> odatda shartnoma muddatiga
 <li>Ish beruvchini o'zgartirish — OAMP'dan <b>oldindan ruxsat</b> olish kerak (60 kun ichida yangi ish topish sharti bilan).</li>
 <li>5 yil uzluksiz yashagandan keyin — doimiy yashash (trvalý pobyt) so'rash mumkin.</li>
 </ul><p style="background:#F4F1E8;border-left:3px solid #F2C14E;padding:8px 12px;border-radius:6px;font-size:.82rem;">\uD83D\uDD17 <b>Rasmiy manba (tekshirish uchun):</b> <a href="https://frs.gov.cz" target="_blank" rel="noopener" style="color:#1A2F66;font-weight:700;text-decoration:underline;">frs.gov.cz</a></p>`,
-s9: `<div style='background:#E7F5EE;border-radius:10px;padding:12px;margin-bottom:10px;'><p style='margin:0 0 6px;'><b>💵 Qancha qaytadi?</b><br>Shaxsiy chegirma yiliga ~30 840 Kč. To'liq yil ishlamaganlarga ortiqcha ushlangani qaytadi — ko'pincha bir necha ming kron.</p><p style='margin:0 0 6px;'><b>✅ Eng oson yo'l:</b><br>Bitta ish beruvchida ishlagan bo'lsangiz — undan <b>ročné zúčtování</b> (yillik hisob) so'rang, hammasini o'zi qiladi, qaytim oylik bilan keladi.</p><p style='margin:0;'><b>📱 3 qadamda:</b><br>1) Ish beruvchidan daromad ma'lumotnomasi oling.<br>2) Fevral o'rtasigacha ročné zúčtování arizasini bering (yoki Moje daně portalida o'zingiz).<br>3) Qaytim hisobingizga keladi.</p></div><p><b>Daňové přiznání</b> — yillik deklaratsiya: qog'ozda <b>1-aprelgacha</b>, elektron <b>2-maygacha</b>.</p>
+s9: `<div style='background:#E7F5EE;border-radius:10px;padding:12px;margin-bottom:10px;'><p style='margin:0 0 6px;'><b>💵 Qancha qaytadi?</b><br>Shaxsiy chegirma yiliga ~30 840 Kč. To'liq yil ishlamaganlarga ortiqcha ushlangani qaytadi — ko'pincha bir necha ming kron.</p><p style='margin:0 0 6px;'><b>✅ Eng oson yo'l:</b><br>Bitta ish beruvchida ishlagan bo'lsangiz — undan <b>ročné zúčtování</b> (yillik hisob) so'rang, hammasini o'zi qiladi, qaytim oylik bilan keladi.</p><p style='margin:0;'><b>📱 3 qadamda:</b><br>1) Ish beruvchidan daromad ma'lumotnomasi oling.<br>2) Fevral o'rtasigacha ročné zúčtování arizasini bering (yoki Moje daně portalida o'zingiz).<br>3) Qaytim hisobingizga keladi.</p></div><p><b>Daňové přiznání</b> — yillik deklaratsiya: qog'ozda <b>1-aprelgacha</b>, elektron <b>4-maygacha</b> (2026-yildan muddat 2-maydan 4-mayga ko'chirilgan).</p>
 <ul>
 <li>Agar faqat bitta ish beruvchida ishlagan bo'lsangiz, undan <b>"roční zúčtování"</b> (yillik hisob-kitob) so'rashingiz mumkin — fevral o'rtasigacha ariza bering, deklaratsiya o'zi shart bo'lmaydi va qaytim oylik bilan keladi.</li>
 <li>Qaytim manbalari: shaxsiy chegirma (sleva na poplatníka ~30,840 Kč/yil — to'liq yil ishlamaganlarga ko'pincha qaytim chiqadi), bolalar uchun chegirma.</li>
@@ -2907,7 +2931,7 @@ s8: `<p>Litvada ishchilar odatda <b>vaqtinchalik yashash ruxsati (TRP)</b> bilan
 <li>Ish beruvchi o'zgarsa — yangi ruxsat/xabarnoma talab qilinishi mumkin, migracija.lt da tekshiring.</li>
 <li>5 yildan keyin — doimiy yashash ruxsati so'rash mumkin (til imtihoni bilan).</li>
 </ul><p style="background:#F4F1E8;border-left:3px solid #F2C14E;padding:8px 12px;border-radius:6px;font-size:.82rem;">\uD83D\uDD17 <b>Rasmiy manba (tekshirish uchun):</b> <a href="https://www.migracija.lt" target="_blank" rel="noopener" style="color:#1A2F66;font-weight:700;text-decoration:underline;">www.migracija.lt</a></p>`,
-s9: `<div style='background:#E7F5EE;border-radius:10px;padding:12px;margin-bottom:10px;'><p style='margin:0 0 6px;'><b>💵 Qancha qaytadi?</b><br>Soliqsiz minimum (NPD) to'liq ishlatilmagan bo'lsa qaytadi. <b>To'liq yil ishlamaganlar deyarli har doim qaytim oladi.</b></p><p style='margin:0 0 6px;'><b>✅ Kimga?</b><br>Rasmiy ishlagan deyarli hammaga ozmi-ko'pmi.</p><p style='margin:0;'><b>📱 3 qadamda:</b><br>1) Smart-ID bilan VMI EDS tizimiga kiring.<br>2) Deklaratsiya tayyor turadi — tekshiring.<br>3) Tasdiqlang — pul iyulgacha keladi. (10 daqiqalik ish)</p></div><p>Yillik deklaratsiya (GPM) — VMI'ning <b>EDS</b> tizimida, <b>1-maygacha</b> o'tgan yil uchun.</p>
+s9: `<div style='background:#E7F5EE;border-radius:10px;padding:12px;margin-bottom:10px;'><p style='margin:0 0 6px;'><b>💵 Qancha qaytadi?</b><br>Soliqsiz minimum (NPD) to'liq ishlatilmagan bo'lsa qaytadi. <b>To'liq yil ishlamaganlar deyarli har doim qaytim oladi.</b></p><p style='margin:0 0 6px;'><b>✅ Kimga?</b><br>Rasmiy ishlagan deyarli hammaga ozmi-ko'pmi.</p><p style='margin:0;'><b>📱 3 qadamda:</b><br>1) Smart-ID bilan VMI EDS tizimiga kiring.<br>2) Deklaratsiya tayyor turadi — tekshiring.<br>3) Tasdiqlang — pul iyulgacha keladi. (10 daqiqalik ish)</p></div><p>Yillik deklaratsiya (GPM) — VMI'ning <b>EDS</b> tizimida, <b>4-maygacha</b> o'tgan yil uchun (2026-yilda bayram kunlari sababli 1-maydan 4-mayga ko'chirildi).</p>
 <ul>
 <li>Deklaratsiya AVTOMATIK to'ldirilgan bo'ladi — kirib tekshirasiz (Smart-ID bilan).</li>
 <li>Qaytim manbalari: NPD (soliqqa tortilmaydigan minimum) yil davomida to'liq qo'llanmagan bo'lsa — ayniqsa yarim yil ishlaganlar uchun qaytim odatiy.</li>
@@ -4216,27 +4240,29 @@ si_X:{s1: `<p><b>Ljubljana:</b> bus/shuttle from the airport (Brnik) ~€4–10 
 
 
 
-/* ----- EuropaLife alohida token tizimi (?lifetoken=...) ----- */
+/* ----- EuropaLife alohida token tizimi (?lifetoken=...) — EuropaGo kabi qurilmaga bog'langan, kirish umrbod ----- */
 function getLifeS(){
   try{
-    var p=new URLSearchParams(window.location.search);
-    var t=p.get("lifetoken");
-    if(t&&t.length>=8&&/^[a-zA-Z0-9_-]+$/.test(t)){
-      localStorage.setItem("el_paid_v1","1");
-      localStorage.setItem("el_token_v1",_h(t));
-      localStorage.setItem("el_ts_v1",Date.now().toString());
-      return true;
-    }
     var paid=localStorage.getItem("el_paid_v1");
     var st=localStorage.getItem("el_token_v1");
-    var ts=parseInt(localStorage.getItem("el_ts_v1")||"0");
-    var EXP=30*24*60*60*1000;
-    if(paid==="1"&&st&&st.length>2&&(Date.now()-ts)<EXP) return true;
-    if(paid==="1"&&(Date.now()-ts)>=EXP){
-      localStorage.removeItem("el_paid_v1");localStorage.removeItem("el_token_v1");localStorage.removeItem("el_ts_v1");
-    }
+    if(paid==="1"&&st&&st.length>2) return true;
     return false;
   }catch(e){return false;}
+}
+function setLifeS(t){
+  try{
+    localStorage.setItem("el_paid_v1","1");
+    localStorage.setItem("el_token_v1",_h(t||("manual_"+Date.now())));
+    localStorage.setItem("el_ts_v1",Date.now().toString());
+  }catch(e){}
+}
+// Tokenni serverda faollashtirish: birinchi ochgan qurilmaga "bog'lanadi" (EuropaGo bilan bir xil mexanizm)
+function activateLifeToken(token){
+  var dev=getDeviceId();
+  return fetch("/api/activate-life?token="+encodeURIComponent(token)+"&device="+encodeURIComponent(dev))
+    .then(function(r){return r.json();})
+    .then(function(d){return !!(d&&d.ok);})
+    .catch(function(){return false;});
 }
 function elHasAccess(){ return getLifeS(); }
 function activateLife(){
@@ -4245,23 +4271,46 @@ function activateLife(){
     localStorage.setItem("el_token_v1","admin_grant");
     localStorage.setItem("el_ts_v1",Date.now().toString());
   }catch(e){}
-  try{gtag('event','purchase',{transaction_id:'el'+Date.now(),currency:'EUR',value:3,payment_type:'telegram',items:[{item_name:'EuropaLife access'}]});}catch(e){}
+  try{gtag('event','purchase',{transaction_id:'el'+Date.now(),currency:'EUR',value:15,payment_type:'telegram',items:[{item_name:'EuropaLife access'}]});}catch(e){}
   toast(elLang==="ru"?"EuropaLife \u043E\u0442\u043A\u0440\u044B\u0442!":elLang==="en"?"EuropaLife unlocked!":"EuropaLife ochildi!");
   if(elCurCountry) elOpenCountry(elCurCountry); else elGoHome();
 }
 function genLifeLink(){
   var t="life_"+Date.now();
   var url=window.location.href.split("?")[0]+"?lifetoken="+t;
-  prompt(lang==="ru"?"EuropaLife \u0441\u0441\u044B\u043B\u043A\u0430:":lang==="en"?"EuropaLife link:":"EuropaLife havola:",url);
+  showLinkOvl(lang==="ru"?"EuropaLife \u0441\u0441\u044B\u043B\u043A\u0430":lang==="en"?"EuropaLife link":"EuropaLife havola",url);
+}
+// Admin: mijoz EL tokeni boshqa qurilmaga noto'g'ri bog'lanib qolsa, shu yerdan tozalanadi.
+function resetLifeTokenPrompt(){
+  var full=prompt(lang==="ru"?"Полная ссылка или lifetoken клиента:":lang==="en"?"Client's full link or lifetoken:":"Mijozning to'liq havolasi yoki lifetoken'i:");
+  if(!full) return;
+  var token=full;
+  try{
+    if(full.indexOf("lifetoken=")>-1){
+      var qp=new URLSearchParams(full.split("?")[1]||full);
+      token=qp.get("lifetoken")||full;
+    }
+  }catch(e){}
+  token=token.trim();
+  if(!token||token.length<5){toast(lang==="uz"?"Noto'g'ri token":"Invalid token");return;}
+  var pw=prompt(lang==="uz"?"Admin parolni tasdiqlang:":lang==="ru"?"Подтвердите пароль:":"Confirm admin password:");
+  if(!pw){return;}
+  fetch("/api/reset-life-token?token="+encodeURIComponent(token)+"&pw="+encodeURIComponent(pw))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d&&d.ok){toast(lang==="uz"?"EL token tozalandi \u2014 mijoz qayta ochishi mumkin":lang==="ru"?"Токен сброшен":"Token cleared");}
+      else{toast(lang==="uz"?"Xato: "+(d&&d.reason||"noma'lum"):"Error: "+(d&&d.reason||"unknown"));}
+    })
+    .catch(function(){toast(lang==="uz"?"Server bilan bog'lanib bo'lmadi":"Could not reach server");});
 }
 function elPay(){
   var u=EL_UI[elLang];
   var ctry=elCurCountry?(" ("+u.cn[elCurCountry]+")"):"";
   var msg;
-  if(elLang==="ru") msg="\u0417\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u0439\u0442\u0435! \u0425\u043e\u0447\u0443 \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u044c \u26A1 EuropaLife"+ctry+" \u2014 3 \u20AC.";
-  else if(elLang==="en") msg="Hello! I want to pay for \u26A1 EuropaLife"+ctry+" \u2014 3 \u20AC.";
-  else msg="Assalomu alaykum! \u26A1 EuropaLife to'lovi"+ctry+" \u2014 3 \u20AC.";
-  try{gtag('event','begin_checkout',{currency:'EUR',value:3,payment_type:'telegram',items:[{item_name:'EuropaLife access'}]});}catch(e){}
+  if(elLang==="ru") msg="\u0417\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u0439\u0442\u0435! \u0425\u043e\u0447\u0443 \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u044c \u26A1 EuropaLife"+ctry+" \u2014 15 \u20AC.";
+  else if(elLang==="en") msg="Hello! I want to pay for \u26A1 EuropaLife"+ctry+" \u2014 15 \u20AC.";
+  else msg="Assalomu alaykum! \u26A1 EuropaLife to'lovi"+ctry+" \u2014 15 \u20AC.";
+  try{gtag('event','begin_checkout',{currency:'EUR',value:15,payment_type:'telegram',items:[{item_name:'EuropaLife access'}]});}catch(e){}
   window.open("https://t.me/Evropagoo?text="+encodeURIComponent(msg),"_blank");
 }
 function elCopyCard(){
@@ -4336,11 +4385,11 @@ function elOpenCountry(code){
   if(!open){
     html+='<div class="el-paywall" id="elPaywall"><h4>'+u.pwT+'</h4>'
       +'<p style="font-size:.85rem;opacity:.85;margin:4px 0;">'+u.cn[code]+' \u2014 '+u.pwS+'</p>'
-      +'<div class="el-price"><span style="text-decoration:line-through;opacity:.6;font-size:.9rem;margin-right:8px;">6 \u20AC</span>3 \u20AC</div>'
+      +'<div class="el-price"><span style="text-decoration:line-through;opacity:.6;font-size:.9rem;margin-right:8px;">30 \u20AC</span>15 \u20AC</div>'
       +'<div style="background:rgba(255,255,255,.10);border:1px dashed rgba(242,193,78,.6);border-radius:10px;padding:12px;margin:10px 0;text-align:left;">'
       +'<div style="font-size:.72rem;opacity:.8;margin-bottom:4px;">'+u.cardLbl+'</div>'
       +'<div style="display:flex;align-items:center;gap:8px;">'
-      +'<span id="elCardNum" style="font-family:monospace;font-size:1.02rem;font-weight:700;letter-spacing:1px;">4916 9909 0434 1234</span>'
+      +'<span id="elCardNum" style="font-family:monospace;font-size:1.02rem;font-weight:700;letter-spacing:1px;">4067 0700 0486 7557</span>'
       +'<button onclick="elCopyCard()" style="background:rgba(242,193,78,.9);color:#101F4A;border:none;border-radius:6px;padding:5px 10px;font-size:.72rem;font-weight:700;cursor:pointer;">'+u.copyLbl+'</button>'
       +'</div></div>'
       +'<div style="font-size:.75rem;opacity:.6;margin:6px 0;">\u2014 '+u.orLbl+' \u2014</div>'
@@ -4369,9 +4418,24 @@ function elLogoTap(){
   elLcT=setTimeout(function(){elLc=0;},2500);
   if(elLc>=5){elLc=0;openModal("admOvl");}
 }
-/* URL'da lifetoken bo'lsa darhol saqlash */
-try{ getLifeS(); }catch(e){}
-/* boshlang'ich render */
+/* URL'da lifetoken bo'lsa — EuropaGo bilan bir xil server-tekshiruvli qurilma-bog'lash */
+try{
+  var _elt=(typeof _tp!=="undefined"?_tp:new URLSearchParams(window.location.search)).get("lifetoken");
+  if(_elt&&_elt.length>=8){
+    goScreen("sc-life");
+    toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
+    activateLifeToken(_elt).then(function(ok){
+      if(ok){
+        setLifeS(_elt);
+        toast(lang==="uz"?"EuropaLife kirish ochildi!":lang==="ru"?"EuropaLife \u0434\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!":"EuropaLife access opened!");
+        if(elCurCountry) elOpenCountry(elCurCountry); else elRenderHome();
+      } else {
+        var lockedMsg=lang==="ru"?"\u042d\u0442\u0430 \u0441\u0441\u044b\u043b\u043a\u0430 \u0443\u0436\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0430 \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u043c \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0435.":lang==="en"?"This link was already used on another device.":"Bu havola boshqa qurilmada allaqachon ishlatilgan.";
+        toast(lockedMsg);
+      }
+    });
+  }
+}catch(e){}
 try{ elApplyChrome(); elRenderHome(); }catch(e){}
 </script>
 
