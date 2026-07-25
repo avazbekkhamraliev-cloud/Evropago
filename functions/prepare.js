@@ -26,7 +26,7 @@ export async function onRequestPost({ request, env }) {
     return jsonResponse({ error: -3, error_note: 'Action not found' });
   }
 
-  const EXPECTED_AMOUNT = 14900;
+  const EXPECTED_AMOUNT = 99000;
   if (Math.round(parseFloat(amount)) !== EXPECTED_AMOUNT) {
     return jsonResponse({ error: -2, error_note: 'Incorrect parameter amount' });
   }
