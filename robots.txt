@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://evropago.uz/sitemap.xml
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
