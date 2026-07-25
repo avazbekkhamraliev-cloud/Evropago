@@ -56,12 +56,14 @@ export async function onRequestPost({ request, env }) {
   record.click_trans_id = click_trans_id;
   await env.CLICK_KV.put('order:' + merchant_trans_id, JSON.stringify(record), {
     expirationTtl: 31536000
-  });await fetch("https://api.telegram.org/bot8836337328:AAFzJVsV74GEslIfy1Ii5mEqmGJKSRayZw8/sendMessage", {
+  });
+
+  await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
       chat_id: "7180211852",
-      text: "✅ Yangi to'lov!\nSumma: " + (amount/100) + " so'm\nOrder: " + merchant_trans_id
+      text: "✅ Yangi to'lov!\nSumma: " + amount + " so'm\nOrder: " + merchant_trans_id
     })
   });
 
@@ -72,4 +74,4 @@ export async function onRequestPost({ request, env }) {
     merchant_trans_id,
     merchant_confirm_id: record.prepare_id
   });
-}
+    }
