@@ -672,6 +672,166 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
     <div class="fw">
       <div class="sech"><h2 id="firmH">Ishonchli saytlar</h2><p id="firmP">To'g'ridan-to'g'ri</p></div>
       <div id="firmNote" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:var(--mt);"></div>
+
+      <style>
+        .fg-uz,.fg-ru,.fg-en{display:none;}
+        html[lang="uz"] .fg-uz{display:block;}
+        html[lang="ru"] .fg-ru{display:block;}
+        html[lang="en"] .fg-en{display:block;}
+        html:not([lang="ru"]):not([lang="en"]) .fg-uz{display:block;}
+        .fg-title-uz,.fg-title-ru,.fg-title-en{display:none;}
+        html[lang="uz"] .fg-title-uz{display:inline;}
+        html[lang="ru"] .fg-title-ru{display:inline;}
+        html[lang="en"] .fg-title-en{display:inline;}
+        html:not([lang="ru"]):not([lang="en"]) .fg-title-uz{display:inline;}
+      </style>
+      <div style="background:var(--c);border:1.5px solid #ef4444;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+        <div onclick="toggleFraudGuard()" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:rgba(239,68,68,0.10);">
+          <div style="font-size:14px;font-weight:800;color:#ef4444;">
+            &#128737;
+            <span class="fg-title-uz">Firibgarlardan ehtiyot bo'ling — to'liq qo'llanma</span>
+            <span class="fg-title-ru">Осторожно, мошенники — подробное руководство</span>
+            <span class="fg-title-en">Beware of scammers — full guide</span>
+          </div>
+          <div id="fraudGuardArr" style="font-size:12px;color:var(--mt);transition:transform .2s;">&#9660;</div>
+        </div>
+        <div id="fraudGuardB" style="display:none;padding:4px 16px 18px;font-size:13.5px;line-height:1.75;color:var(--mt);">
+
+          <div class="fg-uz">
+          <p style="margin:10px 0 4px;color:var(--tx);font-weight:700;">1&#65039;&#8419; Oltin qoida</p>
+          <p style="margin:0 0 10px;">Haqiqiy ish beruvchi <b style="color:var(--tx)">hech qachon</b> ariza, viza, ro'yxatdan o'tish yoki "hujjatlarni tezlashtirish" uchun sizdan oldindan pul so'ramaydi. Agar kimdir pul so'rasa — bu 99% firibgar, muloqotni shu yerda to'xtating.</p>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">2&#65039;&#8419; Ish saytiga qoldirgan ma'lumotingiz bilan bog'liq xavf</p>
+          <p style="margin:0 0 10px;">Ish saytlarida (LinkedIn, Indeed, mahalliy job-board va h.k.) CV yoki telefon raqamingizni qoldirganingizda, ba'zan bu ma'lumotlar sizga <b style="color:var(--tx)">bevosita aloqaga chiqadigan noma'lum "kompaniyalar"</b> qo'liga o'tib qolishi mumkin. Ular o'zini yirik yoki tanish firma nomidan tanishtirishi, hatto haqiqiy kompaniya logotipi/nomidan foydalanishi mumkin — bu ularning haqiqiyligini kafolatlamaydi.</p>
+          <p style="margin:0 0 6px;"><b style="color:var(--tx)">Qanday farqlash kerak:</b></p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li>Taklif <b>sizning arizangizdan keyin</b> emas, birinchi bo'lib, kutilmaganda kelganmi? — ehtiyot bo'ling.</li>
+            <li>Kompaniya nomini qidiruv tizimida qidiring: rasmiy veb-sayti, yuridik manzili, litsenziyasi bormi?</li>
+            <li>Ish beruvchi bilan yozishmani <b>faqat kompaniyaning rasmiy domenidagi email</b> orqali olib boring (masalan @company.com), shaxsiy Gmail/Telegram orqali "HR menejer" deb tanishtirilgan odamga ishonmang.</li>
+            <li>Video-qo'ng'iroqda suhbat so'rang — faqat matnda yozishishdan bosh tortsa, bu shubhali belgi.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">3&#65039;&#8419; Ish beruvchidan so'rash va tekshirish kerak bo'lgan hujjatlar</p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li><b>Rasmiy ish taklifnomasi (Job Offer Letter)</b> — kompaniya blankida, imzo va muhr bilan, aniq lavozim, maosh va ish joyi manzili ko'rsatilgan bo'lishi kerak.</li>
+            <li><b>Mehnat shartnomasi (Employment Contract)</b> loyihasi — maosh, ish vaqti, yashash sharoiti (agar ta'minlansa) aniq yozilgan bo'lishi kerak.</li>
+            <li><b>Kompaniyaning ro'yxatdan o'tganlik/litsenziya raqami</b> — shu davlatning rasmiy tijorat reestrida (masalan Germaniyada Handelsregister) tekshiring.</li>
+            <li><b>Ishga taklif qiluvchi shaxsning ismi va lavozimi</b> — LinkedIn profilida shu kompaniyada ishlashi ko'rsatilganmi, tekshiring.</li>
+            <li>Agar vositachi/agentlik orqali kelsa — <b>uning shu davlatda mehnat vositachiligi litsenziyasi bor-yo'qligini</b> so'rang.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">4&#65039;&#8419; Kompaniyani qanday tekshirish mumkin</p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li>Kompaniya nomi + davlat nomi bilan qidiring, rasmiy veb-saytini toping (ijtimoiy tarmoq sahifasi emas, alohida domen bo'lishi kerak).</li>
+            <li>Google Maps'da ofis manzilini qidiring — mavjud va real joymi?</li>
+            <li>Google/Trustpilot'da kompaniya sharhlarini o'qing.</li>
+            <li>Shu davlatning rasmiy biznes reestri saytida (masalan Germaniya — Handelsregister, Polsha — KRS, Chexiya — ARES) kompaniya nomini qidiring.</li>
+            <li>Elchixona yoki mehnat migratsiyasi agentligi orqali kompaniya haqida so'rov yuboring, agar imkon bo'lsa.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">5&#65039;&#8419; Qizil bayroqlar (darhol shubhalaning)</p>
+          <ul style="margin:0 0 4px;padding-left:20px;">
+            <li>Oldindan pul, "viza kafolat puli" yoki "ro'yxatdan o'tish to'lovi" so'rashadi.</li>
+            <li>Shaxsiy hujjatlaringiz nusxasini (pasport, diplom) tekshirilmagan shaxsiy raqamga/hisobga yuborishni talab qiladi.</li>
+            <li>"100% viza kafolati" yoki "hech qanday hujjatsiz ish" kabi haqiqatga to'g'ri kelmaydigan va'dalar beradi.</li>
+            <li>Faqat Telegram/WhatsApp orqali muloqot qiladi, rasmiy email yoki telefon raqami yo'q.</li>
+            <li>Shoshiltiradi: "bugun to'lamasangiz, o'rin ketadi" kabi bosim o'tkazadi.</li>
+          </ul>
+
+          <p style="margin:14px 0 0;background:rgba(239,68,68,0.08);border-radius:8px;padding:10px 12px;">Shubhangiz bo'lsa — pul o'tkazishdan oldin bizga yozing, birga tekshirib ko'ramiz. EuropaGo hech qachon sizdan uchinchi shaxs nomidan pul so'ramaydi.</p>
+          </div>
+
+          <div class="fg-ru">
+          <p style="margin:10px 0 4px;color:var(--tx);font-weight:700;">1&#65039;&#8419; Золотое правило</p>
+          <p style="margin:0 0 10px;">Настоящий работодатель <b style="color:var(--tx)">никогда</b> не просит деньги заранее — ни за анкету, ни за визу, ни за "ускорение оформления документов". Если кто-то просит деньги — это на 99% мошенник, прекращайте общение.</p>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">2&#65039;&#8419; Риск, связанный с данными на сайтах вакансий</p>
+          <p style="margin:0 0 10px;">Оставляя резюме или номер телефона на сайтах вакансий (LinkedIn, Indeed и т.д.), эти данные иногда попадают к <b style="color:var(--tx)">неизвестным "компаниям"</b>, которые сами связываются с вами. Они могут представляться известной фирмой и даже использовать её логотип — это не гарантирует их подлинность.</p>
+          <p style="margin:0 0 6px;"><b style="color:var(--tx)">Как отличить:</b></p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li>Предложение пришло <b>неожиданно, первым</b>, а не после вашей заявки? — будьте осторожны.</li>
+            <li>Найдите компанию в поиске: есть ли официальный сайт, юридический адрес, лицензия?</li>
+            <li>Переписку ведите <b>только через официальный email компании</b> (например @company.com), не доверяйте "HR-менеджеру" с личного Gmail или Telegram.</li>
+            <li>Попросите видеозвонок — если отказываются от разговора и общаются только текстом, это подозрительно.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">3&#65039;&#8419; Какие документы запросить и проверить у работодателя</p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li><b>Официальное предложение о работе (Job Offer Letter)</b> — на бланке компании, с подписью и печатью, с указанием должности, зарплаты и адреса работы.</li>
+            <li>Проект <b>трудового договора</b> — с чётко прописанной зарплатой, графиком, условиями проживания (если предоставляются).</li>
+            <li><b>Регистрационный/лицензионный номер компании</b> — проверьте в официальном торговом реестре страны (например, в Германии — Handelsregister).</li>
+            <li><b>Имя и должность представителя</b> — проверьте, указан ли он в LinkedIn как сотрудник этой компании.</li>
+            <li>Если работаете через посредника/агентство — спросите про <b>наличие лицензии на трудовое посредничество</b> в этой стране.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">4&#65039;&#8419; Как проверить компанию</p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li>Ищите название компании вместе со страной, найдите официальный сайт (не страницу в соцсетях, а отдельный домен).</li>
+            <li>Проверьте адрес офиса на Google Maps — существует ли он на самом деле.</li>
+            <li>Почитайте отзывы о компании в Google/Trustpilot.</li>
+            <li>Проверьте компанию в официальном бизнес-реестре страны (Германия — Handelsregister, Польша — KRS, Чехия — ARES).</li>
+            <li>По возможности запросите информацию о компании через посольство или агентство трудовой миграции.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">5&#65039;&#8419; Красные флаги (сразу насторожитесь)</p>
+          <ul style="margin:0 0 4px;padding-left:20px;">
+            <li>Просят деньги заранее — "гарантийный взнос за визу" или "плата за регистрацию".</li>
+            <li>Требуют отправить копии личных документов (паспорт, диплом) на непроверенный личный номер/счёт.</li>
+            <li>Обещают нереальное: "100% гарантия визы" или "работа совсем без документов".</li>
+            <li>Общаются только через Telegram/WhatsApp, нет официального email или телефона.</li>
+            <li>Торопят: "если не оплатите сегодня, место уйдёт" — давление на решение.</li>
+          </ul>
+
+          <p style="margin:14px 0 0;background:rgba(239,68,68,0.08);border-radius:8px;padding:10px 12px;">Если сомневаетесь — напишите нам перед тем, как переводить деньги, проверим вместе. EuropaGo никогда не просит деньги от имени третьих лиц.</p>
+          </div>
+
+          <div class="fg-en">
+          <p style="margin:10px 0 4px;color:var(--tx);font-weight:700;">1&#65039;&#8419; Golden rule</p>
+          <p style="margin:0 0 10px;">A real employer <b style="color:var(--tx)">never</b> asks for money upfront — not for an application, a visa, or "speeding up paperwork". If anyone asks for money, it's 99% a scam — stop the conversation.</p>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">2&#65039;&#8419; The risk from data you leave on job sites</p>
+          <p style="margin:0 0 10px;">When you leave your CV or phone number on job sites (LinkedIn, Indeed, etc.), that data sometimes ends up with <b style="color:var(--tx)">unknown "companies"</b> that contact you directly. They may present themselves as a known firm, even using its logo — that doesn't guarantee they're genuine.</p>
+          <p style="margin:0 0 6px;"><b style="color:var(--tx)">How to tell the difference:</b></p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li>Did the offer arrive <b>unexpectedly, first</b>, rather than after your application? — be cautious.</li>
+            <li>Search the company name: does it have an official website, legal address, licence?</li>
+            <li>Only communicate <b>through the company's official domain email</b> (e.g. @company.com); don't trust an "HR manager" writing from a personal Gmail or Telegram.</li>
+            <li>Ask for a video call — refusing to talk and only texting is a red flag.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">3&#65039;&#8419; Documents to request and verify from an employer</p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li>An <b>official Job Offer Letter</b> — on company letterhead, signed and stamped, with a clear job title, salary and work address.</li>
+            <li>A draft <b>employment contract</b> — with salary, working hours, and housing terms (if provided) clearly stated.</li>
+            <li>The <b>company's registration/licence number</b> — check it in the country's official trade register (e.g. Handelsregister in Germany).</li>
+            <li>The <b>name and title of the person offering the job</b> — check if they're listed as an employee of that company on LinkedIn.</li>
+            <li>If working through an intermediary/agency — ask whether it holds a <b>labour intermediary licence</b> in that country.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">4&#65039;&#8419; How to verify a company</p>
+          <ul style="margin:0 0 10px;padding-left:20px;">
+            <li>Search the company name together with the country, find its official website (a separate domain, not just a social media page).</li>
+            <li>Check the office address on Google Maps — is it a real, existing location?</li>
+            <li>Read company reviews on Google/Trustpilot.</li>
+            <li>Look the company up in the country's official business register (Germany — Handelsregister, Poland — KRS, Czechia — ARES).</li>
+            <li>If possible, ask the embassy or labour migration agency about the company.</li>
+          </ul>
+
+          <p style="margin:14px 0 4px;color:var(--tx);font-weight:700;">5&#65039;&#8419; Red flags (be suspicious immediately)</p>
+          <ul style="margin:0 0 4px;padding-left:20px;">
+            <li>Asking for money upfront — a "visa guarantee fee" or "registration fee".</li>
+            <li>Demanding copies of personal documents (passport, diploma) sent to an unverified personal number/account.</li>
+            <li>Promising things that aren't realistic: "100% visa guarantee" or "work with no documents at all".</li>
+            <li>Only communicating via Telegram/WhatsApp, no official email or phone number.</li>
+            <li>Rushing you: "if you don't pay today, the spot is gone" — pressure tactics.</li>
+          </ul>
+
+          <p style="margin:14px 0 0;background:rgba(239,68,68,0.08);border-radius:8px;padding:10px 12px;">If in doubt — message us before transferring any money, and we'll check together. EuropaGo never asks for money on behalf of third parties.</p>
+          </div>
+
+        </div>
+      </div>
+
       <div style="background:var(--c);border:1px solid var(--bd);border-radius:12px;margin-bottom:16px;overflow:hidden;">
         <div onclick="toggleJobSteps()" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
           <div id="jobStepsH" style="font-size:14px;font-weight:700;">📌 Saytdan natija chiqishi uchun 5 qadam</div>
@@ -1313,6 +1473,7 @@ function T(){
 
 function setEl(id,html){var e=document.getElementById(id);if(e)e.innerHTML=html;}
 function toggleJobSteps(){var b=document.getElementById("jobStepsB"),a=document.getElementById("jobStepsArr");if(!b)return;var open=b.style.display!=="none";b.style.display=open?"none":"block";if(a)a.style.transform=open?"rotate(0deg)":"rotate(180deg)";}
+function toggleFraudGuard(){var b=document.getElementById("fraudGuardB"),a=document.getElementById("fraudGuardArr");if(!b)return;var open=b.style.display!=="none";b.style.display=open?"none":"block";if(a)a.style.transform=open?"rotate(0deg)":"rotate(180deg)";}
 function setTxt(id,txt){var e=document.getElementById(id);if(e)e.textContent=txt;}
 
 var news2026OpenLbl="📢 2026 yangiliklari";
@@ -1823,7 +1984,7 @@ function selPm(id){
 // === CLICK TO'LOV ===
 var CLICK_SERVICE_ID="104256", CLICK_MERCHANT_ID="61650";
 function payClick(){
-  var orderId=localStorage.getItem("eg_order")||("eg"+Date.now()+Math.floor(Math.random()*1000));
+  var orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
   try{localStorage.setItem("eg_order",orderId);}catch(e){}
   var amount=99000; // 1 davlat tarifi
   // GA: to'lov boshlandi (Click)
