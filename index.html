@@ -1823,7 +1823,7 @@ function selPm(id){
 // === CLICK TO'LOV ===
 var CLICK_SERVICE_ID="104256", CLICK_MERCHANT_ID="61650";
 function payClick(){
-  var orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
+  var orderId=localStorage.getItem("eg_order")||("eg"+Date.now()+Math.floor(Math.random()*1000));
   try{localStorage.setItem("eg_order",orderId);}catch(e){}
   var amount=99000; // 1 davlat tarifi
   // GA: to'lov boshlandi (Click)
