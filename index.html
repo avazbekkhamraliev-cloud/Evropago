@@ -2692,39 +2692,68 @@ try{
   var _tp=new URLSearchParams(window.location.search);
   var _tt=_tp.get("token");
   var _ord=_tp.get("order");
+  // Avval localStorage'ni tekshiramiz: agar shu qurilmada bu token/order bilan
+  // ALLAQACHON muvaffaqiyatli kirilgan bo'lsa, serverga qayta so'rov yubormaymiz.
+  // Bu refresh'da "havola boshqa qurilmada ishlatilgan" degan noto'g'ri qulflanishning oldini oladi.
+  var _alreadyPaidLocal=false;
+  try{
+    _alreadyPaidLocal=(localStorage.getItem("eg_paid_v3")==="1" && !!localStorage.getItem("eg_token_v3"));
+  }catch(e){}
+
   if(_tt&&_tt.length>4){
     tokenInUrl=true;
-    goScreen("sc-pay");
-    toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
-    activateToken(_tt).then(function(ok){
-      if(ok){
-        setS();
-        hasAccess=true;
-        goScreen("sc-app"); buildGuide();
-      } else {
-        var lockedMsg=lang==="ru"?"\u042d\u0442\u0430 \u0441\u0441\u044b\u043b\u043a\u0430 \u0443\u0436\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0430 \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u043c \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0435.":lang==="en"?"This link was already used on another device.":"Bu havola boshqa qurilmada allaqachon ishlatilgan.";
-        toast(lockedMsg);
-        goScreen("sc-pay");
-      }
-    });
+    var _savedTok=null;
+    try{_savedTok=localStorage.getItem("eg_token_v3");}catch(e){}
+    if(_alreadyPaidLocal && _savedTok===_h(_tt)){
+      // Bu qurilmada bu token bilan avval tasdiqlangan — serverni qayta chaqirmaymiz
+      hasAccess=true;
+      goScreen("sc-app"); buildGuide();
+    } else if(_alreadyPaidLocal){
+      // Qurilmada boshqa (masalan admin_grant yoki eski) to'lov belgisi bor — shuni ham hurmat qilamiz
+      hasAccess=true; setS();
+      goScreen("sc-app"); buildGuide();
+    } else {
+      goScreen("sc-pay");
+      toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
+      activateToken(_tt).then(function(ok){
+        if(ok){
+          setS();
+          hasAccess=true;
+          goScreen("sc-app"); buildGuide();
+        } else {
+          var lockedMsg=lang==="ru"?"\u042d\u0442\u0430 \u0441\u0441\u044b\u043b\u043a\u0430 \u0443\u0436\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0430 \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u043c \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0435.":lang==="en"?"This link was already used on another device.":"Bu havola boshqa qurilmada allaqachon ishlatilgan.";
+          toast(lockedMsg);
+          goScreen("sc-pay");
+        }
+      });
+    }
   } else if(_ord){
-    // Click to'lovidan qaytdi — serverdan tekshiramiz
-    goScreen("sc-pay");
-    toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":"Tekshirilmoqda...");
-    checkPaidRetry(_ord).then(function(paid){
-      if(paid){
-        // Server tasdiqladi — localStorage ga yozamiz
-        try{
-          localStorage.setItem("eg_paid_v3","1");
-          localStorage.setItem("eg_token_v3","click_"+_ord.slice(-8));
-          localStorage.setItem("eg_ts_v3",Date.now().toString());
-        }catch(e){}
-        // GA: TO'LOV TASDIQLANDI (eng muhim event — daromad)
-        try{gtag('event','purchase',{transaction_id:_ord,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
-        hasAccess=true; goScreen("sc-app"); buildGuide();
-        toast(lang==="uz"?"Kirish ochildi!":"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!"); }
-      else { toast(lang==="uz"?"To'lov topilmadi. Birozdan keyin urinib ko'ring.":"\u041e\u043f\u043b\u0430\u0442\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."); }
-    });
+    if(_alreadyPaidLocal){
+      // To'lov avval shu qurilmada tasdiqlangan — qayta serverga so'rov yubormay to'g'ridan-to'g'ri kiritamiz
+      hasAccess=true;
+      goScreen("sc-app"); buildGuide();
+    } else {
+      // Click to'lovidan qaytdi — serverdan tekshiramiz
+      goScreen("sc-pay");
+      toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":"Tekshirilmoqda...");
+      checkPaidRetry(_ord).then(function(paid){
+        if(paid){
+          // Server tasdiqladi — localStorage ga yozamiz
+          try{
+            localStorage.setItem("eg_paid_v3","1");
+            localStorage.setItem("eg_token_v3","click_"+_ord.slice(-8));
+            localStorage.setItem("eg_ts_v3",Date.now().toString());
+          }catch(e){}
+          // GA: TO'LOV TASDIQLANDI (eng muhim event — daromad)
+          try{gtag('event','purchase',{transaction_id:_ord,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+          hasAccess=true; goScreen("sc-app"); buildGuide();
+          toast(lang==="uz"?"Kirish ochildi!":"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!"); }
+        else { toast(lang==="uz"?"To'lov topilmadi. Birozdan keyin urinib ko'ring.":"\u041e\u043f\u043b\u0430\u0442\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430."); }
+      });
+    }
+  } else if(_alreadyPaidLocal){
+    // URL'da token/order yo'q, lekin qurilmada to'lov belgisi bor — kirish ochiq bo'lishi kerak
+    hasAccess=true;
   }
 }catch(e){}
 
@@ -2733,10 +2762,12 @@ try{var _sc=localStorage.getItem('eg_selC_v2');if(_sc)selC=_sc;}catch(e){}
 try{var _sj=localStorage.getItem('eg_selJ_v2');if(_sj)selJ=_sj;}catch(e){}
 if(savedOrig){userOrigin=savedOrig;var _oc=document.getElementById("oc-"+savedOrig);if(_oc){_oc.classList.add("sel");}document.getElementById("origNext").disabled=false;}
 
-if(tokenInUrl){
+if(tokenInUrl && !hasAccess){
   goScreen("sc-pay");
   // Eslatma: actBox/activate() endi bu yerda ko'rsatilmaydi —
   // token tekshiruvi to'liq activateToken() orqali server tomonda amalga oshadi.
+} else if(hasAccess){
+  // localStorage orqali kirish allaqachon tasdiqlangan (yuqorida) — sc-app'da qolamiz
 } else if(savedOrig){
   goScreen("sc-welcome");
 } else {
