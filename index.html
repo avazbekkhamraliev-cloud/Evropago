@@ -919,6 +919,7 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
         <div id="tgBlock">
         <div style="text-align:center;margin-bottom:8px;"><span style="background:#dcfce7;color:#166534;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;">&#9989; Tavsiya etiladi</span></div>
         <button class="act-btn" onclick="payTelegram()" id="tgBtn" style="width:100%;background:linear-gradient(135deg,#229ED9,#1c8bc0);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:12px;">&#9993; Telegram orqali to'lash</button>
+        <button class="act-btn" onclick="payWhatsapp()" id="waBtn" style="width:100%;background:linear-gradient(135deg,#25D366,#1ebe57);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:12px;">&#128241; WhatsApp orqali to'lash</button>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--mt);font-size:11px;" id="orDivider"><div style="flex:1;height:1px;background:var(--bd);"></div><span id="orLbl">yoki karta orqali (Click/UzCard/Humo)</span><div style="flex:1;height:1px;background:var(--bd);"></div></div>
         <div id="clickBlock">
@@ -1557,6 +1558,7 @@ function applyLang(){
   setEl("pmHint",lang==="ru"?"Нет Click? Выберите UzCard или Humo — оплата переводом на карту":lang==="en"?"No Click? Choose UzCard or Humo — pay by card transfer":"Click yo'qmi? UzCard yoki Humo'ni tanlang — kartaga o'tkazma orqali");
   setEl("clickHelpLink",lang==="ru"?"&#10067; Нужна помощь?":lang==="en"?"&#10067; Need help?":"&#10067; Yordam kerakmi?");
   setEl("tgBtn",lang==="ru"?"&#9993; Оплата через Telegram":lang==="en"?"&#9993; Pay via Telegram":"&#9993; Telegram orqali to'lash");
+  setEl("waBtn",lang==="ru"?"&#128241; Оплата через WhatsApp":lang==="en"?"&#128241; Pay via WhatsApp":"&#128241; WhatsApp orqali to'lash");
   setEl("firmH",t.firmH);setEl("firmP",t.firmP);setEl("firmNote",t.firmNote);
   setEl("faqH",t.faqH);setEl("faqP",t.faqP);
   setEl("rvH",t.rvH);setEl("rvP",t.rvP);
@@ -2034,6 +2036,19 @@ function payTelegram(){
   var url="https://t.me/"+TG_USERNAME+"?text="+encodeURIComponent(msg);
   // GA: to'lov boshlandi (Telegram)
   try{gtag('event','begin_checkout',{currency:'UZS',value:99000,payment_type:'telegram',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+  window.open(url,"_blank");
+}
+// Rossiya va boshqa Telegram bloklangan davlatlar uchun — WhatsApp orqali (qo'lda to'lov)
+var WA_NUMBER="998916570222"; // xalqaro formatda, + siz
+function payWhatsapp(){
+  var ctry="";
+  try{var cc=CC.find(function(c){return c.id===selC;});if(cc)ctry=lang==="ru"?cc.ru:lang==="en"?cc.en:cc.uz;}catch(e){}
+  var msg;
+  if(lang==="ru") msg="Здравствуйте! Хочу оплатить EuropaGo"+(ctry?" ("+ctry+")":"")+".";
+  else if(lang==="en") msg="Hello! I want to pay for \uD83D\uDE80 EuropaGo"+(ctry?" ("+ctry+")":"")+".";
+  else msg="Assalomu alaykum! \uD83D\uDE80 EuropaGo to'lovi"+(ctry?" ("+ctry+")":"")+".";
+  var url="https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(msg);
+  try{gtag('event','begin_checkout',{currency:'UZS',value:99000,payment_type:'whatsapp',items:[{item_name:'EuropaGo access'}]});}catch(e){}
   window.open(url,"_blank");
 }
 // Karta orqali to'lash panelini ochish/yopish
