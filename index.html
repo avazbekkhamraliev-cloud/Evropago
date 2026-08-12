@@ -955,6 +955,12 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
         <div style="font-size:10px;color:var(--mt);text-align:center;margin-bottom:8px;" id="pmHint">Click yo'qmi? UzCard yoki Humo'ni tanlang — kartaga o'tkazma orqali</div>
         <button class="act-btn" onclick="payClick()" id="payBtn" style="width:100%;background:linear-gradient(135deg,#00aaff,#0077cc);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:8px;">&#128179; Click orqali to'lash</button>
         <button onclick="recheckPayment()" id="recheckBtn" style="width:100%;background:#fff;color:#0077cc;border:2px solid #0077cc;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;">&#128260; <span id="recheckBtnTxt">Click orqali to'lov qildim — tekshirish</span></button>
+        <div id="tokenEntryToggle" onclick="toggleTokenEntry()" style="text-align:center;font-size:12.5px;color:#0077cc;font-weight:700;cursor:pointer;margin-bottom:10px;text-decoration:underline;">&#128273; Tokenim/havolam bor — qo'lda kiritish</div>
+        <div id="tokenEntryBox" style="display:none;background:#f8faff;border:1px solid #d6e4ff;border-radius:12px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:11.5px;color:#556;margin-bottom:6px;" id="tokenEntryHint">Havolani Google qidiruv katagiga emas, shu yerga joylashtiring:</div>
+          <input type="text" id="tokenEntryInput" placeholder="token_... yoki to'liq havola" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:13px;margin-bottom:8px;">
+          <button onclick="activateManualToken()" style="width:100%;background:#0077cc;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;" id="tokenEntryBtn">Faollashtirish</button>
+        </div>
         <div onclick="payClickHelp()" id="clickHelpLink" style="text-align:center;font-size:12px;color:#229ED9;font-weight:700;cursor:pointer;margin-bottom:10px;text-decoration:underline;">&#10067; Yordam kerakmi?</div>
         </div>
         <div id="cardBlock">
@@ -1181,6 +1187,47 @@ window.addEventListener("popstate",function(e){
   _fromPopstate=true;
   goScreen(sid);
 });
+// Mijoz havolani noto'g'ri joyga (masalan, Google qidiruviga) joylashtirib, token
+// URL'dan yo'qolib qolsa — shu yerdan qo'lda kiritib faollashtirishi mumkin.
+function toggleTokenEntry(){
+  var box=document.getElementById("tokenEntryBox");
+  if(!box)return;
+  var open=box.style.display!=="none";
+  box.style.display=open?"none":"block";
+}
+function activateManualToken(){
+  var inp=document.getElementById("tokenEntryInput");
+  if(!inp)return;
+  var raw=inp.value.trim();
+  if(!raw){
+    toast(lang==="ru"?"Введите токен или ссылку":lang==="en"?"Enter a token or link":"Token yoki havolani kiriting");
+    return;
+  }
+  var token=raw;
+  // Agar to'liq havola joylashtirilgan bo'lsa — ichidan token'ni ajratib olamiz
+  try{
+    if(raw.indexOf("token=")>-1){
+      var qs=raw.split("?")[1]||raw;
+      var qp=new URLSearchParams(qs);
+      var extracted=qp.get("token");
+      if(extracted) token=extracted;
+    }
+  }catch(e){}
+  token=token.trim();
+  if(!token||token.length<5||!/^[a-zA-Z0-9_-]+$/.test(token)){
+    toast(lang==="ru"?"Похоже, это не токен. Проверьте и попробуйте снова.":lang==="en"?"This doesn't look like a valid token. Please check and try again.":"Bu token'ga o'xshamayapti. Tekshirib qayta kiriting.");
+    return;
+  }
+  try{
+    localStorage.setItem("eg_paid_v3","1");
+    localStorage.setItem("eg_token_v3", _h(token));
+    localStorage.setItem("eg_ts_v3", Date.now().toString());
+  }catch(e){}
+  try{gtag('event','purchase',{transaction_id:token,currency:'UZS',value:99000,payment_type:'manual_token',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+  hasAccess=true;
+  toast(lang==="ru"?"Токен принят!":lang==="en"?"Token accepted!":"Token qabul qilindi!");
+  goScreen("sc-app");buildGuide();
+}
 function reorderPayMethods(){
   // Endi standart tartib: Telegram/karta o'tkazma birinchi (ishonchliroq), Click ikkinchi.
   // Faqat "yoki..." matnini davlatga qarab moslashtiramiz.
@@ -2063,8 +2110,20 @@ function selPm(id){
 // === CLICK TO'LOV ===
 var CLICK_SERVICE_ID="104256", CLICK_MERCHANT_ID="61650";
 function payClick(){
-  var orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
-  try{localStorage.setItem("eg_order",orderId);}catch(e){}
+  // Bir xil order ID'ni qayta ishlatamiz (30 daqiqagacha) — agar mijoz tugmani
+  // bir necha marta bossa ham, to'lov bitta ID'ga bog'lanib qoladi va "yo'qolib qolmaydi".
+  var orderId=null;
+  try{
+    var savedOrder=localStorage.getItem("eg_order");
+    var savedTs=parseInt(localStorage.getItem("eg_order_ts")||"0",10);
+    if(savedOrder && savedTs && (Date.now()-savedTs) < 30*60*1000){
+      orderId=savedOrder;
+    }
+  }catch(e){}
+  if(!orderId){
+    orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
+    try{localStorage.setItem("eg_order",orderId);localStorage.setItem("eg_order_ts",Date.now().toString());localStorage.setItem("eg_recheck_count","0");}catch(e){}
+  }
   var amount=99000; // 1 davlat tarifi
   // GA: to'lov boshlandi (Click)
   try{gtag('event','begin_checkout',{currency:'UZS',value:amount,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
@@ -2194,7 +2253,20 @@ function recheckPayment(){
     } else {
       if(btn)btn.disabled=false;
       if(txt)txt.textContent=lang==="ru"?"Я оплатил через Click — проверить":lang==="en"?"I paid via Click — check":"Click orqali to'lov qildim — tekshirish";
-      toast(lang==="ru"?"Оплата пока не найдена. Если вы недавно оплатили, подождите 1-2 минуты и попробуйте снова.":lang==="en"?"Payment not found yet. If you just paid, wait 1-2 minutes and try again.":"To'lov hali topilmadi. Yaqinda to'lagan bo'lsangiz, 1-2 daqiqa kutib qayta urinib ko'ring.");
+      var _rcCount=0;
+      try{_rcCount=parseInt(localStorage.getItem("eg_recheck_count")||"0",10)+1;localStorage.setItem("eg_recheck_count",_rcCount.toString());}catch(e){}
+      if(_rcCount>=2){
+        // Bir necha marta tekshirib topilmasa — Telegram orqali admin yordamiga yo'naltiramiz,
+        // order ID bilan birga, tezroq topib bera olishi uchun.
+        var _msg=lang==="ru"?"Здравствуйте! Я оплатил через Click, но сайт не подтверждает оплату. Мой номер заказа: "+orderId:
+                 lang==="en"?"Hello! I paid via Click but the site doesn't confirm payment. My order number: "+orderId:
+                 "Assalomu alaykum! Click orqali to'ladim, lekin sayt to'lovni tasdiqlamayapti. Buyurtma raqamim: "+orderId;
+        var _turl="https://t.me/"+TG_USERNAME+"?text="+encodeURIComponent(_msg);
+        toast(lang==="ru"?"Оплата не находится автоматически. Открываем чат поддержки — отправьте номер заказа.":lang==="en"?"Payment can't be found automatically. Opening support chat — please send your order number.":"To'lov avtomatik topilmayapti. Yordam chatini ochamiz — buyurtma raqamini yuboring.");
+        setTimeout(function(){window.open(_turl,"_blank");},1200);
+      } else {
+        toast(lang==="ru"?"Оплата пока не найдена. Если вы недавно оплатили, подождите 1-2 минуты и попробуйте снова.":lang==="en"?"Payment not found yet. If you just paid, wait 1-2 minutes and try again.":"To'lov hali topilmadi. Yaqinda to'lagan bo'lsangiz, 1-2 daqiqa kutib qayta urinib ko'ring.");
+      }
     }
   });
 }
