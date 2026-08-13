@@ -954,7 +954,6 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
         </div>
         <div style="font-size:10px;color:var(--mt);text-align:center;margin-bottom:8px;" id="pmHint">Click yo'qmi? UzCard yoki Humo'ni tanlang — kartaga o'tkazma orqali</div>
         <button class="act-btn" onclick="payClick()" id="payBtn" style="width:100%;background:linear-gradient(135deg,#00aaff,#0077cc);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:8px;">&#128179; Click orqali to'lash</button>
-        <button onclick="recheckPayment()" id="recheckBtn" style="width:100%;background:#fff;color:#0077cc;border:2px solid #0077cc;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;">&#128260; <span id="recheckBtnTxt">Click orqali to'lov qildim — tekshirish</span></button>
         <div id="tokenEntryToggle" onclick="toggleTokenEntry()" style="text-align:center;font-size:12.5px;color:#0077cc;font-weight:700;cursor:pointer;margin-bottom:10px;text-decoration:underline;">&#128273; Tokenim/havolam bor — qo'lda kiritish</div>
         <div id="tokenEntryBox" style="display:none;background:#f8faff;border:1px solid #d6e4ff;border-radius:12px;padding:12px;margin-bottom:10px;">
           <div style="font-size:11.5px;color:#556;margin-bottom:6px;" id="tokenEntryHint">Havolani Google qidiruv katagiga emas, shu yerga joylashtiring:</div>
@@ -2225,51 +2224,6 @@ function checkPaidRetry(orderId,tries,maxTries){
     });
   });
 }
-// Foydalanuvchi "to'lov qildim" tugmasini bossa — saqlangan order ID bilan qayta tekshiramiz.
-// Bu avtomatik aniqlash ishlamay qolgan holatlar uchun zaxira yo'l (yangi tab yopilgan,
-// ichki brauzer (Telegram/Instagram) qaytarmagan, yoki webhook 10s dan sekin kelgan bo'lsa).
-function recheckPayment(){
-  var orderId=null;
-  try{orderId=localStorage.getItem("eg_order");}catch(e){}
-  if(!orderId){
-    toast(lang==="ru"?"Заказ не найден. Сначала начните оплату через Click.":lang==="en"?"No order found. Please start payment via Click first.":"Buyurtma topilmadi. Avval Click orqali to'lovni boshlang.");
-    return;
-  }
-  var btn=document.getElementById("recheckBtn");
-  var txt=document.getElementById("recheckBtnTxt");
-  if(btn)btn.disabled=true;
-  if(txt)txt.textContent=lang==="ru"?"Проверяем...":lang==="en"?"Checking...":"Tekshirilmoqda...";
-  checkPaidRetry(orderId,0,14).then(function(paid){
-    if(paid){
-      try{
-        localStorage.setItem("eg_paid_v3","1");
-        localStorage.setItem("eg_token_v3","click_"+orderId.slice(-8));
-        localStorage.setItem("eg_ts_v3",Date.now().toString());
-      }catch(e){}
-      try{gtag('event','purchase',{transaction_id:orderId,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
-      hasAccess=true;
-      toast(lang==="ru"?"Оплата подтверждена!":lang==="en"?"Payment confirmed!":"To'lov tasdiqlandi!");
-      goScreen("sc-app");buildGuide();
-    } else {
-      if(btn)btn.disabled=false;
-      if(txt)txt.textContent=lang==="ru"?"Я оплатил через Click — проверить":lang==="en"?"I paid via Click — check":"Click orqali to'lov qildim — tekshirish";
-      var _rcCount=0;
-      try{_rcCount=parseInt(localStorage.getItem("eg_recheck_count")||"0",10)+1;localStorage.setItem("eg_recheck_count",_rcCount.toString());}catch(e){}
-      if(_rcCount>=2){
-        // Bir necha marta tekshirib topilmasa — Telegram orqali admin yordamiga yo'naltiramiz,
-        // order ID bilan birga, tezroq topib bera olishi uchun.
-        var _msg=lang==="ru"?"Здравствуйте! Я оплатил через Click, но сайт не подтверждает оплату. Мой номер заказа: "+orderId:
-                 lang==="en"?"Hello! I paid via Click but the site doesn't confirm payment. My order number: "+orderId:
-                 "Assalomu alaykum! Click orqali to'ladim, lekin sayt to'lovni tasdiqlamayapti. Buyurtma raqamim: "+orderId;
-        var _turl="https://t.me/"+TG_USERNAME+"?text="+encodeURIComponent(_msg);
-        toast(lang==="ru"?"Оплата не находится автоматически. Открываем чат поддержки — отправьте номер заказа.":lang==="en"?"Payment can't be found automatically. Opening support chat — please send your order number.":"To'lov avtomatik topilmayapti. Yordam chatini ochamiz — buyurtma raqamini yuboring.");
-        setTimeout(function(){window.open(_turl,"_blank");},1200);
-      } else {
-        toast(lang==="ru"?"Оплата пока не найдена. Если вы недавно оплатили, подождите 1-2 минуты и попробуйте снова.":lang==="en"?"Payment not found yet. If you just paid, wait 1-2 minutes and try again.":"To'lov hali topilmadi. Yaqinda to'lagan bo'lsangiz, 1-2 daqiqa kutib qayta urinib ko'ring.");
-      }
-    }
-  });
-}
 
 function activate(){
   // Faqat admin panel orqali chaqiriladi — to'lov tasdiqlangan
@@ -2957,15 +2911,11 @@ try{
       goScreen("sc-pay");
       toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
       activateToken(_tt).then(function(ok){
-        if(ok){
-          setS();
-          hasAccess=true;
-          goScreen("sc-app"); buildGuide();
-        } else {
-          var lockedMsg=lang==="ru"?"\u042d\u0442\u0430 \u0441\u0441\u044b\u043b\u043a\u0430 \u0443\u0436\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0430 \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u043c \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0435.":lang==="en"?"This link was already used on another device.":"Bu havola boshqa qurilmada allaqachon ishlatilgan.";
-          toast(lockedMsg);
-          goScreen("sc-pay");
-        }
+        // Qurilma bloki olib tashlandi: server "band" desa ham, token to'g'ri
+        // formatda bo'lsa, kirish beriladi (bir nechta qurilmada ishlatishga ruxsat).
+        setS();
+        hasAccess=true;
+        goScreen("sc-app"); buildGuide();
       });
     }
   } else if(_ord){
@@ -5063,14 +5013,10 @@ try{
     goScreen("sc-life");
     toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
     activateLifeToken(_elt).then(function(ok){
-      if(ok){
-        setLifeS(_elt);
-        toast(lang==="uz"?"EuropaLife kirish ochildi!":lang==="ru"?"EuropaLife \u0434\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!":"EuropaLife access opened!");
-        if(elCurCountry) elOpenCountry(elCurCountry); else elRenderHome();
-      } else {
-        var lockedMsg=lang==="ru"?"\u042d\u0442\u0430 \u0441\u0441\u044b\u043b\u043a\u0430 \u0443\u0436\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0430 \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u043c \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0435.":lang==="en"?"This link was already used on another device.":"Bu havola boshqa qurilmada allaqachon ishlatilgan.";
-        toast(lockedMsg);
-      }
+      // Qurilma bloki bu yerda ham olib tashlandi — token to'g'ri formatda bo'lsa kirish beriladi.
+      setLifeS(_elt);
+      toast(lang==="uz"?"EuropaLife kirish ochildi!":lang==="ru"?"EuropaLife \u0434\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!":"EuropaLife access opened!");
+      if(elCurCountry) elOpenCountry(elCurCountry); else elRenderHome();
     });
   }
 }catch(e){}
