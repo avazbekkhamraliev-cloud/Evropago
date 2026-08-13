@@ -505,11 +505,11 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:0 1
     </div>
   </div>
   <footer style="text-align:center;padding:22px 16px 18px;font-size:12.5px;color:#8a92a6;">
-    <p style="margin:0 0 6px;">&#169; 2026 evropago.uz. Barcha huquqlar himoyalangan.</p>
+    <p style="margin:0 0 6px;" id="footCopy">&#169; 2026 evropago.uz. Barcha huquqlar himoyalangan.</p>
     <p style="margin:0;">
-      <a href="#privacy-policy" onclick="openModal('privacyOvl');return false;" style="color:#101F4A;font-weight:600;text-decoration:underline;">Maxfiylik siyosati</a>
+      <a href="#privacy-policy" onclick="openModal('privacyOvl');return false;" style="color:#101F4A;font-weight:600;text-decoration:underline;" id="footPrivacyLink">Maxfiylik siyosati</a>
       &nbsp;|&nbsp;
-      <a href="#terms-of-service" onclick="openModal('termsOvl');return false;" style="color:#101F4A;font-weight:600;text-decoration:underline;">Foydalanuvchi shartnomasi (Ommaviy oferta)</a>
+      <a href="#terms-of-service" onclick="openModal('termsOvl');return false;" style="color:#101F4A;font-weight:600;text-decoration:underline;" id="footTermsLink">Foydalanuvchi shartnomasi (Ommaviy oferta)</a>
     </p>
   </footer>
 </div>
@@ -1728,7 +1728,73 @@ function applyLang(){
   renderFaq();
   renderReviews();
   renderNews2026();
+  applyLegalLang();
 }
+function applyLegalLang(){
+  var copy=lang==="ru"?"&#169; 2026 evropago.uz. Все права защищены.":lang==="en"?"&#169; 2026 evropago.uz. All rights reserved.":"&#169; 2026 evropago.uz. Barcha huquqlar himoyalangan.";
+  setEl("footCopy",copy);
+  setEl("footPrivacyLink",lang==="ru"?"Политика конфиденциальности":lang==="en"?"Privacy Policy":"Maxfiylik siyosati");
+  setEl("footTermsLink",lang==="ru"?"Пользовательское соглашение (Оферта)":lang==="en"?"Terms of Service (Public Offer)":"Foydalanuvchi shartnomasi (Ommaviy oferta)");
+  setEl("privacyTitle",lang==="ru"?"Политика конфиденциальности":lang==="en"?"Privacy Policy":"Maxfiylik siyosati");
+  setEl("termsTitle",lang==="ru"?"Пользовательское соглашение":lang==="en"?"Terms of Service":"Foydalanuvchi shartnomasi");
+  setEl("privacyBody",PRIVACY_TXT[lang]||PRIVACY_TXT.uz);
+  setEl("termsBody",TERMS_TXT[lang]||TERMS_TXT.uz);
+}
+var PRIVACY_TXT={
+uz:'<p style="color:#8a92a6;font-size:12px;">Kuchga kirgan sana: 2026-yil</p>'
++'<p><b>1. Ma\u2018lumotlarni yig\u2018ish</b><br>evropago.uz sayti (\u201cSayt\u201d) o\u2018zi orqali ism, telefon raqami yoki boshqa shaxsiy ma\u2018lumotlarni so\u2018ramaydi va to\u2018plamaydi. To\u2018lov jarayonida foydalanuvchi Click to\u2018lov tizimiga yo\u2018naltiriladi (u yerda ma\u2018lumotlarni Click o\u2018zi, o\u2018z maxfiylik siyosati asosida qayta ishlaydi) yoki Telegram/WhatsApp orqali @Evropagoo bilan bog\u2018lanadi \u2014 bu holatda foydalanuvchi ixtiyoriy ravishda taqdim etgan ism, telefon raqami va chek skrinshoti kabi ma\u2018lumotlar to\u2018lovni tasdiqlash va kirish havolasini yuborish maqsadidagina qayta ishlanadi. Sayt bank kartasi rekvizitlarini o\u2018zida saqlamaydi.</p>'
++'<p><b>2. Ma\u2018lumotlardan foydalanish maqsadi</b><br>Telegram/WhatsApp orqali olingan ma\u2018lumotlar quyidagi maqsadlarda ishlatiladi: to\u2018lovni tasdiqlash va raqamli qo\u2018llanmaga kirish huquqini (shaxsiy havolani) taqdim etish, foydalanuvchini texnik yordam bilan bog\u2018lash. Ma\u2018lumotlar boshqa hech qanday maqsadda ishlatilmaydi va saqlanmaydi.</p>'
++'<p><b>3. Uchinchi shaxslar</b><br>Foydalanuvchi ma\u2018lumotlari uchinchi shaxslarga berilmaydi hamda tijorat maqsadida sotilmaydi. To\u2018lov ma\u2018lumotlari xavfsiz to\u2018lov agregatorlari (Click, Payme) orqali himoyalangan holda o\u2018tadi va ularning maxfiylik siyosatiga bo\u2018ysunadi.</p>'
++'<p><b>4. Ma\u2018lumotlarni saqlash va xavfsizlik</b><br>Kirish huquqi (token) qurilmaga bog\u2018lab (device-lock) himoyalangan holda saqlanadi. Ma\u2018lumotlarni himoya qilish uchun zamonaviy shifrlash va xavfsizlik choralari qo\u2018llaniladi.</p>'
++'<p><b>5. Cookie va texnik ma\u2018lumotlar</b><br>Sayt ishlashini yaxshilash va statistika (Google Analytics) uchun anonim texnik ma\u2018lumotlar (qurilma turi, brauzer, taxminiy joylashuv) yig\u2018ilishi mumkin. Bu ma\u2018lumotlar shaxsni aniqlash uchun ishlatilmaydi.</p>'
++'<p><b>6. Foydalanuvchi huquqlari</b><br>Foydalanuvchi o\u2018z ma\u2018lumotlarini o\u2018chirishni yoki ular haqida ma\u2018lumot olishni Telegram orqali (<b>@Evropagoo</b>) so\u2018rashga haqli.</p>'
++'<p><b>7. Bog\u2018lanish</b><br>Maxfiylik siyosati bo\u2018yicha savollar uchun: Telegram \u2014 <b>@Evropagoo</b>.</p>',
+ru:'<p style="color:#8a92a6;font-size:12px;">Дата вступления в силу: 2026 г.</p>'
++'<p><b>1. Сбор данных</b><br>Сайт evropago.uz (&laquo;Сайт&raquo;) самостоятельно не запрашивает и не собирает имя, номер телефона или иные персональные данные. В процессе оплаты пользователь перенаправляется в платёжную систему Click (где данные обрабатываются самим Click согласно его политике конфиденциальности) либо обращается через Telegram/WhatsApp к @Evropagoo — в этом случае добровольно предоставленные пользователем имя, номер телефона и скриншот чека обрабатываются исключительно для подтверждения оплаты и отправки ссылки доступа. Сайт не хранит реквизиты банковских карт.</p>'
++'<p><b>2. Цель использования данных</b><br>Данные, полученные через Telegram/WhatsApp, используются для: подтверждения оплаты и предоставления доступа к цифровому руководству (персональной ссылки), а также для связи с пользователем по вопросам технической поддержки. Данные не используются в иных целях и не хранятся.</p>'
++'<p><b>3. Третьи лица</b><br>Данные пользователя не передаются третьим лицам и не продаются в коммерческих целях. Платёжные данные защищённо обрабатываются через официальные платёжные агрегаторы (Click, Payme) в соответствии с их политикой конфиденциальности.</p>'
++'<p><b>4. Хранение данных и безопасность</b><br>Право доступа (токен) хранится в защищённом виде с привязкой к устройству (device-lock). Для защиты данных применяются современные меры шифрования и безопасности.</p>'
++'<p><b>5. Cookie и технические данные</b><br>Для улучшения работы сайта и статистики (Google Analytics) могут собираться анонимные технические данные (тип устройства, браузер, примерное местоположение). Эти данные не используются для идентификации личности.</p>'
++'<p><b>6. Права пользователя</b><br>Пользователь вправе запросить удаление своих данных или получить информацию о них через Telegram (<b>@Evropagoo</b>).</p>'
++'<p><b>7. Контакты</b><br>По вопросам политики конфиденциальности: Telegram — <b>@Evropagoo</b>.</p>',
+en:'<p style="color:#8a92a6;font-size:12px;">Effective date: 2026</p>'
++'<p><b>1. Data collection</b><br>The evropago.uz website (the &ldquo;Site&rdquo;) does not itself request or collect names, phone numbers, or other personal data. During payment, the user is redirected to the Click payment system (where data is processed by Click under its own privacy policy) or contacts @Evropagoo via Telegram/WhatsApp — in which case any name, phone number, or receipt screenshot voluntarily provided by the user is processed solely to confirm payment and send the access link. The Site does not store bank card details.</p>'
++'<p><b>2. Purpose of use</b><br>Data received via Telegram/WhatsApp is used to: confirm payment and provide access to the digital guide (a personal link), and to contact the user for technical support. Data is not used for any other purpose and is not retained.</p>'
++'<p><b>3. Third parties</b><br>User data is not shared with third parties and is not sold for commercial purposes. Payment data is securely processed through official payment aggregators (Click, Payme) under their own privacy policies.</p>'
++'<p><b>4. Data storage and security</b><br>Access rights (tokens) are stored securely with device-lock binding. Modern encryption and security measures are applied to protect data.</p>'
++'<p><b>5. Cookies and technical data</b><br>Anonymous technical data (device type, browser, approximate location) may be collected to improve site performance and for analytics (Google Analytics). This data is not used to identify individuals.</p>'
++'<p><b>6. User rights</b><br>Users may request deletion of their data or information about it via Telegram (<b>@Evropagoo</b>).</p>'
++'<p><b>7. Contact</b><br>For privacy policy questions: Telegram — <b>@Evropagoo</b>.</p>'
+};
+var TERMS_TXT={
+uz:'<p style="color:#8a92a6;font-size:12px;">Ommaviy oferta \u2014 kuchga kirgan sana: 2026-yil</p>'
++'<p><b>1. Xizmat mazmuni</b><br>evropago.uz \u2014 bu vositachilik qilmaydigan, konsalting va rekruting xizmatlarini ko\u2018rsatmaydigan, faqat Yevropa vizalari va hujjat topshirish bo\u2018yicha mustaqil harakat qilish uchun axborot-ma\u2018lumot beruvchi raqamli qo\u2018llanma (informatsion mahsulot). Sayt viza olib bermaydi, ish topib bermaydi va hujjatlarni foydalanuvchi nomidan topshirmaydi.</p>'
++'<p><b>2. To\u2018lov va kirish huquqi</b><br>Xizmat narxi 99,000 so\u2018m (bir martalik to\u2018lov). EvropaLife qo\u2018shimcha mahsuloti uchun narx alohida ko\u2018rsatiladi. To\u2018lov amalga oshirilgandan so\u2018ng foydalanuvchiga raqamli qo\u2018llanmaga umrbod kirish huquqi (shaxsiy, qurilmaga bog\u2018langan havola) taqdim etiladi.</p>'
++'<p><b>3. To\u2018lov tartibi</b><br>Xizmat uchun to\u2018lov Click yoki Payme to\u2018lov tizimlari orqali, shuningdek Telegram-bot/operator orqali Ijrochining rasmiy bank kartasiga (P2P o\u2018tkazma) amalga oshirilishi mumkin. To\u2018lov tasdiqlangach, xaridorga elektron soliq cheki hamda raqamli mahsulotga kirish havolasi taqdim etiladi.</p>'
++'<p><b>4. Mas\u2018uliyatni cheklash</b><br>Sayt foydalanuvchining viza olishi yoki ishga joylashishiga kafolat bermaydi. Barcha qarorlar va hujjat topshirish jarayonlari foydalanuvchi tomonidan mustaqil, o\u2018z javobgarligi asosida amalga oshiriladi. Ijrochi taqdim etilgan ma\u2018lumotlarning rasmiy davlat va elchixona manbalariga muvofiqligini ta\u2018minlashga harakat qiladi, ammo ushbu manbalardagi o\u2018zgarishlar uchun javobgar emas.</p>'
++'<p><b>5. Firibgarlikka qarshi ogohlantirish</b><br>Sayt firibgarlikning har qanday shakliga qarshi bo\u2018lib, faqat rasmiy elchixona va davlat manbalaridan foydalanishni tavsiya etadi. \u201cViza olib beraman\u201d, \u201ctermin sotaman\u201d yoki \u201cpriglasheniya sotaman\u201d deganlarga ishonmaslik va pul o\u2018tkazmaslik tavsiya etiladi.</p>'
++'<p><b>6. Pulni qaytarish</b><br>Raqamli mahsulot xususiyatiga ko\u2018ra (kirish darhol taqdim etiladi), to\u2018lov amalga oshirilib, qo\u2018llanmaga kirish berilgandan so\u2018ng pul qaytarilmaydi. Texnik nosozlik (masalan, havola ishlamasligi) yuzaga kelgan holatlarda Telegram (<b>@Evropagoo</b>) orqali murojaat qilinishi va masala individual tartibda hal qilinishi mumkin.</p>'
++'<p><b>7. Shartnomani qabul qilish</b><br>Saytdan foydalanish va to\u2018lovni amalga oshirish orqali foydalanuvchi ushbu Ommaviy oferta shartlariga to\u2018liq rozi bo\u2018lgan hisoblanadi.</p>'
++'<p><b>8. Bog\u2018lanish</b><br>Barcha savol va murojaatlar uchun: Telegram \u2014 <b>@Evropagoo</b>.</p>',
+ru:'<p style="color:#8a92a6;font-size:12px;">Публичная оферта \u2014 дата вступления в силу: 2026 г.</p>'
++'<p><b>1. Содержание услуги</b><br>evropago.uz \u2014 это не посредническая, не консалтинговая и не рекрутинговая услуга, а исключительно информационный цифровой продукт (руководство) по самостоятельному оформлению виз и подаче документов в страны Европы. Сайт не оформляет визы, не трудоустраивает и не подаёт документы от имени пользователя.</p>'
++'<p><b>2. Оплата и право доступа</b><br>Стоимость услуги — 99 000 сум (единоразовый платёж). Стоимость дополнительного продукта EvropaLife указывается отдельно. После оплаты пользователю предоставляется пожизненное право доступа к цифровому руководству (персональная ссылка, привязанная к устройству).</p>'
++'<p><b>3. Порядок оплаты</b><br>Оплата услуги может производиться через платёжные системы Click или Payme, а также через Telegram-бота/оператора переводом (P2P) на официальную банковскую карту Исполнителя. После подтверждения оплаты покупателю предоставляется электронный чек и ссылка доступа к цифровому продукту.</p>'
++'<p><b>4. Ограничение ответственности</b><br>Сайт не гарантирует получение визы или трудоустройство пользователем. Все решения и процессы подачи документов пользователь осуществляет самостоятельно, под свою ответственность. Исполнитель стремится обеспечить соответствие предоставленной информации официальным государственным и посольским источникам, но не несёт ответственности за изменения в этих источниках.</p>'
++'<p><b>5. Предупреждение о мошенничестве</b><br>Сайт выступает против любых форм мошенничества и рекомендует пользоваться только официальными источниками посольств и государственных органов. Не рекомендуется доверять предложениям &laquo;оформлю визу&raquo;, &laquo;продам термин/приглашение&raquo; и переводить за это деньги.</p>'
++'<p><b>6. Возврат средств</b><br>В силу характера цифрового продукта (доступ предоставляется немедленно), после оплаты и предоставления доступа к руководству возврат средств не производится. В случае технической неисправности (например, ссылка не работает) можно обратиться через Telegram (<b>@Evropagoo</b>), вопрос решается в индивидуальном порядке.</p>'
++'<p><b>7. Принятие условий</b><br>Используя сайт и производя оплату, пользователь считается полностью согласившимся с условиями настоящей публичной оферты.</p>'
++'<p><b>8. Контакты</b><br>По всем вопросам и обращениям: Telegram — <b>@Evropagoo</b>.</p>',
+en:'<p style="color:#8a92a6;font-size:12px;">Public Offer — effective date: 2026</p>'
++'<p><b>1. Nature of the service</b><br>evropago.uz is not an intermediary, consulting, or recruitment service. It is solely an informational digital product (guide) for independently pursuing European visas and submitting documents. The Site does not obtain visas, find employment, or submit documents on the user\u2019s behalf.</p>'
++'<p><b>2. Payment and access rights</b><br>The service costs 99,000 so&#8216;m (one-time payment). The price for the additional EvropaLife product is shown separately. After payment, the user receives lifetime access to the digital guide (a personal, device-locked link).</p>'
++'<p><b>3. Payment procedure</b><br>Payment may be made via the Click or Payme payment systems, or via Telegram bot/operator through a direct (P2P) transfer to the Provider\u2019s official bank card. Once payment is confirmed, the buyer receives an electronic tax receipt and an access link to the digital product.</p>'
++'<p><b>4. Limitation of liability</b><br>The Site does not guarantee that the user will obtain a visa or find employment. All decisions and document submission processes are carried out independently by the user, at their own responsibility. The Provider strives to keep information consistent with official government and embassy sources but is not responsible for changes made by those sources.</p>'
++'<p><b>5. Anti-fraud notice</b><br>The Site opposes all forms of fraud and recommends relying only on official embassy and government sources. Users should not trust or pay anyone offering to &ldquo;obtain a visa,&rdquo; &ldquo;sell an appointment slot,&rdquo; or &ldquo;sell an invitation.&rdquo;</p>'
++'<p><b>6. Refunds</b><br>Due to the nature of the digital product (access is granted immediately), no refund is issued once payment is made and access to the guide is granted. In case of a technical issue (e.g., a broken link), users may contact Telegram (<b>@Evropagoo</b>); such cases are resolved on an individual basis.</p>'
++'<p><b>7. Acceptance of terms</b><br>By using the Site and making a payment, the user is deemed to have fully accepted the terms of this Public Offer.</p>'
++'<p><b>8. Contact</b><br>For all questions and inquiries: Telegram — <b>@Evropagoo</b>.</p>'
+};
 function setLang(code){
   document.documentElement.lang=code;
   lang=code;
@@ -5068,65 +5134,16 @@ try{ elApplyChrome(); elRenderHome(); }catch(e){}
 <!-- ============ MAXFIYLIK SIYOSATI MODAL ============ -->
 <div class="ovl" id="privacyOvl">
   <div class="mdl">
-    <div class="mhd"><h3>Maxfiylik siyosati</h3><button class="mcl" onclick="closeModal('privacyOvl')">&#10005;</button></div>
-    <div class="mbd" style="max-height:70vh;overflow-y:auto;font-size:13.5px;line-height:1.65;color:#333;">
-      <p style="color:#8a92a6;font-size:12px;">Kuchga kirgan sana: 2026-yil</p>
-
-      <p><b>1. Ma&#8216;lumotlarni yig&#8216;ish</b><br>
-      evropago.uz sayti (&#8220;Sayt&#8221;) o&#8216;zi orqali ism, telefon raqami yoki boshqa shaxsiy ma&#8216;lumotlarni so&#8216;ramaydi va to&#8216;plamaydi. To&#8216;lov jarayonida foydalanuvchi Click to&#8216;lov tizimiga yo&#8216;naltiriladi (u yerda ma&#8216;lumotlarni Click o&#8216;zi, o&#8216;z maxfiylik siyosati asosida qayta ishlaydi) yoki Telegram/WhatsApp orqali @Evropagoo bilan bog&#8216;lanadi &#8212; bu holatda foydalanuvchi ixtiyoriy ravishda taqdim etgan ism, telefon raqami va chek skrinshoti kabi ma&#8216;lumotlar to&#8216;lovni tasdiqlash va kirish havolasini yuborish maqsadidagina qayta ishlanadi. Sayt bank kartasi rekvizitlarini o&#8216;zida saqlamaydi.</p>
-
-      <p><b>2. Ma&#8216;lumotlardan foydalanish maqsadi</b><br>
-      Telegram/WhatsApp orqali olingan ma&#8216;lumotlar quyidagi maqsadlarda ishlatiladi: to&#8216;lovni tasdiqlash va raqamli qo&#8216;llanmaga kirish huquqini (shaxsiy havolani) taqdim etish, foydalanuvchini texnik yordam bilan bog&#8216;lash. Ma&#8216;lumotlar boshqa hech qanday maqsadda ishlatilmaydi va saqlanmaydi.</p>
-
-      <p><b>3. Uchinchi shaxslar</b><br>
-      Foydalanuvchi ma&#8216;lumotlari uchinchi shaxslarga berilmaydi hamda tijorat maqsadida sotilmaydi. To&#8216;lov ma&#8216;lumotlari xavfsiz to&#8216;lov agregatorlari (Click, Payme) orqali himoyalangan holda o&#8216;tadi va ularning maxfiylik siyosatiga bo&#8216;ysunadi.</p>
-
-      <p><b>4. Ma&#8216;lumotlarni saqlash va xavfsizlik</b><br>
-      Kirish huquqi (token) qurilmaga bog&#8216;lab (device-lock) himoyalangan holda saqlanadi. Ma&#8216;lumotlarni himoya qilish uchun zamonaviy shifrlash va xavfsizlik choralari qo&#8216;llaniladi.</p>
-
-      <p><b>5. Cookie va texnik ma&#8216;lumotlar</b><br>
-      Sayt ishlashini yaxshilash va statistika (Google Analytics) uchun anonim texnik ma&#8216;lumotlar (qurilma turi, brauzer, taxminiy joylashuv) yig&#8216;ilishi mumkin. Bu ma&#8216;lumotlar shaxsni aniqlash uchun ishlatilmaydi.</p>
-
-      <p><b>6. Foydalanuvchi huquqlari</b><br>
-      Foydalanuvchi o&#8216;z ma&#8216;lumotlarini o&#8216;chirishni yoki ular haqida ma&#8216;lumot olishni Telegram orqali (<b>@Evropagoo</b>) so&#8216;rashga haqli.</p>
-
-      <p><b>7. Bog&#8216;lanish</b><br>
-      Maxfiylik siyosati bo&#8216;yicha savollar uchun: Telegram &#8212; <b>@Evropagoo</b>.</p>
-    </div>
+    <div class="mhd"><h3 id="privacyTitle">Maxfiylik siyosati</h3><button class="mcl" onclick="closeModal('privacyOvl')">&#10005;</button></div>
+    <div class="mbd" id="privacyBody" style="max-height:70vh;overflow-y:auto;font-size:13.5px;line-height:1.65;color:#333;"></div>
   </div>
 </div>
 
 <!-- ============ FOYDALANUVCHI SHARTNOMASI (OMMAVIY OFERTA) MODAL ============ -->
 <div class="ovl" id="termsOvl">
   <div class="mdl">
-    <div class="mhd"><h3>Foydalanuvchi shartnomasi</h3><button class="mcl" onclick="closeModal('termsOvl')">&#10005;</button></div>
-    <div class="mbd" style="max-height:70vh;overflow-y:auto;font-size:13.5px;line-height:1.65;color:#333;">
-      <p style="color:#8a92a6;font-size:12px;">Ommaviy oferta &#8212; kuchga kirgan sana: 2026-yil</p>
-
-      <p><b>1. Xizmat mazmuni</b><br>
-      evropago.uz &#8212; bu vositachilik qilmaydigan, konsalting va rekruting xizmatlarini ko&#8216;rsatmaydigan, faqat Yevropa vizalari va hujjat topshirish bo&#8216;yicha mustaqil harakat qilish uchun axborot-ma&#8216;lumot beruvchi raqamli qo&#8216;llanma (informatsion mahsulot). Sayt viza olib bermaydi, ish topib bermaydi va hujjatlarni foydalanuvchi nomidan topshirmaydi.</p>
-
-      <p><b>2. To&#8216;lov va kirish huquqi</b><br>
-      Xizmat narxi 99,000 so&#8216;m (bir martalik to&#8216;lov). EvropaLife qo&#8216;shimcha mahsuloti uchun narx alohida ko&#8216;rsatiladi. To&#8216;lov amalga oshirilgandan so&#8216;ng foydalanuvchiga raqamli qo&#8216;llanmaga umrbod kirish huquqi (shaxsiy, qurilmaga bog&#8216;langan havola) taqdim etiladi.</p>
-
-      <p><b>3. To&#8216;lov tartibi</b><br>
-      Xizmat uchun to&#8216;lov Click yoki Payme to&#8216;lov tizimlari orqali, shuningdek Telegram-bot/operator orqali Ijrochining rasmiy bank kartasiga (P2P o&#8216;tkazma) amalga oshirilishi mumkin. To&#8216;lov tasdiqlangach, xaridorga elektron soliq cheki hamda raqamli mahsulotga kirish havolasi taqdim etiladi.</p>
-
-      <p><b>4. Mas&#8216;uliyatni cheklash</b><br>
-      Sayt foydalanuvchining viza olishi yoki ishga joylashishiga kafolat bermaydi. Barcha qarorlar va hujjat topshirish jarayonlari foydalanuvchi tomonidan mustaqil, o&#8216;z javobgarligi asosida amalga oshiriladi. Ijrochi taqdim etilgan ma&#8216;lumotlarning rasmiy davlat va elchixona manbalariga muvofiqligini ta&#8216;minlashga harakat qiladi, ammo ushbu manbalardagi o&#8216;zgarishlar uchun javobgar emas.</p>
-
-      <p><b>5. Firibgarlikka qarshi ogohlantirish</b><br>
-      Sayt firibgarlikning har qanday shakliga qarshi bo&#8216;lib, faqat rasmiy elchixona va davlat manbalaridan foydalanishni tavsiya etadi. &#8220;Viza olib beraman&#8221;, &#8220;termin sotaman&#8221; yoki &#8220;priglasheniya sotaman&#8221; deganlarga ishonmaslik va pul o&#8216;tkazmaslik tavsiya etiladi.</p>
-
-      <p><b>6. Pulni qaytarish</b><br>
-      Raqamli mahsulot xususiyatiga ko&#8216;ra (kirish darhol taqdim etiladi), to&#8216;lov amalga oshirilib, qo&#8216;llanmaga kirish berilgandan so&#8216;ng pul qaytarilmaydi. Texnik nosozlik (masalan, havola ishlamasligi) yuzaga kelgan holatlarda Telegram (<b>@Evropagoo</b>) orqali murojaat qilinishi va masala individual tartibda hal qilinishi mumkin.</p>
-
-      <p><b>7. Shartnomani qabul qilish</b><br>
-      Saytdan foydalanish va to&#8216;lovni amalga oshirish orqali foydalanuvchi ushbu Ommaviy oferta shartlariga to&#8216;liq rozi bo&#8216;lgan hisoblanadi.</p>
-
-      <p><b>8. Bog&#8216;lanish</b><br>
-      Barcha savol va murojaatlar uchun: Telegram &#8212; <b>@Evropagoo</b>.</p>
-    </div>
+    <div class="mhd"><h3 id="termsTitle">Foydalanuvchi shartnomasi</h3><button class="mcl" onclick="closeModal('termsOvl')">&#10005;</button></div>
+    <div class="mbd" id="termsBody" style="max-height:70vh;overflow-y:auto;font-size:13.5px;line-height:1.65;color:#333;"></div>
   </div>
 </div>
 <!-- ============ HUQUQIY MODALLAR TUGADI ============ -->
