@@ -912,8 +912,18 @@ nav{background:rgba(255,255,255,.97);border-bottom:1px solid #d0d9f0;padding:6px
             <button onclick="closeCv()" id="cvCloseBtn" style="background:#374151;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;">✕</button>
           </div>
           <button id="cvTranslateBtn" style="display:block;width:100%;background:linear-gradient(135deg,#0ea5e9,#38bdf8);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;">&#127760; Tarjima qilish</button>
-          <div style="font-size:10.5px;color:#94a3b8;margin-bottom:10px;line-height:1.5;">O'zbek yoki rus tilida to'ldiring, so'ng shu tugma orqali Google Tarjima yangi oynada avtomatik tanlangan davlat tiliga o'giradi.</div>
+          <div style="font-size:10.5px;color:#94a3b8;margin-bottom:10px;line-height:1.5;">O'zbek yoki rus tilida to'ldiring, so'ng shu tugma orqali sahifaning o'zida tanlangan davlat tiliga tarjima qilib ko'rsatamiz.</div>
           <div id="cvSheet" contenteditable="true" spellcheck="false" style="background:#ffffff;color:#000;border-radius:10px;padding:22px 20px;font-family:Arial,Helvetica,sans-serif;outline:none;"></div>
+        </div>
+      </div>
+      <div id="cvTranslateOvl" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10001;flex-direction:column;padding:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;background:#101F4A;border-radius:10px 10px 0 0;padding:10px 14px;">
+          <span style="color:#F2C14E;font-weight:800;font-size:13.5px;">&#127760; Tarjima</span>
+          <button onclick="closeCvTranslate()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;">&#10005;</button>
+        </div>
+        <iframe id="cvTranslateFrame" src="about:blank" style="flex:1;width:100%;border:none;background:#fff;"></iframe>
+        <div style="background:#fff;border-radius:0 0 10px 10px;padding:8px 12px;text-align:center;font-size:11.5px;">
+          Ko'rinmayapti yoki yuklanmayaptimi? <a id="cvTranslateFallback" href="#" target="_blank" style="color:#0077cc;font-weight:700;">Shu yerni bosib, yangi oynada oching &#8599;</a>
         </div>
       </div>
       <div id="fb"></div>
@@ -1712,6 +1722,15 @@ function applyLang(){
   renderFirms(ff2);
   renderNews2026();
   applyLegalLang();
+  // Agar CV oynasi ochiq bo'lsa, uni ham yangi tilga darhol yangilaymiz
+  try{
+    var cvM=document.getElementById("cvModal");
+    if(cvM && cvM.style.display==="block" && _lastCvFlt){
+      var tplKey2=CV_MAP[_lastCvFlt]||"en";
+      var cvOrigKey2=tplKey2==="pl"?"plN":tplKey2==="de"?"de":"en";
+      setEl("cvSheet",cvTpl(tplKey2,lang).replace(/\{O\}/g,origW(cvOrigKey2)));
+    }
+  }catch(e){}
 }
 function applyLegalLang(){
   var copy=lang==="ru"?"&#169; 2026 evropago.uz. Все права защищены.":lang==="en"?"&#169; 2026 evropago.uz. All rights reserved.":"&#169; 2026 evropago.uz. Barcha huquqlar himoyalangan.";
@@ -2770,27 +2789,53 @@ function renderJobSteps(flt){
 }
 var CV_SEC="font-size:13px;font-weight:700;border-bottom:1px solid #999;margin:14px 0 6px;letter-spacing:.5px;";
 var CV_BODY="font-size:12px;line-height:1.65;";
-var CV_TPL={
-pl:"<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[IMIĘ I NAZWISKO — Ism familiya]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Tel.: [+998 90 123 45 67] | E-mail: [email@mail.com] | Data urodzenia: [01.01.1995, kun.oy.yil]<br>Obywatelstwo: {O} | Miejsce zamieszkania: [Shahar nomi], {O}</div></div>"
-+"<div style='"+CV_SEC+"'>PROFIL ZAWODOWY (qisqa tanishtiruv, 2-3 gap)</div><div style='"+CV_BODY+"'>[Masalan: Tajribali qurilish ishchisi, 5 yillik tajriba, mehnatsevar va tez o'rganuvchi. Jamoada ishlashga va yangi muhitga moslashishga tayyor.]</div>"
-+"<div style='"+CV_SEC+"'>DOŚWIADCZENIE ZAWODOWE (ish tajribangiz, so'nggisidan boshlab)</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — [Lavozim nomi], [Korxona nomi], [Shahar]<br>• [Asosiy vazifa — 1-2 jumla, masalan: kunlik 20+ mahsulot yig'ish liniyasida ishladim]<br>• [Yutuq bo'lsa qo'shing — masalan: hech qanday jarohat holatisiz ishladim]<br><b>[2019 – 2022]</b> — [Lavozim nomi], [Korxona nomi], [Shahar]<br>• [Vazifalaringiz qisqacha]</div>"
-+"<div style='"+CV_SEC+"'>WYKSZTAŁCENIE (ta'lim)</div><div style='"+CV_BODY+"'>[Bitirgan yil] — [Maktab / kollej / universitet nomi], [Yo'nalish / mutaxassislik]</div>"
-+"<div style='"+CV_SEC+"'>UMIEJĘTNOŚCI (ko'nikmalar)</div><div style='"+CV_BODY+"'>• Języki (tillar): uzbecki (ojczysty / ona tili), rosyjski ([daraja: dobry/b.o'rtacha]), polski / angielski ([daraja])<br>• [Haydovchilik guvohnomasi kategoriyasi — masalan B, C]<br>• [Texnika/asbob bilan ishlash tajribasi bo'lsa yozing]<br>• Punktualność, pracowitość, szybkie uczenie się (vaqtga rioya, mehnatsevarlik, tez o'rganish)</div>"
-+"<div style='font-size:10px;color:#555;margin-top:16px;border-top:1px solid #ccc;padding-top:8px;'>Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niezbędnych do realizacji procesu rekrutacji.<br><i>(Ariza jarayoni uchun shaxsiy ma'lumotlarimni qayta ishlashga roziman.)</i></div>",
-de:"<div style='text-align:center;font-size:14px;font-weight:700;letter-spacing:2px;margin-bottom:8px;'>LEBENSLAUF</div>"
-+"<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[VORNAME NACHNAME — Ism familiya]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Telefon: [+998 90 123 45 67] | E-Mail: [email@mail.com] | Geburtsdatum: [01.01.1995, kun.oy.yil]<br>Staatsangehörigkeit: {O} | Wohnort: [Shahar nomi], {O}</div><div style='font-size:10px;color:#777;margin-top:4px;'>[Foto — o'ng yuqori burchakka 3,5×4,5 rasm qo'yish tavsiya etiladi]</div></div>"
-+"<div style='"+CV_SEC+"'>PROFIL (qisqa tanishtiruv, 2-3 gap)</div><div style='"+CV_BODY+"'>[Masalan: Tajribali qurilish ishchisi, 5 yillik tajriba, mehnatsevar va tez o'rganuvchi. Jamoada ishlashga tayyor.]</div>"
-+"<div style='"+CV_SEC+"'>BERUFSERFAHRUNG (ish tajribangiz, so'nggisidan boshlab)</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — [Lavozim nomi], [Korxona nomi], [Shahar]<br>• [Asosiy vazifa — 1-2 jumla]<br>• [Yutuq bo'lsa qo'shing]<br><b>[2019 – 2022]</b> — [Lavozim nomi], [Korxona nomi]<br>• [Vazifalaringiz qisqacha]</div>"
-+"<div style='"+CV_SEC+"'>AUSBILDUNG (ta'lim)</div><div style='"+CV_BODY+"'>[Bitirgan yil] — [Maktab / kollej / universitet nomi], [Yo'nalish / mutaxassislik]</div>"
-+"<div style='"+CV_SEC+"'>KENNTNISSE (ko'nikmalar)</div><div style='"+CV_BODY+"'>• Sprachen (tillar): Usbekisch (Muttersprache / ona tili), Russisch ([daraja]), Deutsch / Englisch ([daraja])<br>• [Führerschein Klasse B / C — haydovchilik guvohnomasi bo'lsa]<br>• [Texnika/asbob bilan ishlash tajribasi bo'lsa yozing]<br>• Pünktlichkeit, Fleiß, schnelles Lernen (vaqtga rioya, mehnatsevarlik, tez o'rganish)</div>"
-+"<div style='font-size:11px;margin-top:16px;'>[Shahar], [Sana] &nbsp;&nbsp;&nbsp; [Imzo — Unterschrift]</div>",
-en:"<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[FULL NAME — Ism familiya]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Phone: [+998 90 123 45 67] | Email: [email@mail.com] | Date of birth: [01.01.1995, kun.oy.yil]<br>Nationality: {O} | Location: [Shahar nomi], {O}</div></div>"
-+"<div style='"+CV_SEC+"'>PROFESSIONAL PROFILE (qisqa tanishtiruv, 2-3 gap)</div><div style='"+CV_BODY+"'>[Masalan: Experienced construction worker with 5 years of experience, hardworking and a fast learner, ready to work in a team.]</div>"
-+"<div style='"+CV_SEC+"'>WORK EXPERIENCE (ish tajribangiz, so'nggisidan boshlab)</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — [Lavozim nomi], [Korxona nomi], [Shahar]<br>• [Asosiy vazifa — 1-2 jumla]<br>• [Yutuq bo'lsa qo'shing]<br><b>[2019 – 2022]</b> — [Lavozim nomi], [Korxona nomi]<br>• [Vazifalaringiz qisqacha]</div>"
-+"<div style='"+CV_SEC+"'>EDUCATION (ta'lim)</div><div style='"+CV_BODY+"'>[Bitirgan yil] — [Maktab / kollej / universitet nomi], [Yo'nalish / mutaxassislik]</div>"
-+"<div style='"+CV_SEC+"'>SKILLS (ko'nikmalar)</div><div style='"+CV_BODY+"'>• Languages (tillar): Uzbek (native / ona tili), Russian ([daraja]), English ([daraja])<br>• [Driving licence category B / C — haydovchilik guvohnomasi bo'lsa]<br>• [Texnika/asbob bilan ishlash tajribasi bo'lsa yozing]<br>• Punctual, hardworking, fast learner (vaqtga rioya, mehnatsevarlik, tez o'rganish)</div>"
+var CV_HINTS={
+uz:{name:"Ism familiya",city:"Shahar nomi",dob:"kun.oy.yil",photo:"Foto — o'ng yuqori burchakka 3,5×4,5 rasm qo'yish tavsiya etiladi",
+profileLabel:"qisqa tanishtiruv, 2-3 gap",profileEx:"Masalan: Tajribali qurilish ishchisi, 5 yillik tajriba, mehnatsevar va tez o'rganuvchi. Jamoada ishlashga tayyor.",
+expLabel:"ish tajribangiz, so'nggisidan boshlab",position:"Lavozim nomi",company:"Korxona nomi",city2:"Shahar",task:"Asosiy vazifa — 1-2 jumla",achievement:"Yutuq bo'lsa qo'shing",duties:"Vazifalaringiz qisqacha",
+eduLabel:"ta'lim",gradYear:"Bitirgan yil",school:"Maktab / kollej / universitet nomi",major:"Yo'nalish / mutaxassislik",
+skillsLabel:"ko'nikmalar",langLabel:"tillar",native:"ona tili",level:"daraja",license:"Haydovchilik guvohnomasi kategoriyasi — masalan B, C",equipment:"Texnika/asbob bilan ishlash tajribasi bo'lsa yozing",traits:"vaqtga rioya, mehnatsevarlik, tez o'rganish",
+consent:"Ariza jarayoni uchun shaxsiy ma'lumotlarimni qayta ishlashga roziman."},
+ru:{name:"Имя Фамилия",city:"Название города",dob:"день.месяц.год",photo:"Фото — рекомендуется разместить в правом верхнем углу, 3,5×4,5",
+profileLabel:"краткое представление, 2-3 предложения",profileEx:"Например: Опытный строительный рабочий, 5 лет опыта, трудолюбивый и быстро обучаемый. Готов работать в команде.",
+expLabel:"ваш опыт работы, начиная с последнего места",position:"Название должности",company:"Название компании",city2:"Город",task:"Основная задача — 1-2 предложения",achievement:"Добавьте достижение, если есть",duties:"Кратко об обязанностях",
+eduLabel:"образование",gradYear:"Год окончания",school:"Название школы / колледжа / университета",major:"Направление / специальность",
+skillsLabel:"навыки",langLabel:"языки",native:"родной язык",level:"уровень",license:"Категория водительских прав — например B, C",equipment:"Укажите опыт работы с техникой/инструментами, если есть",traits:"пунктуальность, трудолюбие, быстрая обучаемость",
+consent:"Даю согласие на обработку моих персональных данных для целей процесса приёма на работу."},
+en:{name:"Full name",city:"City name",dob:"day.month.year",photo:"Photo — recommended in the top-right corner, 3.5×4.5",
+profileLabel:"short introduction, 2-3 sentences",profileEx:"Example: Experienced construction worker with 5 years of experience, hardworking and a fast learner, ready to work in a team.",
+expLabel:"your work experience, most recent first",position:"Job title",company:"Company name",city2:"City",task:"Main task — 1-2 sentences",achievement:"Add an achievement if you have one",duties:"Brief responsibilities",
+eduLabel:"education",gradYear:"Graduation year",school:"School / college / university name",major:"Field of study",
+skillsLabel:"skills",langLabel:"languages",native:"native",level:"level",license:"Driving licence category — e.g. B, C",equipment:"Mention equipment/tools experience if you have any",traits:"punctuality, hard work, fast learning",
+consent:"I consent to the processing of my personal data for recruitment purposes."}
 };
+function cvTpl(tplKey,uiLang){
+  var h=CV_HINTS[uiLang]||CV_HINTS.uz;
+  if(tplKey==="pl"){
+    return "<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[IMIĘ I NAZWISKO — "+h.name+"]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Tel.: [+998 90 123 45 67] | E-mail: [email@mail.com] | Data urodzenia: [01.01.1995, "+h.dob+"]<br>Obywatelstwo: {O} | Miejsce zamieszkania: ["+h.city+"], {O}</div></div>"
+    +"<div style='"+CV_SEC+"'>PROFIL ZAWODOWY ("+h.profileLabel+")</div><div style='"+CV_BODY+"'>["+h.profileEx+"]</div>"
+    +"<div style='"+CV_SEC+"'>DOŚWIADCZENIE ZAWODOWE ("+h.expLabel+")</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — ["+h.position+"], ["+h.company+"], ["+h.city2+"]<br>• ["+h.task+"]<br>• ["+h.achievement+"]<br><b>[2019 – 2022]</b> — ["+h.position+"], ["+h.company+"]<br>• ["+h.duties+"]</div>"
+    +"<div style='"+CV_SEC+"'>WYKSZTAŁCENIE ("+h.eduLabel+")</div><div style='"+CV_BODY+"'>["+h.gradYear+"] — ["+h.school+"], ["+h.major+"]</div>"
+    +"<div style='"+CV_SEC+"'>UMIEJĘTNOŚCI ("+h.skillsLabel+")</div><div style='"+CV_BODY+"'>• Języki ("+h.langLabel+"): uzbecki (ojczysty / "+h.native+"), rosyjski (["+h.level+"]), polski / angielski (["+h.level+"])<br>• ["+h.license+"]<br>• ["+h.equipment+"]<br>• Punktualność, pracowitość, szybkie uczenie się ("+h.traits+")</div>"
+    +"<div style='font-size:10px;color:#555;margin-top:16px;border-top:1px solid #ccc;padding-top:8px;'>Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niezbędnych do realizacji procesu rekrutacji.<br><i>("+h.consent+")</i></div>";
+  }
+  if(tplKey==="de"){
+    return "<div style='text-align:center;font-size:14px;font-weight:700;letter-spacing:2px;margin-bottom:8px;'>LEBENSLAUF</div>"
+    +"<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[VORNAME NACHNAME — "+h.name+"]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Telefon: [+998 90 123 45 67] | E-Mail: [email@mail.com] | Geburtsdatum: [01.01.1995, "+h.dob+"]<br>Staatsangehörigkeit: {O} | Wohnort: ["+h.city+"], {O}</div><div style='font-size:10px;color:#777;margin-top:4px;'>["+h.photo+"]</div></div>"
+    +"<div style='"+CV_SEC+"'>PROFIL ("+h.profileLabel+")</div><div style='"+CV_BODY+"'>["+h.profileEx+"]</div>"
+    +"<div style='"+CV_SEC+"'>BERUFSERFAHRUNG ("+h.expLabel+")</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — ["+h.position+"], ["+h.company+"], ["+h.city2+"]<br>• ["+h.task+"]<br>• ["+h.achievement+"]<br><b>[2019 – 2022]</b> — ["+h.position+"], ["+h.company+"]<br>• ["+h.duties+"]</div>"
+    +"<div style='"+CV_SEC+"'>AUSBILDUNG ("+h.eduLabel+")</div><div style='"+CV_BODY+"'>["+h.gradYear+"] — ["+h.school+"], ["+h.major+"]</div>"
+    +"<div style='"+CV_SEC+"'>KENNTNISSE ("+h.skillsLabel+")</div><div style='"+CV_BODY+"'>• Sprachen ("+h.langLabel+"): Usbekisch (Muttersprache / "+h.native+"), Russisch (["+h.level+"]), Deutsch / Englisch (["+h.level+"])<br>• [Führerschein Klasse B / C — "+h.license+"]<br>• ["+h.equipment+"]<br>• Pünktlichkeit, Fleiß, schnelles Lernen ("+h.traits+")</div>";
+  }
+  // en (fallback for most other countries)
+  return "<div style='text-align:center;border-bottom:2px solid #333;padding-bottom:10px;margin-bottom:6px;'><div style='font-size:20px;font-weight:700;letter-spacing:1px;'>[FULL NAME — "+h.name+"]</div><div style='font-size:12px;margin-top:6px;line-height:1.6;'>Phone: [+998 90 123 45 67] | Email: [email@mail.com] | Date of birth: [01.01.1995, "+h.dob+"]<br>Nationality: {O} | Location: ["+h.city+"], {O}</div></div>"
+  +"<div style='"+CV_SEC+"'>PROFESSIONAL PROFILE ("+h.profileLabel+")</div><div style='"+CV_BODY+"'>["+h.profileEx+"]</div>"
+  +"<div style='"+CV_SEC+"'>WORK EXPERIENCE ("+h.expLabel+")</div><div style='"+CV_BODY+"'><b>[2022 – 2025]</b> — ["+h.position+"], ["+h.company+"], ["+h.city2+"]<br>• ["+h.task+"]<br>• ["+h.achievement+"]<br><b>[2019 – 2022]</b> — ["+h.position+"], ["+h.company+"]<br>• ["+h.duties+"]</div>"
+  +"<div style='"+CV_SEC+"'>EDUCATION ("+h.eduLabel+")</div><div style='"+CV_BODY+"'>["+h.gradYear+"] — ["+h.school+"], ["+h.major+"]</div>"
+  +"<div style='"+CV_SEC+"'>SKILLS ("+h.skillsLabel+")</div><div style='"+CV_BODY+"'>• Languages ("+h.langLabel+"): Uzbek (native / "+h.native+"), Russian (["+h.level+"]), English (["+h.level+"])<br>• [Driving licence category B / C — "+h.license+"]<br>• ["+h.equipment+"]<br>• Punctual, hardworking, fast learner ("+h.traits+")</div>";
+}
 var CV_MAP={pl:"pl",de:"de",at:"de",nl:"en",se:"en",cz:"en",sk:"en",hu:"en",it:"en",es:"en",fr:"en",be:"en",no:"en",lt:"en",fi:"en",pt:"en",gr:"en",ro:"en",hr:"en",si:"en",all:"en"};
+var _lastCvFlt=null;
 // Google Translate uchun har bir davlatning to'g'ri til kodi (shablon tilidan farqli bo'lishi mumkin)
 var CV_TRANSLATE_LANG={pl:"pl",de:"de",at:"de",nl:"nl",se:"sv",cz:"cs",sk:"sk",hu:"hu",it:"it",es:"es",fr:"fr",be:"fr",no:"no",lt:"lt",fi:"fi",pt:"pt",gr:"el",ro:"ro",hr:"hr",si:"sl",bg:"bg",ee:"et",dk:"da",lv:"lv",all:"en"};
 function cvTranslate(flt){
@@ -2799,11 +2844,23 @@ function cvTranslate(flt){
   var target=CV_TRANSLATE_LANG[flt]||"en";
   var srcLang=lang==="ru"?"ru":lang==="en"?"en":"uz";
   var url="https://translate.google.com/?sl="+srcLang+"&tl="+target+"&text="+encodeURIComponent(txt)+"&op=translate";
-  window.open(url,"_blank");
+  var ov=document.getElementById("cvTranslateOvl");
+  var fr=document.getElementById("cvTranslateFrame");
+  var fb=document.getElementById("cvTranslateFallback");
+  if(fr) fr.src=url;
+  if(fb) fb.href=url;
+  if(ov) ov.style.display="flex";
+}
+function closeCvTranslate(){
+  var ov=document.getElementById("cvTranslateOvl");
+  var fr=document.getElementById("cvTranslateFrame");
+  if(fr) fr.src="about:blank";
+  if(ov) ov.style.display="none";
 }
 function openCv(flt){
   if(!hasAccess){goScreen("sc-pay");return;}
   var m=document.getElementById("cvModal");if(!m)return;
+  _lastCvFlt=flt;
   var T=JOBSTEPS_TXT[lang]||JOBSTEPS_TXT.uz;
   var countryName=JOBSTEPS[flt]?(JOBSTEPS[flt].name[lang]||JOBSTEPS[flt].name.uz):"";
   var translateLbl=lang==="ru"?"\uD83C\uDF10 Перевести на "+(countryName||"язык страны"):lang==="en"?"\uD83C\uDF10 Translate to "+(countryName||"country language"):"\uD83C\uDF10 "+(countryName||"Davlat tili")+"ga tarjima qilish";
@@ -2813,7 +2870,7 @@ function openCv(flt){
   if(tBtn){tBtn.innerHTML=translateLbl;tBtn.onclick=function(){cvTranslate(flt);};}
   var tplKey=CV_MAP[flt]||"en";
   var cvOrigKey=tplKey==="pl"?"plN":tplKey==="de"?"de":"en";
-  setEl("cvSheet",CV_TPL[tplKey].replace(/\{O\}/g,origW(cvOrigKey)));
+  setEl("cvSheet",cvTpl(tplKey,lang).replace(/\{O\}/g,origW(cvOrigKey)));
   m.style.display="block";
 }
 function closeCv(){var m=document.getElementById("cvModal");if(m)m.style.display="none";}
@@ -5380,7 +5437,7 @@ function renderWageCompare(){
   var rows=[
     ["&#127463;&#127468; Bolgariya","1,213 BGN/oy (~€620)"],
     ["&#127470;&#127481; Italiya","shartnoma bo'yicha (kollektiv shartnomaga qarab)"],
-    ["&#127467;&#127466; Germaniya","€13.90/soat"],
+    ["&#127465;&#127466; Germaniya","€13.90/soat"],
     ["&#127469;&#127479; Fransiya","~€1,802/oy (SMIC)"],
     ["&#127477;&#127473; Polsha","~4,806 PLN/oy (~€1,120)"]
   ];
