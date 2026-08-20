@@ -1151,7 +1151,13 @@ function activateToken(token){
   return fetch("/api/activate?token="+encodeURIComponent(token)+"&device="+encodeURIComponent(dev))
     .then(function(r){return r.json();})
     .then(function(d){return !!(d&&d.ok);})
-    .catch(function(){return false;});
+    .catch(function(){
+      // MUHIM: tarmoq/server bilan bog'lanib bo'lmasa (sekin internet, vaqtinchalik
+      // uzilish va h.k.), buni "boshqa qurilmada ishlatilgan" deb talqin qilmaymiz —
+      // aks holda sekin internetli haqiqiy mijozlar noto'g'ri bloklanib qolishi mumkin.
+      // null qaytaramiz: "server javob bermadi", "rad etildi" emas.
+      return null;
+    });
 }
 
 // Qurilma bloki faqat shu sanadan KEYIN yaratilgan tokenlarga qo'llanadi.
@@ -1255,7 +1261,7 @@ function activateManualToken(){
   }
   toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
   activateToken(token).then(function(ok){
-    if(!ok&&!isLegacyToken(token)){
+    if(ok===false&&!isLegacyToken(token)){
       toast(lang==="ru"?"Эта ссылка уже использована на другом устройстве. Обратитесь в поддержку: @Evropagoo":lang==="en"?"This link has already been used on another device. Contact support: @Evropagoo":"Bu token boshqa qurilmada allaqachon ishlatilgan. Yordam uchun murojaat qiling: @Evropagoo");
       return;
     }
@@ -3101,6 +3107,7 @@ function moderateReview(id,action){
 
 // INIT
 var tokenInUrl=false;
+var orderCheckInProgress=false;
 try{
   var _tp=new URLSearchParams(window.location.search);
   var _tt=_tp.get("token");
@@ -3129,12 +3136,15 @@ try{
       goScreen("sc-pay");
       toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
       activateToken(_tt).then(function(ok){
-        if(ok||isLegacyToken(_tt)){
+        if(ok||isLegacyToken(_tt)||ok===null){
+          // ok===null: server bilan bog'lanib bo'lmadi (tarmoq muammosi) —
+          // haqiqiy mijozni bloklamaslik uchun kirishga ruxsat beramiz.
           setS();
           hasAccess=true;
           goScreen("sc-app"); enterGuide();
+          if(ok===null){toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e \u043e\u0444\u043b\u0430\u0439\u043d, \u0441\u0432\u044f\u0437\u044c \u0441\u043b\u0430\u0431\u0430\u044f":lang==="en"?"Verified offline, weak connection":"Bog'lanish sekin — offlayn tasdiqlandi");}
         } else {
-          // Qurilma bloki: token boshqa qurilmada allaqachon faollashtirilgan — kirish rad etiladi.
+          // Qurilma bloki: server ANIQ "band" deb javob berdi (tarmoq xatosi emas) — kirish rad etiladi.
           hasAccess=false;
           goScreen("sc-pay");
           toast(lang==="ru"?"Эта ссылка уже использована на другом устройстве. Обратитесь в поддержку: @Evropagoo":lang==="en"?"This link has already been used on another device. Contact support: @Evropagoo":"Bu havola boshqa qurilmada allaqachon ishlatilgan. Yordam uchun murojaat qiling: @Evropagoo");
@@ -3148,11 +3158,13 @@ try{
       goScreen("sc-app"); enterGuide();
     } else {
       // Click to'lovidan qaytdi — serverdan tekshiramiz
+      orderCheckInProgress=true;
       goScreen("sc-pay");
       var _cbox=document.getElementById("checkingBox");
       if(_cbox) _cbox.style.display="block";
       toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":"Tekshirilmoqda...");
       checkPaidRetry(_ord).then(function(paid){
+        orderCheckInProgress=false;
         if(_cbox) _cbox.style.display="none";
         if(paid){
           // Server tasdiqladi — localStorage ga yozamiz
@@ -3188,6 +3200,9 @@ if(tokenInUrl && !hasAccess){
   goScreen("sc-pay");
   // Eslatma: actBox/activate() endi bu yerda ko'rsatilmaydi —
   // token tekshiruvi to'liq activateToken() orqali server tomonda amalga oshadi.
+} else if(orderCheckInProgress){
+  // Click to'lovidan qaytib, tekshiruv hali fon rejimida ketmoqda —
+  // ekranni sc-pay'da qoldiramiz, bosh sahifaga qaytarib yubormaymiz.
 } else if(hasAccess){
   // localStorage orqali kirish allaqachon tasdiqlangan (yuqorida) — sc-app'da qolamiz
 } else if(savedOrig){
