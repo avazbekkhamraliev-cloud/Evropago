@@ -184,7 +184,7 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
 .pay-cn{font-size:16px;font-weight:900;color:var(--tx);}
 .pay-body{padding:16px;}
 .pay-price-box{background:#f0f4ff;border:1px solid #c0cfe0;border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;}
-.pay-price{font-size:30px;font-weight:900;color:var(--tx);}
+.pay-price{font-size:30px;font-weight:900;color:#101F4A;}
 .pay-once{font-size:12px;color:var(--grn);margin-top:3px;}
 .pmeths{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0;}
 .pm{background:var(--c2);border:1px solid var(--bd);border-radius:7px;padding:8px 4px;text-align:center;cursor:pointer;}
@@ -324,22 +324,22 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
 #sc-life .el-card:active{transform:scale(.98)}
 #sc-life .el-card .el-flag{font-size:2rem}
 #sc-life .el-card .el-meta{flex:1}
-#sc-life .el-card .el-meta h3{font-size:1.05rem;font-weight:700;margin:0}
+#sc-life .el-card .el-meta h3{font-size:1.05rem;font-weight:700;margin:0;color:#1a1a2e;}
 #sc-life .el-card .el-meta p{font-size:.8rem;color:#6b7280;margin:0}
 #sc-life .el-chip{font-size:.65rem;font-weight:700;letter-spacing:1px;color:#101F4A;border:1.5px dashed #F2C14E;border-radius:6px;padding:6px 8px;text-transform:uppercase}
 #sc-life .el-card.soon{opacity:.55;cursor:default}
 #sc-life .el-card.soon .el-chip{border-color:#D9D6CC;color:#9ca3af}
 #sc-life .el-country{display:none;max-width:520px;margin:0 auto;padding:20px 16px 60px}
 #sc-life .el-country.active{display:block}
-#sc-life .el-back{background:none;border:none;color:#101F4A;font-weight:600;font-size:.9rem;margin-bottom:14px;cursor:pointer}
+#sc-life .el-back{background:none;border:none;color:var(--tx);font-weight:600;font-size:.9rem;margin-bottom:14px;cursor:pointer}
 #sc-life .el-chead{display:flex;align-items:center;gap:12px;margin-bottom:18px}
 #sc-life .el-chead .el-flag{font-size:2.4rem}
 #sc-life .el-chead h2{font-size:1.3rem;margin:0}
-#sc-life .el-chead small{color:#6b7280}
+#sc-life .el-chead small{color:var(--mt);}
 #sc-life .el-sec{background:#fff;border:1px solid #D9D6CC;border-radius:12px;margin-bottom:12px;overflow:hidden}
 #sc-life .el-shead{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer}
 #sc-life .el-shead .el-icon{font-size:1.2rem}
-#sc-life .el-shead h4{flex:1;font-size:.95rem;margin:0}
+#sc-life .el-shead h4{flex:1;font-size:.95rem;margin:0;color:#1a1a2e;}
 #sc-life .el-tag{font-size:.65rem;font-weight:700;border-radius:5px;padding:3px 8px;text-transform:uppercase;letter-spacing:.5px}
 #sc-life .el-tag.free{background:#E7F5EE;color:#2E8B57}
 #sc-life .el-tag.pro{background:#FBF0D9;color:#9A7B1F}
@@ -1508,7 +1508,7 @@ var FIRMS=[
   {c:"fr",cn:"",i:"&#128188;",n:"HelloWork.com",d:{ru:"Крупнейший частный сайт вакансий Франции (950,000+ предложений).",uz:"Fransiyaning eng yirik xususiy ish sayti (950,000+ vakansiya).",en:"France's largest private job site (950,000+ listings)."},free:false,s:"hellowork.com"},
   {c:"be",cn:"",i:"&#128188;",n:"StepStone.be",d:{ru:"Крупный сайт вакансий Бельгии.",uz:"Belgiyadagi yirik vakansiyalar sayti.",en:"Major job site in Belgium."},free:false,s:"stepstone.be"},
   {c:"it",cn:"",i:"&#128188;",n:"Jooble.it",d:{ru:"Крупный агрегатор вакансий (InfoJobs.it и старый Subito Lavoro закрыты/недоступны).",uz:"Yirik vakansiyalar agregatori (InfoJobs.it yopilgan, Subito Lavoro ba'zi hududlarda ochilmasligi mumkin).",en:"Large job aggregator (InfoJobs.it closed, old Subito Lavoro may be blocked in some regions)."},free:false,s:"it.jooble.org"},
-  {c:"it",cn:"",i:"&#127760;",n:"Decreto Flussi — qo'llanma",d:{ru:"Подробное объяснение системы квот — 2027: 165 850 мест, Узбекистан в списке.",uz:"Kvota tizimining batafsil tushuntirilishi — 2027: 165,850 o'rin, O'zbekiston ro'yxatda.",en:"Detailed explanation of the quota system — 2027: 165,850 spots, Uzbekistan on the list."},free:false,s:"www.portalemigranti.it/2026/04/03/decreto-flussi-2026-tutto-quello-che-devi-sapere-su-click-day-quote-e-requisiti/",isNew:true},
+  {c:"it",cn:"",i:"&#127760;",n:"InfoMigrants — Decreto Flussi",d:{ru:"Подробное объяснение системы квот — 2026\u20132028: 497,550 мест, Узбекистан в списке.",uz:"Kvota tizimining batafsil tushuntirilishi — 2026\u20132028: 497,550 o'rin, O'zbekiston ro'yxatda.",en:"Detailed explanation of the quota system — 2026\u20132028: 497,550 spots, Uzbekistan on the list."},free:false,s:"www.infomigrants.net/en/post/68411/explainer-italys-20262028-flow-decree-decreto-flussi",isNew:true},
   {c:"es",cn:"",i:"&#128188;",n:"InfoJobs.net",d:{ru:"Крупнейший сайт вакансий Испании.",uz:"Ispaniyaning eng yirik ish sayti.",en:"Spain's largest job site."},free:false,s:"infojobs.net"},
   {c:"pt",cn:"",i:"&#128188;",n:"Net-Empregos",d:{ru:"Крупнейший сайт вакансий Португалии.",uz:"Portugaliyaning eng yirik ish sayti.",en:"Portugal's largest job site."},free:false,s:"net-empregos.com"},
   {c:"gr",cn:"",i:"&#128188;",n:"Kariera.gr",d:{ru:"Ведущий сайт вакансий Греции.",uz:"Gretsiyaning yetakchi ish sayti.",en:"Greece's leading job site."},free:false,s:"kariera.gr"},
