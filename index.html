@@ -3204,7 +3204,9 @@ if(tokenInUrl && !hasAccess){
   // Click to'lovidan qaytib, tekshiruv hali fon rejimida ketmoqda —
   // ekranni sc-pay'da qoldiramiz, bosh sahifaga qaytarib yubormaymiz.
 } else if(hasAccess){
-  // localStorage orqali kirish allaqachon tasdiqlangan (yuqorida) — sc-app'da qolamiz
+  // localStorage orqali kirish allaqachon tasdiqlangan — to'g'ridan-to'g'ri ilovaga kiritamiz,
+  // Bosh sahifada qoldirib, mijozni qayta tanlov qilishga majburlamaymiz.
+  goScreen("sc-app"); enterGuide();
 } else if(savedOrig){
   goScreen("sc-welcome");
 } else {
