@@ -1005,8 +1005,8 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
         </div>
         <button class="act-btn" onclick="payClick()" id="payBtn" style="width:100%;background:linear-gradient(135deg,#00aaff,#0077cc);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:8px;">&#128179; Click orqali to'lash</button>
         <div id="recheckBox" style="display:none;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px;margin-bottom:10px;text-align:center;">
-          <div style="font-size:12px;color:#92400e;margin-bottom:8px;line-height:1.5;" id="recheckHint">To'lov qildingizmi? Ba'zan tasdiqlash bir necha daqiqa vaqt olishi mumkin — qayta to'lamang, shu tugmani bosing:</div>
-          <button onclick="recheckPayment()" id="recheckBtn" style="background:#101F4A;color:#F2C14E;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;">&#128260; To'lovni qayta tekshirish</button>
+          <div style="font-size:22px;margin-bottom:6px;">&#9203;</div>
+          <div style="font-size:12px;color:#92400e;line-height:1.5;" id="recheckHint">To'lov qildingizmi? Tasdiqlash avtomatik tekshirilmoqda — bir necha daqiqa vaqt olishi mumkin, sahifani ochiq qoldiring. Qayta to'lamang.</div>
         </div>
         <div onclick="payClickHelp()" id="clickHelpLink" style="text-align:center;font-size:12px;color:#229ED9;font-weight:700;cursor:pointer;margin-bottom:10px;text-decoration:underline;">&#10067; Yordam kerakmi?</div>
         </div>
@@ -1220,6 +1220,29 @@ function goScreen(id){
       setEl("cardStep1",lang==="ru"?"1. Переведите <b>99 000 сум</b> на карту:":lang==="en"?"1. Transfer <b>29,900 UZS</b> to this card:":"1. Quyidagi kartaga <b>99 000 so'm</b> o'tkazing:");
       setEl("cardStep2",lang==="ru"?"2. После оплаты отправьте чек в Telegram — пришлём доступ:":lang==="en"?"2. After payment, send the receipt to Telegram — we'll send the link:":"2. To'lagach, chek rasmini Telegram'ga yuboring — havola beramiz:");
     }catch(e){}
+    // Agar tasdiqlanmagan (lekin hali "muddati o'tmagan") buyurtma localStorage'da qolgan bo'lsa —
+    // mijoz Click'dan qanday qaytganidan qat'i nazar (?order= bo'lmasa ham), avtomatik fon
+    // rejimidagi tekshiruvni ishga tushiramiz — hech qanday tugma bosish shart emas.
+    try{
+      if(!hasAccess && !orderCheckInProgress){
+        var _pO=null,_pT=0;
+        try{_pO=localStorage.getItem("eg_order");_pT=parseInt(localStorage.getItem("eg_order_ts")||"0",10);}catch(e){}
+        var _rb=document.getElementById("recheckBox");
+        if(_pO && _pT && (Date.now()-_pT) < 24*60*60*1000){
+          if(_rb)_rb.style.display="block";
+          startPendingPoll(_pO);
+        } else {
+          if(_rb)_rb.style.display="none";
+          stopPendingPoll();
+        }
+      } else {
+        stopPendingPoll();
+      }
+    }catch(e){}
+  } else {
+    // Boshqa ekranga o'tildi — lekin agar hali tasdiqlanmagan buyurtma bo'lsa,
+    // fon tekshiruvini TO'XTATMAYMIZ: mijoz "Orqaga" bosib boshqa joyni ko'rib yursa ham,
+    // to'lov tasdiqlangan zahoti avtomatik kirish ochilishi kerak.
   }
 }
 window.addEventListener("popstate",function(e){
@@ -1732,8 +1755,7 @@ function applyLang(){
   setEl("rankBtnLbl",lang==="ru"?"С какой страны получить визу быстрее?":lang==="en"?"Which country is fastest for a visa?":"Qaysi davlatdan viza olish tezroq?");
   setEl("fraudBtnLbl",lang==="ru"?"Осторожно, мошенники":lang==="en"?"Beware of scammers":"Firibgarlardan ehtiyot bo'ling");
   setEl("actNote",t.actNote);setEl("actBtn",t.actBtn);setEl("payBack",t.payBack);
-  setEl("recheckHint",lang==="ru"?"Вы уже оплатили? Иногда подтверждение занимает пару минут — не платите повторно, нажмите эту кнопку:":lang==="en"?"Already paid? Confirmation can sometimes take a couple of minutes — don't pay again, just tap this button:":"To'lov qildingizmi? Ba'zan tasdiqlash bir necha daqiqa vaqt olishi mumkin — qayta to'lamang, shu tugmani bosing:");
-  setEl("recheckBtn",lang==="ru"?"\ud83d\udd04 Перепроверить оплату":lang==="en"?"\ud83d\udd04 Recheck payment":"\ud83d\udd04 To'lovni qayta tekshirish");
+  setEl("recheckHint",lang==="ru"?"Вы уже оплатили? Подтверждение проверяется автоматически — это может занять пару минут, оставьте страницу открытой. Не платите повторно.":lang==="en"?"Already paid? Confirmation is being checked automatically — this can take a couple of minutes, keep the page open. Don't pay again.":"To'lov qildingizmi? Tasdiqlash avtomatik tekshirilmoqda — bir necha daqiqa vaqt olishi mumkin, sahifani ochiq qoldiring. Qayta to'lamang.");
   setEl("checkingTitle",lang==="ru"?"Проверка оплаты...":lang==="en"?"Checking payment...":"To'lov tekshirilmoqda...");
   setEl("checkingSub",lang==="ru"?"Это может занять от нескольких секунд до 2 минут. Не закрывайте страницу.":lang==="en"?"This can take a few seconds up to 2 minutes. Don't close the page.":"Bu bir necha soniyadan 2 daqiqagacha davom etishi mumkin. Sahifani yopmang.");
   // Chet el / Telegram tugmasi tarjimalari
@@ -2256,42 +2278,69 @@ function selPm(id){
 // === CLICK TO'LOV ===
 var CLICK_SERVICE_ID="104256", CLICK_MERCHANT_ID="61650";
 function payClick(){
+  var amount=99000; // 1 davlat tarifi
+  function _goPay(orderId){
+    // GA: to'lov boshlandi (Click)
+    try{gtag('event','begin_checkout',{currency:'UZS',value:amount,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+    // return_url: origin aniq bo'lmasa (preview/null) evropago.uz ishlatamiz
+    var origin=location.origin;
+    if(!origin||origin==="null"||origin.indexOf("http")!==0){origin="https://evropago.uz";}
+    var ret=encodeURIComponent(origin+"/?order="+orderId);
+    var url="https://my.click.uz/services/pay?service_id="+CLICK_SERVICE_ID+"&merchant_id="+CLICK_MERCHANT_ID+"&amount="+amount+"&transaction_param="+orderId+"&return_url="+ret;
+    // MUHIM: Click sahifasi SHU OYNANING O'ZIDA ochilishi shart — aks holda
+    // to'lovdan keyin return_url boshqa (yangi) oynaga qaytadi va asosiy sahifa
+    // hech qachon "?order=" parametrini ko'rmaydi, avtomatik tekshirish ishlamay qoladi.
+    try{
+      location.href=url;
+    }catch(e){
+      // Zaxira variant: agar biror sababdan location.href ishlamasa
+      var a=document.createElement("a");
+      a.href=url;
+      a.rel="noopener";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+  function _newOrderAndPay(){
+    var orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
+    try{localStorage.setItem("eg_order",orderId);localStorage.setItem("eg_order_ts",Date.now().toString());localStorage.setItem("eg_recheck_count","0");}catch(e){}
+    _goPay(orderId);
+  }
   // Bir xil order ID'ni qayta ishlatamiz (30 daqiqagacha) — agar mijoz tugmani
   // bir necha marta bossa ham, to'lov bitta ID'ga bog'lanib qoladi va "yo'qolib qolmaydi".
-  var orderId=null;
+  var savedOrder=null, savedTs=0;
   try{
-    var savedOrder=localStorage.getItem("eg_order");
-    var savedTs=parseInt(localStorage.getItem("eg_order_ts")||"0",10);
-    if(savedOrder && savedTs && (Date.now()-savedTs) < 30*60*1000){
-      orderId=savedOrder;
-    }
+    savedOrder=localStorage.getItem("eg_order");
+    savedTs=parseInt(localStorage.getItem("eg_order_ts")||"0",10);
   }catch(e){}
-  if(!orderId){
-    orderId="eg"+Date.now()+Math.floor(Math.random()*1000);
-    try{localStorage.setItem("eg_order",orderId);localStorage.setItem("eg_order_ts",Date.now().toString());localStorage.setItem("eg_recheck_count","0");}catch(e){}
+  if(savedOrder && savedTs && (Date.now()-savedTs) < 30*60*1000){
+    _goPay(savedOrder);
+    return;
   }
-  var amount=99000; // 1 davlat tarifi
-  // GA: to'lov boshlandi (Click)
-  try{gtag('event','begin_checkout',{currency:'UZS',value:amount,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
-  // return_url: origin aniq bo'lmasa (preview/null) evropago.uz ishlatamiz
-  var origin=location.origin;
-  if(!origin||origin==="null"||origin.indexOf("http")!==0){origin="https://evropago.uz";}
-  var ret=encodeURIComponent(origin+"/?order="+orderId);
-  var url="https://my.click.uz/services/pay?service_id="+CLICK_SERVICE_ID+"&merchant_id="+CLICK_MERCHANT_ID+"&amount="+amount+"&transaction_param="+orderId+"&return_url="+ret;
-  // MUHIM: Click sahifasi SHU OYNANING O'ZIDA ochilishi shart — aks holda
-  // to'lovdan keyin return_url boshqa (yangi) oynaga qaytadi va asosiy sahifa
-  // hech qachon "?order=" parametrini ko'rmaydi, avtomatik tekshirish ishlamay qoladi.
-  try{
-    location.href=url;
-  }catch(e){
-    // Zaxira variant: agar biror sababdan location.href ishlamasa
-    var a=document.createElement("a");
-    a.href=url;
-    a.rel="noopener";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  if(savedOrder){
+    // Eski buyurtma muddati (30 daq) o'tgan — lekin to'lov Click tomonda kechikib
+    // tasdiqlangan bo'lishi mumkin (masalan webhook sekin kelgan). Yangi to'lovni
+    // boshlashdan oldin serverdan BIR MARTA tekshiramiz — mijoz ikki marta to'lab
+    // qo'ymasin va "yana to'lov" degan noto'g'ri holatga tushmasin.
+    toast(lang==="ru"?"Проверка предыдущего платежа...":lang==="en"?"Checking previous payment...":"Oldingi to'lov tekshirilmoqda...");
+    checkPaid(savedOrder).then(function(paid){
+      if(paid){
+        try{
+          localStorage.setItem("eg_paid_v3","1");
+          localStorage.setItem("eg_token_v3","click_"+savedOrder.slice(-8));
+          localStorage.setItem("eg_ts_v3",Date.now().toString());
+        }catch(e){}
+        try{gtag('event','purchase',{transaction_id:savedOrder,currency:'UZS',value:amount,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+        hasAccess=true; goScreen("sc-app"); enterGuide();
+        toast(lang==="ru"?"Доступ открыт!":lang==="en"?"Access opened!":"Kirish ochildi!");
+      } else {
+        _newOrderAndPay();
+      }
+    });
+    return;
   }
+  _newOrderAndPay();
 }
 // Chet el mijozlar uchun — Telegram orqali (qo'lda to'lov)
 var TG_USERNAME="Evropagoo"; // @ siz
@@ -2373,27 +2422,40 @@ function checkPaidRetry(orderId,tries,maxTries){
 }
 // Avtomatik kutish tugagandan keyin ham mijoz pul yo'qotmasin — qo'lda qayta tekshirish imkoniyati.
 // Bu funksiya YANGI to'lov boshlamaydi, faqat saqlangan buyurtma holatini serverdan qayta so'raydi.
-function recheckPayment(){
-  var ord=null;
-  try{ord=localStorage.getItem("eg_order");}catch(e){}
-  if(!ord){toast(lang==="ru"?"Активный заказ не найден. Оплатите заново.":lang==="en"?"No active order found. Please pay again.":"Faol buyurtma topilmadi. Qaytadan to'lang.");return;}
-  toast(lang==="ru"?"\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430...":lang==="en"?"Checking...":"Tekshirilmoqda...");
-  var rb=document.getElementById("recheckBtn");if(rb)rb.disabled=true;
-  checkPaid(ord).then(function(paid){
-    if(rb)rb.disabled=false;
-    if(paid){
-      try{
-        localStorage.setItem("eg_paid_v3","1");
-        localStorage.setItem("eg_token_v3","click_"+ord.slice(-8));
-        localStorage.setItem("eg_ts_v3",Date.now().toString());
-      }catch(e){}
-      try{gtag('event','purchase',{transaction_id:ord,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
-      hasAccess=true; goScreen("sc-app"); enterGuide();
-      toast(lang==="ru"?"Доступ открыт!":lang==="en"?"Access opened!":"Kirish ochildi!");
-    } else {
-      toast(lang==="ru"?"Оплата пока не подтверждена сервером. Подождите немного и попробуйте снова, или напишите @Evropagoo.":lang==="en"?"Payment not confirmed by server yet. Wait a bit and try again, or message @Evropagoo.":"To'lov hali server tomonidan tasdiqlanmagan. Biroz kutib, qayta urinib ko'ring yoki @Evropagoo ga yozing.");
-    }
-  });
+// Avtomatik fon rejimidagi tekshiruv: mijoz hech qanday tugma bosmasa ham,
+// tasdiqlanmagan buyurtma bo'lsa, biz uni bir necha soniyada bir tekshirib turamiz.
+// Bu mijozning bir necha marta tugma bosishining (va sabrsizlanib qayta to'lashga urinishining) oldini oladi.
+var _pendPollTimer=null, _pendPollOrder=null;
+function stopPendingPoll(){
+  if(_pendPollTimer){clearInterval(_pendPollTimer);_pendPollTimer=null;}
+  _pendPollOrder=null;
+}
+function startPendingPoll(orderId){
+  if(!orderId) return;
+  if(_pendPollOrder===orderId && _pendPollTimer) return; // shu buyurtma uchun allaqachon tekshirilmoqda
+  stopPendingPoll();
+  _pendPollOrder=orderId;
+  var elapsed=0, maxMs=30*60*1000, stepMs=6000; // 30 daqiqagacha, har 6 soniyada
+  _pendPollTimer=setInterval(function(){
+    elapsed+=stepMs;
+    checkPaid(orderId).then(function(paid){
+      if(paid){
+        stopPendingPoll();
+        try{
+          localStorage.setItem("eg_paid_v3","1");
+          localStorage.setItem("eg_token_v3","click_"+orderId.slice(-8));
+          localStorage.setItem("eg_ts_v3",Date.now().toString());
+        }catch(e){}
+        try{gtag('event','purchase',{transaction_id:orderId,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
+        hasAccess=true;
+        var rb=document.getElementById("recheckBox");if(rb)rb.style.display="none";
+        goScreen("sc-app"); enterGuide();
+        toast(lang==="ru"?"Доступ открыт!":lang==="en"?"Access opened!":"Kirish ochildi!");
+      } else if(elapsed>=maxMs){
+        stopPendingPoll();
+      }
+    });
+  },stepMs);
 }
 
 function activate(){
@@ -3178,16 +3240,28 @@ try{
           hasAccess=true; goScreen("sc-app"); enterGuide();
           toast(lang==="uz"?"Kirish ochildi!":"\u0414\u043e\u0441\u0442\u0443\u043f \u043e\u0442\u043a\u0440\u044b\u0442!"); }
         else {
-          toast(lang==="uz"?"To'lov hali tasdiqlanmadi.":"\u041e\u043f\u043b\u0430\u0442\u0430 \u043f\u043e\u043a\u0430 \u043d\u0435 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0430.");
-          // Mijoz PUL YO'QOTMASIN: qayta to'lash o'rniga, holatni qo'lda qayta tekshirish tugmasini ko'rsatamiz.
+          toast(lang==="uz"?"To'lov hali tasdiqlanmadi. Avtomatik tekshirish davom etmoqda...":"\u041e\u043f\u043b\u0430\u0442\u0430 \u043f\u043e\u043a\u0430 \u043d\u0435 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0430. \u0410\u0432\u0442\u043e\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0430\u0435\u0442\u0441\u044f...");
+          // Mijoz PUL YO'QOTMASIN va qayta-qayta tugma bosmasin: avtomatik fon rejimidagi
+          // tekshiruvni davom ettiramiz, holat matnini ko'rsatamiz — tugma kerak emas.
           var box=document.getElementById("recheckBox");
           if(box) box.style.display="block";
+          startPendingPoll(_ord);
         }
       });
     }
   } else if(_alreadyPaidLocal){
     // URL'da token/order yo'q, lekin qurilmada to'lov belgisi bor — kirish ochiq bo'lishi kerak
     hasAccess=true;
+  } else {
+    // URL'da na token, na order bor (masalan Click ilovasi return_url'ni to'liq
+    // saqlamagan yoki mijoz keyinroq qaytgan) — lekin localStorage'da hali
+    // tasdiqlanmagan buyurtma qolgan bo'lishi mumkin. Fon rejimida, jim tekshiramiz:
+    // agar aslida to'langan bo'lsa, mijozni majburiy qayta to'lovga solmaymiz.
+    var _pendOrd=null,_pendTs=0;
+    try{_pendOrd=localStorage.getItem("eg_order");_pendTs=parseInt(localStorage.getItem("eg_order_ts")||"0",10);}catch(e){}
+    if(_pendOrd && _pendTs && (Date.now()-_pendTs) < 24*60*60*1000){
+      startPendingPoll(_pendOrd);
+    }
   }
 }catch(e){}
 
