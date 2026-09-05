@@ -1101,6 +1101,50 @@ function _h(str){
   return Math.abs(h).toString(36);
 }
 
+// 4b. XAVFSIZ SAQLASH QATLAMI (persist layer)
+// MUAMMO: localStorage ba'zi mobil brauzerlarda (ayniqsa Telegram/Instagram ichki
+// brauzeri, ba'zi Android brauzerlar, xususiy/incognito rejim) to'satdan tozalanib
+// qolishi yoki umuman yozilmasligi mumkin — va bu jimgina (xatosiz) sodir bo'ladi.
+// Natija: mijoz to'lagan/token kiritgan bo'ladi, lekin ozgina vaqtdan keyin ilova
+// qayta ochilganda "to'lanmagan" holatga qaytib, qayta to'lov so'raydi.
+// YECHIM: muhim kalitlarni (to'lov holati, token, qurilma ID) BIR VAQTDA 3 ta joyga
+// yozamiz — localStorage + cookie + sessionStorage. O'qishda: qaysi biri mavjud
+// bo'lsa o'shani ishlatamiz va qolganlarini avtomatik tiklaymiz (self-heal).
+function _setCookie(name,value,days){
+  try{
+    var exp="";
+    if(days){var d=new Date();d.setTime(d.getTime()+days*24*60*60*1000);exp="; expires="+d.toUTCString();}
+    document.cookie=name+"="+encodeURIComponent(value)+exp+"; path=/; SameSite=Lax";
+  }catch(e){}
+}
+function _getCookie(name){
+  try{
+    var m=document.cookie.match(new RegExp('(?:^|; )'+name.replace(/[.$?*|{}()\[\]\\\/+^]/g,'\\$&')+'=([^;]*)'));
+    return m?decodeURIComponent(m[1]):null;
+  }catch(e){return null;}
+}
+function psSet(key,value){
+  // Muhim kalitni 3 joyga baravar yozamiz (biri o'chsa ham qolgani qoladi)
+  try{localStorage.setItem(key,value);}catch(e){}
+  try{sessionStorage.setItem(key,value);}catch(e){}
+  _setCookie(key,value,3650); // ~10 yil — "umrbod kirish" siyosatiga mos
+}
+function psGet(key){
+  var v=null;
+  try{v=localStorage.getItem(key);}catch(e){}
+  if(v){return v;}
+  try{v=sessionStorage.getItem(key);}catch(e){}
+  if(v){try{localStorage.setItem(key,v);}catch(e){} return v;}
+  v=_getCookie(key);
+  if(v){try{localStorage.setItem(key,v);}catch(e){} try{sessionStorage.setItem(key,v);}catch(e){} return v;}
+  return null;
+}
+function psRemove(key){
+  try{localStorage.removeItem(key);}catch(e){}
+  try{sessionStorage.removeItem(key);}catch(e){}
+  _setCookie(key,"",-1);
+}
+
 // 5. Rate limiting for admin
 var _adminAttempts = 0;
 var _adminLocked = false;
@@ -1111,14 +1155,12 @@ var _adminLockTime = 0;
 // faqat activateToken() serverda muvaffaqiyatli tasdiqlagandan keyin localStorage'ga
 // yozilgan holatni tekshiradi (qurilma bloki shu orqali saqlanadi).
 function getS(){
-  try{
-    var paid=localStorage.getItem("eg_paid_v3");
-    var savedToken=localStorage.getItem("eg_token_v3");
-    if(paid==="1" && savedToken && savedToken.length>2){
-      return true;
-    }
-    return false;
-  }catch(e){return false;}
+  var paid=psGet("eg_paid_v3");
+  var savedToken=psGet("eg_token_v3");
+  if(paid==="1" && savedToken && savedToken.length>2){
+    return true;
+  }
+  return false;
 }
 
 function setS(){
@@ -1126,19 +1168,22 @@ function setS(){
     var p=new URLSearchParams(window.location.search);
     var t=p.get("token");
     if(!t||t.length<=4) return; // token bo'lmasa yozma
-    localStorage.setItem("eg_paid_v3","1");
-    localStorage.setItem("eg_token_v3", _h(t));
-    localStorage.setItem("eg_ts_v3", Date.now().toString());
+    psSet("eg_paid_v3","1");
+    psSet("eg_token_v3", _h(t));
+    psSet("eg_ts_v3", Date.now().toString());
   }catch(e){}
 }
 
 // 7. Device-lock: har bir qurilma uchun doimiy tasodifiy ID
+// eg_device_id ham xavfsiz qatlam orqali saqlanadi — aks holda localStorage
+// o'chib qolganda qurilma ID'si qayta generatsiya bo'lib, server buni "boshqa
+// qurilma" deb noto'g'ri bloklab qo'yishi mumkin edi.
 function getDeviceId(){
   try{
-    var id=localStorage.getItem("eg_device_id");
+    var id=psGet("eg_device_id");
     if(!id){
       id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));
-      localStorage.setItem("eg_device_id", id);
+      psSet("eg_device_id", id);
     }
     return id;
   }catch(e){return "nodid_"+Date.now();}
@@ -1289,9 +1334,9 @@ function activateManualToken(){
       return;
     }
     try{
-      localStorage.setItem("eg_paid_v3","1");
-      localStorage.setItem("eg_token_v3", _h(token));
-      localStorage.setItem("eg_ts_v3", Date.now().toString());
+      psSet("eg_paid_v3","1");
+      psSet("eg_token_v3", _h(token));
+      psSet("eg_ts_v3", Date.now().toString());
     }catch(e){}
     try{gtag('event','purchase',{transaction_id:token,currency:'UZS',value:99000,payment_type:'manual_token',items:[{item_name:'EuropaGo access'}]});}catch(e){}
     hasAccess=true;
@@ -2327,9 +2372,9 @@ function payClick(){
     checkPaid(savedOrder).then(function(paid){
       if(paid){
         try{
-          localStorage.setItem("eg_paid_v3","1");
-          localStorage.setItem("eg_token_v3","click_"+savedOrder.slice(-8));
-          localStorage.setItem("eg_ts_v3",Date.now().toString());
+          psSet("eg_paid_v3","1");
+          psSet("eg_token_v3","click_"+savedOrder.slice(-8));
+          psSet("eg_ts_v3",Date.now().toString());
         }catch(e){}
         try{gtag('event','purchase',{transaction_id:savedOrder,currency:'UZS',value:amount,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
         hasAccess=true; goScreen("sc-app"); enterGuide();
@@ -2442,9 +2487,9 @@ function startPendingPoll(orderId){
       if(paid){
         stopPendingPoll();
         try{
-          localStorage.setItem("eg_paid_v3","1");
-          localStorage.setItem("eg_token_v3","click_"+orderId.slice(-8));
-          localStorage.setItem("eg_ts_v3",Date.now().toString());
+          psSet("eg_paid_v3","1");
+          psSet("eg_token_v3","click_"+orderId.slice(-8));
+          psSet("eg_ts_v3",Date.now().toString());
         }catch(e){}
         try{gtag('event','purchase',{transaction_id:orderId,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
         hasAccess=true;
@@ -2461,9 +2506,9 @@ function startPendingPoll(orderId){
 function activate(){
   // Faqat admin panel orqali chaqiriladi — to'lov tasdiqlangan
   try{
-    localStorage.setItem("eg_paid_v3","1");
-    localStorage.setItem("eg_token_v3","admin_grant");
-    localStorage.setItem("eg_ts_v3",Date.now().toString());
+    psSet("eg_paid_v3","1");
+    psSet("eg_token_v3","admin_grant");
+    psSet("eg_ts_v3",Date.now().toString());
   }catch(e){}
   hasAccess=true;
   // GA: TO'LOV TASDIQLANDI (admin/Telegram orqali)
@@ -3177,15 +3222,11 @@ try{
   // Avval localStorage'ni tekshiramiz: agar shu qurilmada bu token/order bilan
   // ALLAQACHON muvaffaqiyatli kirilgan bo'lsa, serverga qayta so'rov yubormaymiz.
   // Bu refresh'da "havola boshqa qurilmada ishlatilgan" degan noto'g'ri qulflanishning oldini oladi.
-  var _alreadyPaidLocal=false;
-  try{
-    _alreadyPaidLocal=(localStorage.getItem("eg_paid_v3")==="1" && !!localStorage.getItem("eg_token_v3"));
-  }catch(e){}
+  var _alreadyPaidLocal=(psGet("eg_paid_v3")==="1" && !!psGet("eg_token_v3"));
 
   if(_tt&&_tt.length>4){
     tokenInUrl=true;
-    var _savedTok=null;
-    try{_savedTok=localStorage.getItem("eg_token_v3");}catch(e){}
+    var _savedTok=psGet("eg_token_v3");
     if(_alreadyPaidLocal && _savedTok===_h(_tt)){
       // Bu qurilmada bu token bilan avval tasdiqlangan — serverni qayta chaqirmaymiz
       hasAccess=true;
@@ -3229,12 +3270,10 @@ try{
         orderCheckInProgress=false;
         if(_cbox) _cbox.style.display="none";
         if(paid){
-          // Server tasdiqladi — localStorage ga yozamiz
-          try{
-            localStorage.setItem("eg_paid_v3","1");
-            localStorage.setItem("eg_token_v3","click_"+_ord.slice(-8));
-            localStorage.setItem("eg_ts_v3",Date.now().toString());
-          }catch(e){}
+          // Server tasdiqladi — xavfsiz qatlamga yozamiz (localStorage+cookie+sessionStorage)
+          psSet("eg_paid_v3","1");
+          psSet("eg_token_v3","click_"+_ord.slice(-8));
+          psSet("eg_ts_v3",Date.now().toString());
           // GA: TO'LOV TASDIQLANDI (eng muhim event — daromad)
           try{gtag('event','purchase',{transaction_id:_ord,currency:'UZS',value:99000,payment_type:'click',items:[{item_name:'EuropaGo access'}]});}catch(e){}
           hasAccess=true; goScreen("sc-app"); enterGuide();
