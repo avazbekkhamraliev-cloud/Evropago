@@ -16,6 +16,13 @@
       localStorage.setItem('eg_ref',_ref);
     }
   }catch(e){}
+  // SEO sahifalaridan kelganda davlatni oldindan tanlash: ?c=de
+  try{
+    var _cq=new URLSearchParams(location.search).get('c');
+    if(_cq && /^(pl|de|nl|at|se|cz|sk|hu|it|es|fr|be|no|lt|fi|pt|gr|ro|hr|si|bg|ee|dk|lv)$/.test(_cq)) localStorage.setItem('eg_selC_v2',_cq);
+    var _lq=new URLSearchParams(location.search).get('lang');
+    if(_lq && /^(uz|ru|en)$/.test(_lq)) localStorage.setItem('eg_lang',_lq);
+  }catch(e){}
 </script>
 <meta charset="UTF-8">
 <title>Yevropaga ketish 2026 | Til bilmasdan ketsa bo'ladigan davlatlar, tez viza, ish — EvropaGo</title>
@@ -45,7 +52,9 @@
 <meta name="twitter:image" content="https://evropago.uz/og-image.png">
 <meta name="theme-color" content="#003399">
 <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇪🇺</text></svg>">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -548,6 +557,12 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
     <button onclick="openModal('fraudOvl')" id="fraudBtn" style="margin-top:10px;background:#fff;color:#dc2626;border:1.5px solid #dc2626;border-radius:12px;padding:12px 20px;font-size:13.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;">
       <span style="font-size:17px;">&#128737;</span> <span id="fraudBtnLbl">Firibgarlardan ehtiyot bo'ling</span>
     </button>
+    <button onclick="calcOpen()" id="calcBtn" style="margin-top:10px;background:#fff;color:#101F4A;border:2px solid #101F4A;border-radius:12px;padding:11px 20px;font-size:13.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:17px;">&#128182;</span> <span id="calcBtnLbl" data-cvs="calcBtn">Ketish xarajatlari kalkulyatori</span>
+    </button>
+    <button onclick="cvsOpen()" id="cvsBtn" style="margin-top:10px;background:#F2C14E;color:#101F4A;border:none;border-radius:12px;padding:12px 20px;font-size:13.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(242,193,78,.35);">
+      <span style="font-size:17px;">&#128196;</span> <span id="cvsBtnLbl" data-cvs="welcomeBtn">Faqat CV yozib berish xizmati: 49 000 so'm</span>
+    </button>
   </div>
   <footer style="text-align:center;padding:22px 16px 18px;font-size:12.5px;color:var(--mt);">
     <p style="margin:0 0 6px;" id="footCopy">&#169; 2026 evropago.uz. Barcha huquqlar himoyalangan.</p>
@@ -559,6 +574,100 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
   </footer>
 </div>
 
+
+<!-- SCREEN: CV XIZMATI -->
+<style>
+#sc-cvsvc{background:#06122f;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px));}
+#sc-cvsvc *,#sc-cvsvc *::before,#sc-cvsvc *::after{box-sizing:border-box;}
+#sc-cvsvc .cvs-wrap{width:100%;max-width:640px;margin:0 auto;padding:0 20px;}
+#sc-cvsvc .cvs-hero{padding:30px 0 30px;}
+#sc-cvsvc h1.cvs-h1{font-size:clamp(32px,9vw,50px);line-height:1.05;letter-spacing:-1.2px;margin:0 0 16px;font-weight:800;color:#fff;}
+#sc-cvsvc h1.cvs-h1 span{color:#ffc928;}
+#sc-cvsvc .cvs-lead{color:#b9c8ee;font-size:17px;margin:0 0 22px;max-width:34ch;}
+#sc-cvsvc .cvs-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+#sc-cvsvc .cvs-price{font-size:42px;font-weight:800;letter-spacing:-1px;color:#ffc928;line-height:1;}
+#sc-cvsvc .cvs-note{color:#b9c8ee;font-size:15px;}
+#sc-cvsvc a.cvs-btn{display:flex;align-items:center;justify-content:center;text-align:center;gap:10px;background:#ffc928;color:#06122f;font-weight:800;font-size:18px;text-decoration:none;padding:18px 24px;border-radius:14px;}
+#sc-cvsvc a.cvs-btn:active{transform:scale(.985);}
+#sc-cvsvc a.cvs-btn:focus-visible{outline:3px solid #fff;outline-offset:3px;}
+#sc-cvsvc a.cvs-btn svg{width:22px;height:22px;flex:none;}
+#sc-cvsvc .cvs-fb{display:block;margin-top:12px;color:#b9c8ee;font-size:14px;}
+#sc-cvsvc .cvs-fb a{color:#fff;}
+#sc-cvsvc section.cvs-sec{padding:28px 0;border-top:1px solid rgba(255,255,255,.14);}
+#sc-cvsvc h2.cvs-h2{font-size:25px;letter-spacing:-.5px;margin:0 0 18px;line-height:1.15;color:#fff;font-weight:800;}
+#sc-cvsvc ol.cvs-steps{list-style:none;margin:0;padding:0;counter-reset:cvsstep;}
+#sc-cvsvc ol.cvs-steps li{position:relative;padding:0 0 22px 52px;counter-increment:cvsstep;}
+#sc-cvsvc ol.cvs-steps li:last-child{padding-bottom:0;}
+#sc-cvsvc ol.cvs-steps li::before{content:counter(cvsstep);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;background:#ffc928;color:#06122f;font-weight:800;display:grid;place-items:center;}
+#sc-cvsvc ol.cvs-steps li:not(:last-child)::after{content:"";position:absolute;left:17px;top:40px;bottom:4px;width:2px;background:rgba(255,255,255,.14);}
+#sc-cvsvc ol.cvs-steps strong{display:block;font-size:18px;margin-bottom:2px;color:#fff;}
+#sc-cvsvc ol.cvs-steps span{color:#b9c8ee;font-size:15px;}
+#sc-cvsvc ul.cvs-list{list-style:none;margin:0;padding:0;display:grid;gap:14px;}
+#sc-cvsvc ul.cvs-list li{display:flex;gap:12px;align-items:flex-start;font-size:17px;color:#fff;}
+#sc-cvsvc ul.cvs-list svg{width:22px;height:22px;flex:none;margin-top:2px;color:#ffc928;}
+#sc-cvsvc .cvs-langs{display:flex;flex-wrap:wrap;gap:10px;}
+#sc-cvsvc .cvs-langs span{background:#13296a;padding:9px 16px;border-radius:999px;font-size:15px;font-weight:600;color:#fff;}
+#sc-cvsvc .cvs-small{color:#b9c8ee;font-size:15px;margin:14px 0 0;}
+#sc-cvsvc .cvs-small a{color:#fff;}
+#sc-cvsvc .cvs-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(6,18,47,.97);border-top:1px solid rgba(255,255,255,.14);padding:12px 20px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));}
+#sc-cvsvc .cvs-bar a.cvs-btn{max-width:600px;margin:0 auto;padding:15px 12px;font-size:16px;text-align:center;white-space:nowrap;}
+</style>
+<div class="screen" id="sc-cvsvc">
+  <nav>
+    <div class="logo" onclick="goScreen('sc-welcome')" style="font-weight:800;font-size:17px;color:#101F4A;">Evropa<span style="color:#C9A227;">Go</span></div>
+    <div class="nav-r">
+      <button class="nb" onclick="goScreen('sc-welcome')" data-cvs="back">&#8592; Bosh</button>
+    </div>
+  </nav>
+  <div class="cvs-wrap">
+    <div class="cvs-hero">
+      <h1 class="cvs-h1" data-cvs="h1">Professional CV, <span>bir necha daqiqada</span> tayyor</h1>
+      <p class="cvs-lead" data-cvs="lead">Europass standartida, ingliz tilida. PDF shaklida yuboramiz.</p>
+      <div class="cvs-price-row">
+        <div class="cvs-price" data-cvs="price">49 000 so'm</div>
+        <div class="cvs-note" data-cvs="note">bitta CV uchun</div>
+      </div>
+      <a class="cvs-btn" data-cvs-tg href="https://t.me/Evropagoo?text=Assalomu%20alaykum!%20Tayyor%20resume%20uchun%20to%27lov%2049.000%20so%27m.%20CV%20buyurtma%20bermoqchiman." target="_blank" rel="noopener" onclick="cvsTrack('cv_order_click','top')">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 3.3 2.9 10.5c-1.3.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.8c.3-1.3-.5-1.9-1.3-1.5Zm-3.6 3.9-8.3 7.5-.3 3.4-1.4-4.5 10-6.4Z"/></svg>
+        <span data-cvs="orderBtn">CV buyurtma berish</span>
+      </a>
+      <span class="cvs-fb" data-cvs="fb">Telegramda xabar tayyor holda ochiladi. Faqat "Yuborish"ni bosing.</span>
+    </div>
+
+    <section class="cvs-sec">
+      <h2 class="cvs-h2" data-cvs="hSteps">Qanday buyurtma beriladi</h2>
+      <ol class="cvs-steps">
+        <li><strong data-cvs="s1t">Tugmani bosing</strong><span data-cvs="s1">Telegram ochiladi va "Tayyor resume uchun to'lov 49.000" xabari yozilgan bo'ladi. Uni yuboring.</span></li>
+        <li><strong data-cvs="s2t">Ma'lumotlaringizni yuboring</strong><span data-cvs="s2">Ism-familiya, ish tajribasi, o'qigan joyingiz, bilgan tillaringiz va telefon raqamingiz.</span></li>
+        <li><strong data-cvs="s3t">To'lov qiling</strong><span data-cvs="s3">49 000 so'm. To'lov usulini Telegramda yozib yuboramiz.</span></li>
+        <li><strong data-cvs="s4t">Tayyor CV ni oling</strong><span data-cvs="s4">PDF fayl bir necha daqiqada Telegramga keladi.</span></li>
+      </ol>
+    </section>
+
+    <section class="cvs-sec">
+      <h2 class="cvs-h2" data-cvs="hGet">Nima olasiz</h2>
+      <ul class="cvs-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span data-cvs="g1">Europass standartida, ingliz tilida</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span data-cvs="g2">Ish tajribangiz to'g'ri va chiroyli yoziladi</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span data-cvs="g3">PDF fayl, telefondan ham, kompyuterdan ham ochiladi</span></li>
+      </ul>
+    </section>
+
+    <section class="cvs-sec">
+      <h2 class="cvs-h2" data-cvs="hLang">Boshqa tillarda ham</h2>
+      <div class="cvs-langs"><span data-cvs="l1">Nemis</span><span data-cvs="l2">Polyak</span><span data-cvs="l3">Chex</span><span data-cvs="l4">Litva</span><span data-cvs="l5">Boshqa tillar</span></div>
+      <p class="cvs-small" data-cvs="langNote">Qaysi davlatga ketayotgan bo'lsangiz, CV ni o'sha davlat tilida tayyorlaymiz. Ish e'lonida til ko'rsatilgan bo'lsa, shu tilda yuborish ishonchni oshiradi.</p>
+      <p class="cvs-small" data-cvs="tgNote">Telegram ochilmasa: <a href="https://t.me/Evropagoo" target="_blank" rel="noopener">t.me/Evropagoo</a> ga o'zingiz yozing.</p>
+    </section>
+  </div>
+  <div class="cvs-bar">
+    <a class="cvs-btn" data-cvs-tg href="https://t.me/Evropagoo?text=Assalomu%20alaykum!%20Tayyor%20resume%20uchun%20to%27lov%2049.000%20so%27m.%20CV%20buyurtma%20bermoqchiman." target="_blank" rel="noopener" onclick="cvsTrack('cv_order_click','sticky')" data-cvs="barBtn">CV buyurtma berish: 49 000 so'm</a>
+  </div>
+</div>
+<script>
+function cvsTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}:{});}catch(e){}}
+function cvsOpen(){cvsTrack('cv_page_open');goScreen('sc-cvsvc');}
+</script>
 
 <!-- SCREEN: EUROPALIFE -->
 <div class="screen" id="sc-life">
@@ -591,8 +700,8 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
   <div class="scontent" style="background:var(--bg);justify-content:flex-start;padding-top:16px;">
     <div class="step-card">
       <div class="step-top">
-        <div class="step-label" id="origLabel">Step 1 / 3</div>
-        <div class="step-dots"><div class="dot cur"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="step-label" id="origLabel">Step 1 / 2</div>
+        <div class="step-dots"><div class="dot cur"></div><div class="dot"></div></div>
         <div class="step-title" id="origTitle">Qaysi davlatdansiz?</div>
         <div class="step-sub" id="origSub">For embassy information</div>
       </div>
@@ -643,8 +752,8 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
   <div class="scontent" style="background:var(--bg);justify-content:flex-start;padding-top:16px;">
     <div class="step-card">
       <div class="step-top">
-        <div class="step-label" id="destLabel">Step 2 / 3</div>
-        <div class="step-dots"><div class="dot done"></div><div class="dot cur"></div><div class="dot"></div></div>
+        <div class="step-label" id="destLabel">Step 2 / 2</div>
+        <div class="step-dots"><div class="dot done"></div><div class="dot cur"></div></div>
         <div class="step-title" id="destTitle">Qaysi davlatga?</div>
         <div class="step-sub" id="destSub">Ishlamoqchi bo'lgan davlatingiz</div>
       </div>
@@ -654,7 +763,7 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
       </div>
       <div class="step-footer">
         <button class="btn-back" onclick="goScreen('sc-origin')">&#8592;</button>
-        <button class="btn-next" id="destNext" disabled onclick="goScreen('sc-job')">&#8594;</button>
+        <button class="btn-next" id="destNext" disabled onclick="goToGuide()">&#8594;</button>
       </div>
     </div>
   </div>
@@ -746,6 +855,7 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
   <div class="page" id="tab-firms">
     <div class="fw">
       <div class="sech"><h2 id="firmH">Ishonchli saytlar</h2><p id="firmP">To'g'ridan-to'g'ri</p></div>
+      <div id="ctryStatus"></div>
       <div id="firmNote" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-left:4px solid #f59e0b;border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:var(--mt);"></div>
 
       <style>
@@ -948,6 +1058,11 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
           </div>
           <button id="cvTranslateBtn" style="display:block;width:100%;background:linear-gradient(135deg,#0ea5e9,#38bdf8);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;">&#127760; Tarjima qilish</button>
           <div style="font-size:10.5px;color:#94a3b8;margin-bottom:10px;line-height:1.5;">O'zbek yoki rus tilida to'ldiring, so'ng shu tugma orqali Google Tarjima yangi oynada tanlangan davlat tiliga o'giradi.</div>
+          <div id="cvsHelp" style="background:#13296a;border:1px solid rgba(255,201,40,.55);border-radius:10px;padding:12px;margin-bottom:10px;">
+            <div data-cvs="helpT" style="font-size:13.5px;font-weight:800;color:#fff;margin-bottom:4px;line-height:1.4;">Agar o'zingiz mustaqil CV to'ldira olmasangiz</div>
+            <div data-cvs="helpS" style="font-size:12px;color:#b9c8ee;line-height:1.5;margin-bottom:10px;">CV ni siz uchun tayyorlab beramiz: Europass standartida, PDF shaklida, bir necha daqiqada.</div>
+            <a data-cvs-tg href="https://t.me/Evropagoo?text=Assalomu%20alaykum!%20Tayyor%20resume%20uchun%20to%27lov%2049.000%20so%27m.%20CV%20buyurtma%20bermoqchiman." target="_blank" rel="noopener" onclick="cvsTrack('cv_order_click','modal')" style="display:block;text-align:center;background:#ffc928;color:#06122f;font-weight:800;font-size:14px;text-decoration:none;padding:11px 12px;border-radius:8px;"><span data-cvs="helpBtn">CV tayyorlab berish: 49 000 so'm</span></a>
+          </div>
           <div id="cvSheet" contenteditable="true" spellcheck="false" style="background:#ffffff;color:#000;border-radius:10px;padding:22px 20px;font-family:Arial,Helvetica,sans-serif;outline:none;"></div>
         </div>
       </div>
@@ -986,12 +1101,13 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
         </div>
         <div style="font-size:10px;color:var(--mt);text-transform:uppercase;font-weight:700;margin-bottom:6px;" id="pmLbl">To'lov usuli</div>
         <div id="tgBlock">
-        <div style="text-align:center;margin-bottom:8px;"><span style="background:#dcfce7;color:#166534;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;">&#9989; Tavsiya etiladi</span></div>
+        <div id="recBadgeTg" style="text-align:center;margin-bottom:8px;"><span style="background:#dcfce7;color:#166534;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;">&#9989; Tavsiya etiladi</span></div>
         <button class="act-btn" onclick="payTelegram()" id="tgBtn" style="width:100%;background:linear-gradient(135deg,#229ED9,#1c8bc0);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:12px;">&#9993; Telegram orqali to'lash</button>
         <button class="act-btn" onclick="payWhatsapp()" id="waBtn" style="width:100%;background:linear-gradient(135deg,#25D366,#1ebe57);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:12px;">&#128241; WhatsApp orqali to'lash</button>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--mt);font-size:11px;" id="orDivider"><div style="flex:1;height:1px;background:var(--bd);"></div><span id="orLbl">yoki karta orqali (Click/UzCard/Humo)</span><div style="flex:1;height:1px;background:var(--bd);"></div></div>
         <div id="clickBlock">
+        <div id="recBadgeClick" style="display:none;text-align:center;margin-bottom:8px;"><span style="background:#dcfce7;color:#166534;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;">&#9989; <span id="recBadgeClickTxt">Tavsiya etiladi</span></span></div>
         <div class="pmeths" style="grid-template-columns:repeat(3,1fr);">
           <div class="pm sel" id="pm1" onclick="selPm('pm1')"><div class="pm-i">&#128309;</div><div class="pm-n">Click</div></div>
           <div class="pm" id="pm3" onclick="selPm('pm3')"><div class="pm-i">&#127970;</div><div class="pm-n">UzCard</div></div>
@@ -1025,7 +1141,7 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
         </div>
         </div>
         <div id="trustBoxPay" style="margin-top:6px;margin-bottom:10px;">
-          <div style="text-align:center;font-size:12px;color:var(--mt);margin-bottom:10px;" id="socialTxt">&#128100; 600+ kishi allaqachon foydalanmoqda</div>
+          <div style="text-align:center;font-size:12px;color:var(--mt);margin-bottom:10px;" id="socialTxt">&#128100; Faqat 2026-yil avgust–sentabrida saytdan 11 000+ kishi foydalandi</div>
           <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;">
             <span id="trustChip1" style="font-size:11px;font-weight:700;color:#166534;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:5px 10px;">&#10003; Bir martalik to&#8216;lov</span>
             <span id="trustChip2" style="font-size:11px;font-weight:700;color:#1e40af;background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;padding:5px 10px;">&#128274; Xavfsiz to&#8216;lov</span>
@@ -1041,7 +1157,7 @@ html.dark .dm-btn{background:rgba(242,193,78,.12);border-color:var(--gold);}
           <p class="act-p" id="actNote">Havola oldingizmi?</p>
           <button class="act-btn" onclick="activate()" id="actBtn">&#10003; Havola bilan ochish</button>
         </div>
-        <button class="back-btn" onclick="goScreen('sc-job')" id="payBack">&#8592; Orqaga</button>
+        <button class="back-btn" onclick="goScreen('sc-dest')" id="payBack">&#8592; Orqaga</button>
       </div>
     </div>
   </div>
@@ -1260,7 +1376,7 @@ function goScreen(id){
     try{updateRouteBar("payRoute","payRouteOrigin","payRouteDest");}catch(e){}
     try{reorderPayMethods();}catch(e){}
     try{
-      setEl("socialTxt",lang==="ru"?"\uD83D\uDC64 600+ человек уже пользуются":lang==="en"?"\uD83D\uDC64 600+ people already using it":"\uD83D\uDC64 600+ kishi allaqachon foydalanmoqda");
+      setEl("socialTxt",lang==="ru"?"\uD83D\uDC64 Только за август–сентябрь 2026 сайтом воспользовались 11 000+ человек":lang==="en"?"\uD83D\uDC64 11,000+ people used the site in August–September 2026 alone":"\uD83D\uDC64 Faqat 2026-yil avgust–sentabrida saytdan 11 000+ kishi foydalandi");
       setEl("cardBtnTxt",lang==="ru"?"Оплата картой (Payme, Uzum...)":lang==="en"?"Pay by card (Payme, Uzum...)":"Karta orqali to'lash (Payme, Uzum...)");
       setEl("cardStep1",lang==="ru"?"1. Переведите <b>99 000 сум</b> на карту:":lang==="en"?"1. Transfer <b>29,900 UZS</b> to this card:":"1. Quyidagi kartaga <b>99 000 so'm</b> o'tkazing:");
       setEl("cardStep2",lang==="ru"?"2. После оплаты отправьте чек в Telegram — пришлём доступ:":lang==="en"?"2. After payment, send the receipt to Telegram — we'll send the link:":"2. To'lagach, chek rasmini Telegram'ga yuboring — havola beramiz:");
@@ -1418,7 +1534,7 @@ var EMB={
     hr:{n:{uz:"Xorvatiya — VFS (qaror Ostonada)",ru:"Хорватия — VFS (решение в Астане)",en:"Croatia — VFS (decision in Astana)"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"+998 71 202-55-02",site:"visa.vfsglobal.com/uzb/en/hrv"},
     si:{n:{uz:"Sloveniya — rasmiy saytdan tekshiring",ru:"Словения — уточните на офиц. сайте",en:"Slovenia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"gov.si"},
     dk:{n:{uz:"Daniya — C viza Vengriya orqali (D yo‘q)",ru:"Дания — виза C через Венгрию (D нет)",en:"Denmark — C visa via Hungary (no D)"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"—",site:"taskent.mfa.gov.hu"},
-    lt:{n:{uz:"Litva — VFS (qaror Olmaotada)",ru:"Литва — VFS (решение в Алматы)",en:"Lithuania — VFS (decision in Almaty)"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"+998 71 202-55-02",site:"visa.vfsglobal.com/uzb/en/ltu"},
+    lt:{n:{uz:"Litva — VFS markazi 1-noyabrdan yopiladi",ru:"Литва — центр VFS закрывается с 1 ноября",en:"Lithuania — VFS centre closes from November 1"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"—",site:"migracija.lrv.lt"},
     bg:{n:{uz:"Bolgariya — VFS Global viza markazi",ru:"Болгария — визовый центр VFS Global",en:"Bulgaria — VFS Global VAC"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"—",site:"visa.vfsglobal.com/uzb/en/bgr"},
     ee:{n:{uz:"Estoniya — Latviya elchixonasi orqali (VFS Global)",ru:"Эстония — через посольство Латвии (VFS Global)",en:"Estonia — via Embassy of Latvia (VFS Global)"},city:{uz:"Toshkent",ru:"Ташкент",en:"Tashkent"},tel:"+998 71 237-08-51",site:"vm.ee"},
     lv:{n:{uz:"Latviya elchixonasi",ru:"Посольство Латвии",en:"Embassy of Latvia"},city:{uz:"Toshkent, Lashkarbegi ko'chasi 16A",ru:"Ташкент, ул. Лашкарбеги 16А",en:"Tashkent, 16A Lashkarbegi St."},tel:"+998 71 237-08-51",site:"www2.mfa.gov.lv/en/uzbekistan"}
@@ -1444,7 +1560,7 @@ pt:{n:{uz:"Portugaliya — Germaniya elchixonasi orqali (Bishkek)",ru:"Порт�
     hr:{n:{uz:"Xorvatiya — rasmiy saytdan tekshiring",ru:"Хорватия — уточните на офиц. сайте",en:"Croatia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mvep.gov.hr"},
     si:{n:{uz:"Sloveniya — rasmiy saytdan tekshiring",ru:"Словения — уточните на офиц. сайте",en:"Slovenia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"gov.si"},
     dk:{n:{uz:"Daniya — Rossiyadagi Daniya viza markazi orqali",ru:"Дания — через визовый центр Дании в России",en:"Denmark — via the Denmark Visa Centre in Russia"},city:{uz:"Bishkekda elchixona yo'q",ru:"В Бишкеке посольства нет",en:"No embassy in Bishkek"},tel:"—",site:"visa.vfsglobal.com/one-pager/denmark/Russia/english"},
-    lt:{n:{uz:"Litva — VFS Global",ru:"Литва — VFS Global",en:"Lithuania — VFS Global"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"visa.vfsglobal.com"},
+    lt:{n:{uz:"Litva — VFS markazi 1-noyabrdan yopiladi",ru:"Литва — центр VFS закрывается с 1 ноября",en:"Lithuania — VFS centre closes from November 1"},city:{uz:"Bishkek",ru:"Бишкек",en:"Bishkek"},tel:"—",site:"migracija.lrv.lt"},
     bg:{n:{uz:"Bolgariya — Qozog'iston (Olmaota/Ostona) VFS orqali topshiriladi",ru:"Болгария — подаётся через VFS в Казахстане (Алматы/Астана)",en:"Bulgaria — submit via VFS in Kazakhstan (Almaty/Astana)"},city:{uz:"Bishkekda elchixona yo'q",ru:"В Бишкеке посольства нет",en:"No embassy in Bishkek"},tel:"—",site:"vfsglobal.com/Bulgaria/Kazakhstan"},
     ee:{n:{uz:"Estoniya — Latviya elchixonasi orqali",ru:"Эстония — через посольство Латвии",en:"Estonia — via Embassy of Latvia"},city:{uz:"Bishkekda elchixona yo'q",ru:"В Бишкеке посольства нет",en:"No embassy in Bishkek"},tel:"—",site:"vm.ee"},
     lv:{n:{uz:"Latviya — Qozog'iston viza markazlari orqali (Olmaota/Ostona)",ru:"Латвия — через визовые центры в Казахстане (Алматы/Астана)",en:"Latvia — via visa centres in Kazakhstan (Almaty/Astana)"},city:{uz:"Bishkekda elchixona yo'q",ru:"В Бишкеке посольства нет",en:"No embassy in Bishkek"},tel:"—",site:"www2.mfa.gov.lv/en/kazakhstan"}
@@ -1496,7 +1612,7 @@ gr:{n:{uz:"Gretsiya — Germaniya elchixonasi orqali (Dushanbe)",ru:"Греци�
     hr:{n:{uz:"Xorvatiya — rasmiy saytdan tekshiring",ru:"Хорватия — уточните на офиц. сайте",en:"Croatia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"mvep.gov.hr"},
     si:{n:{uz:"Sloveniya — rasmiy saytdan tekshiring",ru:"Словения — уточните на офиц. сайте",en:"Slovenia — check official site"},city:{uz:"—",ru:"—",en:"—"},tel:"—",site:"gov.si"},
     dk:{n:{uz:"Daniya — Olmaotadagi vakolatxona orqali",ru:"Дания — через представительство в Алматы",en:"Denmark — via the representation in Almaty"},city:{uz:"Olmaota",ru:"Алматы",en:"Almaty"},tel:"—",site:"visa.vfsglobal.com/one-pager/denmark/Russia/english"},
-    lt:{n:{uz:"Litva — VFS Global",ru:"Литва — VFS Global",en:"Lithuania — VFS Global"},city:{uz:"Ostona/Olmaota",ru:"Астана/Алматы",en:"Astana/Almaty"},tel:"—",site:"visa.vfsglobal.com"},
+    lt:{n:{uz:"Litva — VFS markazi 1-noyabrdan yopiladi",ru:"Литва — центр VFS закрывается с 1 ноября",en:"Lithuania — VFS centre closes from November 1"},city:{uz:"Ostona/Olmaota",ru:"Астана/Алматы",en:"Astana/Almaty"},tel:"—",site:"migracija.lrv.lt"},
     bg:{n:{uz:"Bolgariya elchixonasi",ru:"Посольство Болгарии",en:"Embassy of Bulgaria"},city:{uz:"Ostona, Imanov ko'chasi 11, \"Nursaulet\" BM",ru:"Астана, ул. Иманова 11, БЦ «Нурсаулет»",en:"Astana, 11 Imanov St., Nursaulet Business Center"},tel:"+7 7172 90 15 15",site:"mfa.bg/en/embassyinfo/kazakhstan"},
     ee:{n:{uz:"Estoniya elchixonasi",ru:"Посольство Эстонии",en:"Embassy of Estonia"},city:{uz:"Ostona, Kabanbay Batir shoh ko'chasi 28",ru:"Астана, пр. Кабанбай батыра 28",en:"Astana, 28 Kabanbai Batyr Ave"},tel:"+7 7172 240 280",site:"nursultan.mfa.ee"},
     lv:{n:{uz:"Latviya elchixonasi",ru:"Посольство Латвии",en:"Embassy of Latvia"},city:{uz:"Ostona, \"Astana Tower\" BM, Samal m/r 12, 18-qavat",ru:"Астана, БЦ «Astana Tower», Самал 12, 18 этаж",en:"Astana, Astana Tower BC, 12 Samal, 18th floor"},tel:"+7 7172 79-08-14",site:"www2.mfa.gov.lv/en/kazakhstan"}
@@ -1567,21 +1683,56 @@ var JJ=[
 ];
 
 var FIRMS=[
-  {c:"de",cn:"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f",i:"&#127760;",n:"Make it in Germany",d:{ru:"\u041e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u043f\u043e\u0440\u0442\u0430\u043b \u043f\u0440\u0430\u0432\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430.",uz:"Germaniya hukumatining rasmiy portali.",en:"Official German government portal."},free:false,s:"make-it-in-germany.com"},
-  {c:"pl",cn:"\u041f\u043e\u043b\u044c\u0448\u0430",i:"&#127760;",n:"Pracuj.pl",d:{ru:"\u041a\u0440\u0443\u043f\u043d\u0435\u0439\u0448\u0438\u0439 \u0441\u0430\u0439\u0442 \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u0439.",uz:"Polshadagi eng yirik vakansiyalar sayti.",en:"Poland's largest job site."},free:false,s:"pracuj.pl"},
+  {c:"all",cn:"",i:"&#127482;&#127487;",n:"Xorijda ish — Migratsiya agentligi",d:{ru:"Официальная система Агентства внешней трудовой миграции Узбекистана: создайте анкету и получайте предложения о работе за рубежом. Без посредников.",uz:"O'zbekiston Tashqi mehnat migratsiyasi agentligining rasmiy tizimi: anketa yarating va xorijdagi ish takliflarini oling. Vositachisiz.",en:"Official system of Uzbekistan's Agency for External Labour Migration: create a profile and receive job offers abroad. No middlemen."},free:true,s:"xorijdaish.uz",isNew:true,gov:true},
   {c:"all",cn:"\u0412\u0441\u0435",i:"&#128269;",n:"Indeed.com",d:{ru:"\u041c\u0438\u0440\u043e\u0432\u043e\u0439 \u043f\u043e\u0438\u0441\u043a \u0440\u0430\u0431\u043e\u0442\u044b.",uz:"Butun dunyo bo\'ylab ish qidiruv.",en:"Worldwide job search."},free:true,s:"indeed.com"},
+  {c:"cz",cn:"",i:"&#127963;",n:"MPSV — Volná místa pro cizince",d:{ru:"Официальная база вакансий Чехии для иностранцев: показаны только места, на которые работодатель готов взять иностранца. Можно разместить своё CV.",uz:"Chexiya Mehnat vazirligining xorijliklar uchun rasmiy vakansiyalar bazasi: faqat chet ellikni olishga tayyor ish beruvchilar ko'rsatiladi. CV joylash mumkin.",en:"Czechia's official vacancy database for foreigners: only jobs employers are willing to fill with foreign workers. You can post your CV."},free:false,s:"mpsv.gov.cz/hledani-volnych-mist-2",isNew:true,gov:true},
+  {c:"fi",cn:"",i:"&#127806;",n:"EnterFinland — mavsumiy ish ruxsati",d:{ru:"Официальная онлайн-заявка на сезонную работу в Финляндии (Migri): виза до 90 дней или разрешение на 3–9 месяцев. Онлайн дешевле и быстрее.",uz:"Finlandiyaga mavsumiy ish uchun rasmiy onlayn ariza (Migri): 90 kungacha viza yoki 3–9 oylik ruxsatnoma. Onlayn ariza arzonroq va tezroq.",en:"Official online application for seasonal work in Finland (Migri): a visa for up to 90 days or a 3–9 month permit. Online is cheaper and faster."},free:false,s:"enterfinland.fi",isNew:true,gov:true},
+  {c:"fi",cn:"",i:"&#127806;",n:"Työsuojelu — mavsumiy ishchilar huquqlari",d:{ru:"Официальный сайт инспекции охраны труда Финляндии: зарплата, договор и права сезонных работников (сбор ягод, сельское хозяйство).",uz:"Finlandiya mehnatni muhofaza qilish idorasining rasmiy sayti: rezavor terish va qishloq xo'jaligi mavsumiy ishchilari uchun maosh, shartnoma va huquqlar.",en:"Official site of Finland's occupational safety authority: pay, contracts and rights for seasonal workers (berry picking, agriculture)."},free:false,s:"tyosuojelu.fi",isNew:true,gov:true},
+  {c:"fi",cn:"",i:"&#127963;",n:"YTJ — ish beruvchini tekshirish",d:{ru:"Официальный реестр компаний Финляндии: перед подписанием договора проверьте, что работодатель действительно зарегистрирован.",uz:"Finlandiyaning rasmiy kompaniyalar reyestri: shartnoma imzolashdan oldin ish beruvchi haqiqatan ro'yxatdan o'tganini tekshiring.",en:"Finland's official company register: check the employer is really registered before signing a contract."},free:false,s:"ytj.fi",isNew:true,gov:true},
+  {c:"all",cn:"",i:"&#128227;",n:"Migratsiya agentligi — Telegram kanali",d:{ru:"Официальный канал «Xorijda ish» Агентства миграции Узбекистана: новые официальные вакансии в Германию, Чехию, Хорватию и другие страны публикуются здесь первыми.",uz:"O'zbekiston Migratsiya agentligining rasmiy \"Xorijda ish\" kanali: Germaniya, Chexiya, Xorvatiya va boshqa davlatlarga yangi rasmiy vakansiyalar shu yerda birinchi e'lon qilinadi.",en:"The official \"Xorijda ish\" channel of Uzbekistan's Migration Agency: new official vacancies for Germany, Czechia, Croatia and others are posted here first."},free:false,s:"t.me/migratsiyaagentligi",isNew:true,gov:true},
+  {c:"all",cn:"",i:"&#127466;&#127482;",n:"EURES — Yevropa Ittifoqi",d:{ru:"Официальный портал вакансий ЕС: вакансии государственных служб занятости более 30 стран в одном месте.",uz:"Yevropa Ittifoqining rasmiy ish portali: 30 dan ortiq davlat bandlik xizmatlarining vakansiyalari bir joyda.",en:"The EU's official job portal: vacancies from the public employment services of 30+ countries in one place."},free:false,s:"eures.europa.eu",isNew:true,gov:true},
+  {c:"de",cn:"",i:"&#127963;",n:"Bundesagentur für Arbeit — Jobsuche",d:{ru:"Официальная база вакансий Федерального агентства по труду Германии — крупнейшая база объявлений в стране.",uz:"Germaniya Federal mehnat agentligining rasmiy vakansiyalar bazasi — mamlakatdagi eng katta ish e'lonlari bazasi.",en:"Official vacancy database of Germany's Federal Employment Agency — the country's largest job listing database."},free:false,s:"arbeitsagentur.de/jobsuche",isNew:true,gov:true},
+  {c:"pl",cn:"",i:"&#127963;",n:"ePraca — praca.gov.pl",d:{ru:"Официальный портал вакансий государственных служб занятости Польши.",uz:"Polsha davlat bandlik xizmatlarining rasmiy vakansiyalar portali.",en:"Official vacancy portal of Poland's public employment services."},free:false,s:"oferty.praca.gov.pl",isNew:true,gov:true},
+  {c:"cz",cn:"",i:"&#127963;",n:"Úřad práce ČR",d:{ru:"Официальный сайт Бюро труда Чехии: вакансии и информация для иностранцев.",uz:"Chexiya Mehnat idorasining rasmiy sayti: bo'sh ish o'rinlari va xorijliklar uchun ma'lumot.",en:"Official site of the Czech Labour Office: vacancies and information for foreigners."},free:false,s:"up.gov.cz",isNew:true,gov:true},
+  {c:"sk",cn:"",i:"&#127963;",n:"ISTP — Slovakiya",d:{ru:"Официальный портал вакансий, рекомендованный Министерством труда Словакии.",uz:"Slovakiya Mehnat vazirligi ko'rsatgan rasmiy vakansiyalar portali.",en:"Official vacancy portal named by Slovakia's Ministry of Labour."},free:false,s:"istp.sk",isNew:true,gov:true},
+  {c:"hu",cn:"",i:"&#127963;",n:"NFSZ — Vengriya bandlik xizmati",d:{ru:"Официальный сайт Национальной службы занятости Венгрии. Внимание: программа «гостевой работник» сейчас закрыта.",uz:"Vengriya Milliy bandlik xizmatining rasmiy sayti. Eslatma: \"mehmon ishchi\" dasturi hozir yopiq.",en:"Official site of Hungary's National Employment Service. Note: the guest-worker scheme is currently closed."},free:false,s:"nfsz.munka.hu",isNew:true,gov:true},
+  {c:"it",cn:"",i:"&#127963;",n:"SIISL — Lavoro.gov.it",d:{ru:"Официальная платформа вакансий и курсов Министерства труда Италии.",uz:"Italiya Mehnat vazirligining rasmiy ish va kurslar platformasi.",en:"The Italian Labour Ministry's official jobs and training platform."},free:false,s:"siisl.lavoro.gov.it",isNew:true,gov:true},
+  {c:"it",cn:"",i:"&#127806;",n:"Integrazione Migranti — Decreto Flussi",d:{ru:"Официальный портал Министерства труда Италии для мигрантов: квоты Decreto Flussi, правила сезонной и постоянной работы.",uz:"Italiya Mehnat vazirligining migrantlar uchun rasmiy portali: Decreto Flussi kvotalari, mavsumiy va doimiy ish qoidalari.",en:"The Italian Labour Ministry's official portal for migrants: Decreto Flussi quotas, seasonal and non-seasonal work rules."},free:false,s:"integrazionemigranti.gov.it",isNew:true,gov:true},
+  {c:"es",cn:"",i:"&#127963;",n:"SEPE — Ispaniya",d:{ru:"Официальный сайт государственной службы занятости Испании.",uz:"Ispaniya davlat bandlik xizmatining rasmiy sayti.",en:"Official site of Spain's State Public Employment Service."},free:false,s:"sepe.es",isNew:true,gov:true},
+  {c:"es",cn:"",i:"&#127963;",n:"Empléate",d:{ru:"Государственный портал поиска вакансий Испании: объявления с государственных и частных сайтов в одном месте.",uz:"Ispaniya hukumatining vakansiyalar qidiruv portali: davlat va xususiy saytlardagi e'lonlar bir joyda.",en:"Spanish government job search portal: listings from public and private sites in one place."},free:false,s:"empleate.gob.es",isNew:true,gov:true},
+  {c:"fr",cn:"",i:"&#127963;",n:"France Travail",d:{ru:"Государственная служба занятости Франции (бывший Pôle emploi): официальные вакансии.",uz:"Fransiya davlat bandlik xizmati (sobiq Pôle emploi): rasmiy vakansiyalar.",en:"France's public employment service (formerly Pôle emploi): official vacancies."},free:false,s:"francetravail.fr",isNew:true,gov:true},
+  {c:"be",cn:"",i:"&#127963;",n:"VDAB — Flandriya",d:{ru:"Государственная служба занятости Фландрии, Бельгия (на нидерландском).",uz:"Belgiyaning Flandriya mintaqasi davlat bandlik xizmati (golland tilida).",en:"Public employment service of Flanders, Belgium (in Dutch)."},free:false,s:"vdab.be",isNew:true,gov:true},
+  {c:"be",cn:"",i:"&#127963;",n:"Le Forem — Valloniya",d:{ru:"Государственная служба занятости Валлонии, Бельгия (на французском).",uz:"Belgiyaning Valloniya mintaqasi davlat bandlik xizmati (fransuz tilida).",en:"Public employment service of Wallonia, Belgium (in French)."},free:false,s:"forem.be",isNew:true,gov:true},
+  {c:"be",cn:"",i:"&#127963;",n:"Actiris — Bryussel",d:{ru:"Государственная служба занятости региона Брюссель.",uz:"Bryussel mintaqasi davlat bandlik xizmati.",en:"Public employment service of the Brussels region."},free:false,s:"actiris.brussels",isNew:true,gov:true},
+  {c:"nl",cn:"",i:"&#127963;",n:"Werk.nl — UWV",d:{ru:"Официальный сайт вакансий государственной службы занятости Нидерландов UWV.",uz:"Niderlandiya davlat bandlik xizmati UWV ning rasmiy vakansiyalar sayti.",en:"Official vacancy site of the Dutch public employment service UWV."},free:false,s:"werk.nl",isNew:true,gov:true},
+  {c:"at",cn:"",i:"&#127963;",n:"AMS — alle jobs",d:{ru:"Официальная база вакансий службы занятости Австрии AMS (объявления государства и компаний).",uz:"Avstriya bandlik xizmati AMS ning rasmiy vakansiyalar bazasi (davlat va kompaniya e'lonlari).",en:"Official vacancy database of Austria's employment service AMS (public and company listings)."},free:false,s:"jobs.ams.at",isNew:true,gov:true},
+  {c:"no",cn:"",i:"&#127963;",n:"Arbeidsplassen — NAV",d:{ru:"Официальный портал вакансий государственной службы занятости Норвегии NAV.",uz:"Norvegiya davlat bandlik xizmati NAV ning rasmiy ish portali.",en:"Official job portal of Norway's public employment service NAV."},free:false,s:"arbeidsplassen.no",isNew:true,gov:true},
+  {c:"dk",cn:"",i:"&#127963;",n:"Work in Denmark",d:{ru:"Официальный сайт Дании по международному найму: база вакансий для иностранцев.",uz:"Daniyaning xalqaro ishga yollash bo'yicha rasmiy sayti: xorijliklar uchun vakansiyalar bazasi.",en:"Denmark's official site for international recruitment: a job database for foreigners."},free:false,s:"workindenmark.dk",isNew:true,gov:true},
+  {c:"fi",cn:"",i:"&#127963;",n:"Job Market Finland — Työmarkkinatori",d:{ru:"Официальный государственный портал рынка труда Финляндии.",uz:"Finlandiya davlatining rasmiy ish bozori portali.",en:"Finland's official public job market portal."},free:false,s:"tyomarkkinatori.fi",isNew:true,gov:true},
+  {c:"lt",cn:"",i:"&#127963;",n:"Užimtumo tarnyba",d:{ru:"Официальная база вакансий Службы занятости Литвы. Внимание: квота 2026 исчерпана.",uz:"Litva Bandlik xizmatining rasmiy vakansiyalar bazasi. Eslatma: 2026 kvotasi tugagan.",en:"Official vacancy database of Lithuania's Employment Service. Note: the 2026 quota is exhausted."},free:false,s:"uzt.lt",isNew:true,gov:true},
+  {c:"lv",cn:"",i:"&#127963;",n:"NVA — Latviya bandlik agentligi",d:{ru:"Официальный сайт Государственного агентства занятости Латвии: портал CV и вакансий (только на латышском).",uz:"Latviya Davlat bandlik agentligining rasmiy sayti: CV va vakansiyalar portali (faqat latish tilida).",en:"Official site of Latvia's State Employment Agency: CV and vacancy portal (Latvian only)."},free:false,s:"nva.gov.lv",isNew:true,gov:true},
+  {c:"ee",cn:"",i:"&#127963;",n:"Töötukassa",d:{ru:"Официальные вакансии государственной службы занятости Эстонии Töötukassa.",uz:"Estoniya davlat bandlik xizmati Töötukassa ning rasmiy ish e'lonlari.",en:"Official job offers of Estonia's public employment service Töötukassa."},free:false,s:"tootukassa.ee",isNew:true,gov:true},
+  {c:"ee",cn:"",i:"&#127963;",n:"Work in Estonia",d:{ru:"Официальный портал правительства Эстонии по привлечению иностранных специалистов (в основном для квалифицированных кадров).",uz:"Estoniya hukumatining xorijiy mutaxassislarni jalb qilish bo'yicha rasmiy portali (asosan malakali kadrlar uchun).",en:"The Estonian government's official portal for attracting foreign talent (mainly for skilled professionals)."},free:false,s:"workinestonia.com",isNew:true,gov:true},
+  {c:"pt",cn:"",i:"&#127963;",n:"IEFP Online",d:{ru:"Официальный портал вакансий Института занятости и профобучения Португалии.",uz:"Portugaliya Bandlik va kasbiy ta'lim institutining rasmiy vakansiyalar portali.",en:"Official vacancy portal of Portugal's Institute for Employment and Vocational Training."},free:false,s:"iefponline.iefp.pt",isNew:true,gov:true},
+  {c:"gr",cn:"",i:"&#127963;",n:"DYPA — Gretsiya",d:{ru:"Официальный сайт государственной службы занятости Греции (бывшая OAED).",uz:"Gretsiya davlat bandlik xizmati (sobiq OAED) rasmiy sayti.",en:"Official site of Greece's public employment service (formerly OAED)."},free:false,s:"dypa.gov.gr",isNew:true,gov:true},
+  {c:"ro",cn:"",i:"&#127963;",n:"ANOFM — Ruminiya",d:{ru:"Национальное агентство занятости Румынии: официальные вакансии и ярмарки вакансий.",uz:"Ruminiya Milliy bandlik agentligi: rasmiy bo'sh ish o'rinlari va ish yarmarkalari.",en:"Romania's National Employment Agency: official vacancies and job fairs."},free:false,s:"anofm.ro",isNew:true,gov:true},
+  {c:"ro",cn:"",i:"&#127963;",n:"WorkinRomania",d:{ru:"Государственная платформа Румынии для найма иностранных работников (работает с августа 2026). Заявку подаёт работодатель.",uz:"Ruminiya hukumatining xorijlik ishchilarni yollash platformasi (2026-yil avgustdan ishlaydi). Ariza ish beruvchi orqali beriladi.",en:"Romania's government platform for hiring foreign workers (live since August 2026). The employer files the application."},free:false,s:"workinromania.gov.ro",isNew:true,gov:true},
+  {c:"hr",cn:"",i:"&#127963;",n:"HZZ — Burza rada",d:{ru:"Официальная база вакансий службы занятости Хорватии HZZ.",uz:"Xorvatiya bandlik xizmati HZZ ning rasmiy vakansiyalar bazasi.",en:"Official vacancy database of Croatia's employment service HZZ."},free:false,s:"burzarada.hzz.hr",isNew:true,gov:true},
+  {c:"hr",cn:"",i:"&#127806;",n:"HZZ — Sezonski poslovi (mavsumiy)",d:{ru:"Портал сезонной работы службы занятости Хорватии: туризм, гостиницы, рестораны, сельское хозяйство. Бесплатно, без регистрации (на хорватском).",uz:"Xorvatiya bandlik xizmatining mavsumiy ish portali: turizm, mehmonxona, restoran, qishloq xo'jaligi. Bepul, ro'yxatdan o'tmasdan (xorvat tilida).",en:"Croatian Employment Service seasonal jobs portal: tourism, hotels, restaurants, agriculture. Free, no registration (in Croatian)."},free:false,s:"sezonski.hzz.hr",isNew:true,gov:true},
+  {c:"si",cn:"",i:"&#127963;",n:"ZRSZ — Sloveniya",d:{ru:"Официальный сайт вакансий службы занятости Словении.",uz:"Sloveniya bandlik xizmatining rasmiy vakansiyalar sayti.",en:"Official vacancy site of the Employment Service of Slovenia."},free:false,s:"ess.gov.si",isNew:true,gov:true},
+  {c:"bg",cn:"",i:"&#127963;",n:"Agentsiya po zaetostta (AZ)",d:{ru:"Официальный сайт Агентства занятости Болгарии: вакансии и электронные ярмарки вакансий.",uz:"Bolgariya Bandlik agentligining rasmiy sayti: vakansiyalar va elektron ish yarmarkalari.",en:"Official site of Bulgaria's Employment Agency: vacancies and online job fairs."},free:false,s:"az.government.bg",isNew:true,gov:true},
+  {c:"de",cn:"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f",i:"&#127760;",n:"Make it in Germany",d:{ru:"\u041e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u043f\u043e\u0440\u0442\u0430\u043b \u043f\u0440\u0430\u0432\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430.",uz:"Germaniya hukumatining rasmiy portali.",en:"Official German government portal."},free:false,s:"make-it-in-germany.com",gov:true},
+  {c:"pl",cn:"\u041f\u043e\u043b\u044c\u0448\u0430",i:"&#127760;",n:"Pracuj.pl",d:{ru:"\u041a\u0440\u0443\u043f\u043d\u0435\u0439\u0448\u0438\u0439 \u0441\u0430\u0439\u0442 \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u0439.",uz:"Polshadagi eng yirik vakansiyalar sayti.",en:"Poland's largest job site."},free:false,s:"pracuj.pl"},
   {c:"de",cn:"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f",i:"&#128188;",n:"Stepstone.de",d:{ru:"\u0422\u043e\u043f \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u0438 \u0413\u0435\u0440\u043c\u0430\u043d\u0438\u0438.",uz:"Germaniyaning top vakansiyalari.",en:"Top jobs in Germany."},free:false,s:"stepstone.de"},
-  {c:"de",cn:"\u0413\u0435\u0440\u043c\u0430\u043d\u0438\u044f",i:"&#128667;",n:"LKW-Fahrer-Job.de",d:{ru:"\u0414\u043b\u044f \u0432\u043e\u0434\u0438\u0442\u0435\u043b\u0435\u0439 \u0432 \u0413\u0435\u0440\u043c\u0430\u043d\u0438\u0438.",uz:"Germaniyada haydovchilar uchun.",en:"For drivers in Germany."},free:false,s:"lkw-fahrer-job.de"},
   {c:"pl",cn:"\u041f\u043e\u043b\u044c\u0448\u0430",i:"&#127981;",n:"Jooble.pl",d:{ru:"\u0417\u0430\u0432\u043e\u0434\u044b \u041f\u043e\u043b\u044c\u0448\u0438.",uz:"Polsha zavodlaridagi ishlar.",en:"Factory jobs in Poland."},free:false,s:"pl.jooble.org"},
   {c:"nl",cn:"\u041d\u0438\u0434\u0435\u0440\u043b\u0430\u043d\u0434\u044b",i:"&#128667;",n:"Tempo-Team.nl",d:{ru:"\u0410\u0433\u0435\u043d\u0442\u0441\u0442\u0432\u043e \u0437\u0430\u043d\u044f\u0442\u043e\u0441\u0442\u0438.",uz:"Bandlik agentligi.",en:"Employment agency."},free:false,s:"tempo-team.nl"},
   {c:"at",cn:"\u0410\u0432\u0441\u0442\u0440\u0438\u044f",i:"&#128188;",n:"Karriere.at",d:{ru:"Крупнейший частный сайт вакансий Австрии.",uz:"Avstriyaning eng yirik xususiy vakansiyalar sayti.",en:"Austria's largest private job site."},free:false,s:"karriere.at"},
-  {c:"all",cn:"\u0412\u0441\u0435",i:"&#127760;",n:"Eurojobs.com",d:{ru:"\u0412\u0430\u043a\u0430\u043d\u0441\u0438\u0438 \u043f\u043e \u0432\u0441\u0435\u0439 \u0415\u0432\u0440\u043e\u043f\u0435.",uz:"Butun Yevropa bo\'ylab vakansiyalar.",en:"Jobs across Europe."},free:false,s:"eurojobs.com"},
   {c:"cz",cn:"",i:"&#128188;",n:"Jobs.cz",d:{ru:"Крупнейший сайт вакансий Чехии.",uz:"Chexiyaning eng yirik vakansiyalar sayti.",en:"Czechia's largest job site."},free:false,s:"jobs.cz"},
   {c:"cz",cn:"",i:"&#128188;",n:"Prace.cz",d:{ru:"Крупный частный сайт вакансий Чехии (О'zbekiston bilan yiliga 150 viza kelishuvi mavjud — batafsil: @Evropagoo).",uz:"Chexiyaning yirik xususiy ish sayti (O'zbekiston bilan yiliga 150 vizalik kelishuv bor — batafsil: @Evropagoo).",en:"Czechia's major private job site (a 150 visas/year Uzbekistan agreement exists — details via @Evropagoo)."},free:false,s:"prace.cz",isNew:true},
   {c:"sk",cn:"",i:"&#128188;",n:"Profesia.sk",d:{ru:"Ведущий сайт вакансий Словакии.",uz:"Slovakiyaning yetakchi ish sayti.",en:"Slovakia's leading job site."},free:false,s:"profesia.sk"},
   {c:"hu",cn:"",i:"&#128188;",n:"Profession.hu",d:{ru:"Крупнейший сайт вакансий Венгрии.",uz:"Vengriyaning eng yirik ish sayti.",en:"Hungary's largest job site."},free:false,s:"profession.hu"},
   {c:"lt",cn:"",i:"&#128188;",n:"CVbankas.lt",d:{ru:"Самый популярный сайт вакансий Литвы.",uz:"Litvaning eng mashhur vakansiyalar sayti.",en:"Lithuania's most popular job site."},free:false,s:"cvbankas.lt"},
-  {c:"se",cn:"",i:"&#127970;",n:"Platsbanken",d:{ru:"Государственная служба занятости Швеции.",uz:"Shvetsiya davlat bandlik xizmati (rasmiy).",en:"Sweden's official public employment service."},free:false,s:"arbetsformedlingen.se"},
+  {c:"se",cn:"",i:"&#127970;",n:"Platsbanken",d:{ru:"Государственная служба занятости Швеции.",uz:"Shvetsiya davlat bandlik xizmati (rasmiy).",en:"Sweden's official public employment service."},free:false,s:"arbetsformedlingen.se",gov:true},
   {c:"no",cn:"",i:"&#128188;",n:"Finn.no",d:{ru:"Крупнейший портал Норвегии (раздел работы).",uz:"Norvegiyaning eng yirik sayti (ish bo'limi).",en:"Norway's largest portal (jobs section)."},free:false,s:"finn.no"},
   {c:"fi",cn:"",i:"&#128188;",n:"Duunitori.fi",d:{ru:"Популярный сайт вакансий Финляндии.",uz:"Finlandiyaning mashhur ish sayti.",en:"Finland's popular job site."},free:false,s:"duunitori.fi"},
   {c:"fr",cn:"",i:"&#128188;",n:"HelloWork.com",d:{ru:"Крупнейший частный сайт вакансий Франции (950,000+ предложений).",uz:"Fransiyaning eng yirik xususiy ish sayti (950,000+ vakansiya).",en:"France's largest private job site (950,000+ listings)."},free:false,s:"hellowork.com"},
@@ -1594,10 +1745,9 @@ var FIRMS=[
   {c:"ro",cn:"",i:"&#128188;",n:"eJobs.ro",d:{ru:"Крупнейший сайт вакансий Румынии.",uz:"Ruminiyaning eng yirik ish sayti.",en:"Romania's largest job site."},free:false,s:"ejobs.ro"},
   {c:"ro",cn:"",i:"&#128188;",n:"BestJobs.eu",d:{ru:"Крупный частный сайт вакансий Румынии (о платформе WorkinRomania.gov.ro — подробнее у @Evropagoo).",uz:"Ruminiyaning yirik xususiy ish sayti (WorkinRomania.gov.ro davlat platformasi haqida — batafsil @Evropagoo).",en:"Romania's major private job site (about the WorkinRomania.gov.ro state platform — details via @Evropagoo)."},free:false,s:"bestjobs.eu",isNew:true},
   {c:"hr",cn:"",i:"&#128188;",n:"MojPosao.hr",d:{ru:"Ведущий сайт вакансий Хорватии.",uz:"Xorvatiyaning yetakchi ish sayti.",en:"Croatia's leading job site."},free:false,s:"mojposao.hr"},
-  {c:"hr",cn:"",i:"&#128188;",n:"Posao.hr",d:{ru:"Ведущий частный сайт вакансий Хорватии — 20+ лет (7 000 разрешений выдано узбекистанцам в 2024).",uz:"Xorvatiyaning yetakchi xususiy ish sayti — 20+ yildan buyon (2024-yilda O'zbekiston fuqarolariga 7,000 ruxsatnoma berilgan).",en:"Croatia's leading private job site — 20+ years (7,000 permits issued to Uzbek citizens in 2024)."},free:false,s:"posao.hr",isNew:true},
   {c:"si",cn:"",i:"&#128188;",n:"MojeDelo.com",d:{ru:"Ведущий сайт вакансий Словении.",uz:"Sloveniyaning yetakchi ish sayti.",en:"Slovenia's leading job site."},free:false,s:"mojedelo.com"},
   {c:"bg",cn:"",i:"&#128188;",n:"Jobs.bg",d:{ru:"Крупнейший сайт вакансий Болгарии.",uz:"Bolgariyaning eng yirik vakansiyalar sayti.",en:"Bulgaria's largest job site."},free:false,s:"jobs.bg"},
-  {c:"bg",cn:"",i:"&#127760;",n:"WorkinBulgaria",d:{ru:"Официальная платформа сезонной работы — узбекистанцы лидируют по числу регистраций (2025).",uz:"Mavsumiy ish uchun rasmiy davlat platformasi — 2025-yilda O'zbekiston fuqarolari ro'yxatdan o'tishda yetakchi.",en:"Official seasonal-work platform — Uzbek citizens led registrations in 2025."},free:false,s:"workinbulgaria.bg",isNew:true},
+  {c:"bg",cn:"",i:"&#127760;",n:"WorkinBulgaria",d:{ru:"Официальная платформа сезонной работы — узбекистанцы лидируют по числу регистраций (2025).",uz:"Mavsumiy ish uchun rasmiy davlat platformasi — 2025-yilda O'zbekiston fuqarolari ro'yxatdan o'tishda yetakchi.",en:"Official seasonal-work platform — Uzbek citizens led registrations in 2025."},free:false,s:"workinbulgaria.egov.bg",isNew:true,gov:true},
   {c:"ee",cn:"",i:"&#128188;",n:"CV.ee",d:{ru:"Крупнейший сайт вакансий Эстонии.",uz:"Estoniyaning eng yirik vakansiyalar sayti.",en:"Estonia's largest job site."},free:false,s:"cv.ee"},
   {c:"ee",cn:"",i:"&#128188;",n:"CVKeskus.ee",d:{ru:"Ведущий частный сайт вакансий Эстонии.",uz:"Estoniyaning yetakchi xususiy ish sayti.",en:"Estonia's leading private job site."},free:false,s:"cvkeskus.ee"},
   {c:"dk",cn:"",i:"&#128188;",n:"Jobindex.dk",d:{ru:"Крупнейший сайт вакансий Дании.",uz:"Daniyaning eng yirik vakansiyalar sayti.",en:"Denmark's largest job site."},free:false,s:"jobindex.dk"},
@@ -1622,12 +1772,7 @@ var FAQS=[
    a:{uz:"Ko'pchilik davlatlarda til bilish shart emas. Germaniya, Polsha, Chexiya — tiliiz ham mumkin.",ru:"Да, во многих странах не требуют языка. Германия, Польша, Чехия — можно без языка.",en:"In many countries language is not required. Germany, Poland, Czech Republic — possible without language skills."}}
 ];
 
-var RVS=[
-  {id:1,name:"Sherzod M.",country:"Germaniya",stars:5,text:"1500$ tejadim!"},
-  {id:2,name:"Dilorom K.",country:"Polsha",stars:5,text:"Viza o\u2019tdi!"},
-  {id:3,name:"Jasur T.",country:"Niderlandiya",stars:4,text:"Juda foydali!"},
-  {id:4,name:"Nodira A.",country:"Germaniya",stars:5,text:"Eng yaxshi resurs!"}
-];
+var RVS=[];
 
 // LANG — 3 til: uz, ru, en
 function T(){
@@ -1820,8 +1965,8 @@ function applyLang(){
   var exitLbl=lang==="ru"?"\u0412\u044b\u0445\u043e\u0434":lang==="en"?"Exit":"Chiqish";
   setEl("admLinkBtn",linkLbl);setEl("admExitBtn",exitLbl);
   // Step labels
-  var s1=lang==="ru"?"Шаг 1 / 3":lang==="en"?"Step 1 / 3":"Qadam 1 / 3";
-  var s2=lang==="ru"?"Шаг 2 / 3":lang==="en"?"Step 2 / 3":"Qadam 2 / 3";
+  var s1=lang==="ru"?"Шаг 1 / 2":lang==="en"?"Step 1 / 2":"Qadam 1 / 2";
+  var s2=lang==="ru"?"Шаг 2 / 2":lang==="en"?"Step 2 / 2":"Qadam 2 / 2";
   var s3=lang==="ru"?"Шаг 3 / 3":lang==="en"?"Step 3 / 3":"Qadam 3 / 3";
   setEl("origLabel",s1);setEl("destLabel",s2);setEl("jobLabel",s3);
   var pLbl=lang==="ru"?"Процесс":lang==="en"?"Progress":"Jarayon";
@@ -1832,7 +1977,7 @@ function applyLang(){
   // Muhim eslatma sarlavhasi va matni
   setEl("embNoticeTitle",lang==="ru"?"&#9888;&#65039; Важное замечание":lang==="en"?"&#9888;&#65039; Important note":"&#9888;&#65039; Muhim eslatma");
   var noticeMain=lang==="ru"?"Данные носят общий характер. Список документов может меняться. Для точного списка проверьте официальный сайт посольства.":lang==="en"?"This guide is general. Document requirements may change. Check the official embassy website for exact details.":"Bu yo\u2018riqnoma ma\u2018lumotlari umumiy xarakterda. Hujjatlar ro\u2018yxati o\u2018zgarishi mumkin. Aniq va to\u2018liq hujjatlar to\u2018plami uchun rasmiy elchi xona saytini tekshirib oling.";
-  var noticeYear=lang==="ru"?"&#128197; Последнее обновление: июнь 2026":lang==="en"?"&#128197; Last updated: June 2026":"&#128197; Oxirgi yangilanish: 2026-yil iyun";
+  var noticeYear=lang==="ru"?"&#128197; Последнее обновление: октябрь 2026":lang==="en"?"&#128197; Last updated: October 2026":"&#128197; Oxirgi yangilanish: 2026-yil oktabr";
   setEl("embNoticeText",noticeMain+"<br><b style='color:#f59e0b;'>"+noticeYear+"</b><br><span id='embNoticeLink'></span>");
   // Ticker
   var tick;
@@ -2287,7 +2432,7 @@ function getStages(cid,jid){
 
   return [
     {id:"s1",ico:"&#128196;",title:ru?"Основные документы":en?"Main Documents":"Asosiy hujjatlar",free:true,docs:[passport,photo,anketa,biometric,consulfee,eessys]},
-    {id:"s1b",ico:"&#128197;",title:ru?"Запись (термин) на подачу":en?"Appointment (Termin) Booking":"Navbat (termin) olish tartibi",free:false,docs:[navbat1,navbat2]},
+    {id:"s1b",ico:"&#128197;",title:ru?"Запись (термин) на подачу":en?"Appointment (Termin) Booking":"Navbat (termin) olish tartibi",free:true,docs:[navbat1,navbat2]},
     {id:"s2",ico:"&#128188;",title:ru?"Работа и контракт":en?"Work & Contract":"Ish va shartnoma",free:false,docs:[contract,permit,cv,diplom,langcert]},
     {id:"s3",ico:"&#127973;",title:ru?"Страховка и здоровье":en?"Insurance & Health":"Sug\u2019urta va sog\u2019liq",free:false,docs:[medins,healthcert]},
     {id:"s4",ico:"&#127968;",title:ru?"Жильё и финансы":en?"Housing & Finances":"Turar joy va moliya",free:false,docs:[housing,bankst]},
@@ -3074,6 +3219,8 @@ function renderFirms(flt){
   if(JOBSTEPS[flt])cn[flt]=JOBSTEPS[flt].name[lang]||JOBSTEPS[flt].name.uz;
   renderJobSteps(flt);
   var list=FIRMS.filter(function(f){return flt==="all"||f.c===flt||f.c==="all";});
+  // "Barcha davlatlar uchun" saytlari ketma-ket, birinchi bo'lib; keyin tanlangan davlat saytlari
+  list=list.filter(function(f){return f.c==="all";}).concat(list.filter(function(f){return f.c!=="all";}));
   var fb="";
   var openLbl=lang==="ru"?"\u041e\u0442\u043a\u0440\u044b\u0442\u044c":lang==="en"?"Unlock":"Ochish";
   var freeLbl=lang==="ru"?"\u0411\u0435\u0441\u043f\u043b.":lang==="en"?"Free":"Bepul";
@@ -3085,11 +3232,11 @@ function renderFirms(flt){
     if(!hasAccess&&!f.free){
       lockCounters[f.c]=(lockCounters[f.c]||0)+1;
       var idxLbl=lockCounters[f.c];
-      fb+="<div class='fcard' style='text-align:center;padding:20px;border-style:dashed;'><div style='font-size:24px;margin-bottom:8px;'>&#128274;</div><div style='font-size:13px;font-weight:700;margin-bottom:4px;'>"+countryLbl+" &mdash; "+idxLbl+"</div><div style='font-size:11px;color:var(--mt);margin-bottom:10px;'>"+lockedWordLbl+"</div><button style='background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#000;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;' onclick='goScreen(\"sc-pay\")'>"+openLbl+"</button></div>";
+      fb+="<div class='fcard' style='text-align:center;padding:20px;border-style:dashed;'><div style='font-size:24px;margin-bottom:8px;'>&#128274;</div><div style='font-size:13px;font-weight:700;margin-bottom:4px;'>"+(f.c==="all"?(lang==="ru"?"Для всех стран":lang==="en"?"For all countries":"Barcha davlatlar uchun"):countryLbl)+" &mdash; "+idxLbl+"</div><div style='font-size:11px;color:var(--mt);margin-bottom:10px;'>"+(f.gov?(lang==="ru"?"&#127963; Официальный сайт — закрыто":lang==="en"?"&#127963; Official site — locked":"&#127963; Rasmiy sayt — yopiq"):lockedWordLbl)+"</div><button style='background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#000;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;' onclick='goScreen(\"sc-pay\")'>"+openLbl+"</button></div>";
       return;
     }
     var newBadge=f.isNew?"<span style='background:#dcfce7;color:#166534;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:6px;margin-left:6px;'>"+(lang==="ru"?"НОВОЕ":lang==="en"?"NEW":"YANGI")+"</span>":"";
-    fb+="<div class='fcard'><div class='ftop'><div class='flogo'>"+f.i+"</div><div style='flex:1'><div class='fname'>"+f.n+newBadge+"</div><div class='fcountry'>"+countryLbl+"</div><div class='ftags'><span class='ftag'>"+(f.free?freeLbl:paidLbl)+"</span></div></div></div><div class='fdesc'>"+(f.d[lang]||f.d.ru)+"</div><a class='flink' href='https://"+f.s+"' target='_blank'>"+f.s+" &#8599;</a></div>";
+    fb+="<div class='fcard'><div class='ftop'><div class='flogo'>"+f.i+"</div><div style='flex:1'><div class='fname'>"+f.n+newBadge+"</div><div class='fcountry'>"+countryLbl+"</div><div class='ftags'><span class='ftag'"+(f.gov?" style='background:#dcfce7;color:#166534;'":"")+">"+(f.gov?(lang==="ru"?"\u041e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439":lang==="en"?"Official":"Rasmiy"):(f.free?freeLbl:paidLbl))+"</span></div></div></div><div class='fdesc'>"+(f.d[lang]||f.d.ru)+"</div><a class='flink' href='https://"+f.s+"' target='_blank'>"+f.s+" &#8599;</a></div>";
   });
   setEl("fb",fb);
 }
@@ -3316,6 +3463,9 @@ if(tokenInUrl && !hasAccess){
 } else if(orderCheckInProgress){
   // Click to'lovidan qaytib, tekshiruv hali fon rejimida ketmoqda —
   // ekranni sc-pay'da qoldiramiz, bosh sahifaga qaytarib yubormaymiz.
+} else if(location.hash==="#cv"){
+  // evropago.uz/#cv — CV xizmati ekranini to'g'ridan-to'g'ri ochish (reklama havolasi uchun)
+  goScreen("sc-cvsvc"); cvsTrack("cv_page_open");
 } else if(hasAccess){
   // localStorage orqali kirish allaqachon tasdiqlangan — to'g'ridan-to'g'ri ilovaga kiritamiz,
   // Bosh sahifada qoldirib, mijozni qayta tanlov qilishga majburlamaymiz.
@@ -5463,6 +5613,18 @@ function renderMainFaq(){
 <!-- ============ HUQUQIY MODALLAR TUGADI ============ -->
 
 <!-- ============ DAVLATLAR REYTINGI MODAL ============ -->
+<div class="ovl" id="calcOvl">
+  <div class="mdl" style="max-width:420px;">
+    <div class="mhd"><h3 id="calcTitle">&#128182; Ketish xarajatlari kalkulyatori</h3><button class="mcl" onclick="closeModal('calcOvl')">&#10005;</button></div>
+    <div class="mbd" id="calcBody" style="max-height:75vh;overflow-y:auto;font-size:13px;line-height:1.55;"></div>
+  </div>
+</div>
+<div class="ovl" id="guideOvl">
+  <div class="mdl" style="max-width:420px;">
+    <div class="mhd"><h3 id="guideTitle"></h3><button class="mcl" onclick="closeModal('guideOvl')">&#10005;</button></div>
+    <div class="mbd" id="guideBody" style="font-size:13px;line-height:1.55;"></div>
+  </div>
+</div>
 <div class="ovl" id="rankOvl">
   <div class="mdl" style="max-width:420px;">
     <div class="mhd"><h3 id="rankTitle">&#127942; Qaysi davlatdan tez?</h3><button class="mcl" onclick="closeModal('rankOvl')">&#10005;</button></div>
@@ -5490,72 +5652,72 @@ function renderFraudModal(){
 // Manba: rasmiy davlat statistikasi, WorkinBulgaria, gov.si, EU Home Affairs,
 // migration.lt, Xorvatiya IIV, Chexiya MDI va boshqa rasmiy/tekshirilgan manbalar (2026).
 var COUNTRY_RANK=[
-{tier:1,c:"bg",uz:{n:"Bolgariya",note:"2025-yilda mavsumiy ish ro'yxatga olish deyarli 2 barobar oshdi (19,057 taga) — buning yetakchisi aynan O'zbekiston fuqarolari. To'liq raqamli tizim (WorkinBulgaria), O'zbekiston bilan mehnat kelishuvi tayyorlanmoqda."},
-   ru:{n:"Болгария",note:"В 2025 году сезонная регистрация выросла почти в 2 раза (до 19 057) — лидер именно граждане Узбекистана. Полностью цифровая система (WorkinBulgaria), готовится трудовое соглашение с Узбекистаном."},
-   en:{n:"Bulgaria",note:"Seasonal registrations nearly doubled in 2025 (to 19,057) — led by Uzbek citizens. Fully digital system (WorkinBulgaria), a labor agreement with Uzbekistan is in progress."}},
-{tier:1,c:"hr",uz:{n:"Xorvatiya",note:"2024-yilda O'zbekiston fuqarolariga 7,000 ta ish ruxsatnomasi berilgan (rasmiy statistika) — Bosniya va Nepaldan keyin eng ko'p davlatlardan biri. Jarayon odatda 9–12 hafta."},
-   ru:{n:"Хорватия",note:"В 2024 году гражданам Узбекистана выдано 7 000 разрешений на работу (офиц. статистика) — один из самых крупных потоков после Боснии и Непала. Процесс обычно 9–12 недель."},
-   en:{n:"Croatia",note:"In 2024, 7,000 work permits were issued to Uzbek citizens (official statistics) — one of the largest flows after Bosnia and Nepal. Process usually takes 9–12 weeks."}},
-{tier:1,c:"it",uz:{n:"Italiya",note:"2027-yil kvotasi allaqachon rasman e'lon qilingan: 165,850 o'rin, O'zbekiston va Qirg'iziston ro'yxatda. Decreto Flussi tizimi orqali ish beruvchi \"click-day\"da ariza beradi."},
-   ru:{n:"Италия",note:"Квота на 2027 год уже официально объявлена: 165 850 мест, Узбекистан и Кыргызстан в списке. Через систему Decreto Flussi работодатель подаёт заявку в «click-day»."},
-   en:{n:"Italy",note:"The 2027 quota is already officially announced: 165,850 spots, with Uzbekistan and Kyrgyzstan on the list. Via the Decreto Flussi system, the employer applies on a designated \"click-day\"."}},
-{tier:2,c:"de",uz:{n:"Germaniya",note:"O'zbekiston bilan rasmiy migratsiya kelishuvi imzolagan yagona Yevropa davlati (2024). Lekin faqat malakali kadrlar uchun (hamshira, muhandis, IT) — Chancenkarte yoki EU Blue Card orqali."},
-   ru:{n:"Германия",note:"Единственная страна Европы, подписавшая официальное миграционное соглашение с Узбекистаном (2024). Но только для квалифицированных кадров (медсёстры, инженеры, IT) — через Chancenkarte или EU Blue Card."},
-   en:{n:"Germany",note:"The only European country with a formal migration agreement with Uzbekistan (2024). But only for qualified professionals (nurses, engineers, IT) — via Chancenkarte or EU Blue Card."}},
-{tier:2,c:"cz",uz:{n:"Chexiya",note:"O'zbekiston bilan yiliga 150 ta ish vizasi berish bo'yicha alohida davlatlararo kelishuv bor (Employee Card). Kichik, ammo kafolatlangan rasmiy kanal."},
-   ru:{n:"Чехия",note:"Есть отдельное межгосударственное соглашение с Узбекистаном на 150 рабочих виз в год (Employee Card). Небольшой, но гарантированный официальный канал."},
-   en:{n:"Czech Republic",note:"There's a separate bilateral agreement with Uzbekistan for 150 work visas per year (Employee Card). Small but guaranteed official channel."}},
-{tier:3,c:"ro",uz:{n:"Ruminiya",note:"2026-yil kvotasi — 90,000 ruxsatnoma, O'zbekistonga ochiq. Standart jarayon: avval ish beruvchi ruxsatnoma oladi, keyin siz viza olasiz."},
-   ru:{n:"Румыния",note:"Квота на 2026 год — 90 000 разрешений, открыто для Узбекистана. Стандартный процесс: сначала работодатель получает разрешение, затем вы получаете визу."},
-   en:{n:"Romania",note:"2026 quota is 90,000 permits, open to Uzbekistan. Standard process: employer gets the permit first, then you get the visa."}},
-{tier:3,c:"lt",uz:{n:"Litva",note:"Standart yo'l: ish ruxsatnomasi + D turdagi viza. Odatda 6–8 hafta. Kasb yetishmovchiligi ro'yxatidagi mutaxassisliklar uchun tezroq."},
-   ru:{n:"Литва",note:"Стандартный путь: разрешение на работу + виза типа D. Обычно 6–8 недель. Для профессий из списка дефицитных — быстрее."},
-   en:{n:"Lithuania",note:"Standard route: work permit + type D visa. Usually 6–8 weeks. Faster for professions on the shortage list."}},
-{tier:3,c:"pl",uz:{n:"Polsha",note:"Tarixan MDH mamlakatlaridan eng katta bozor, lekin soddalashtirilgan oświadczenie deklaratsiyasiga O'zbekiston kirmaydi — to'liq ish ruxsatnomasi kerak. Shunga qaramay eng ko'p hajmdagi davlatlardan biri."},
-   ru:{n:"Польша",note:"Исторически крупнейший рынок для стран СНГ, но упрощённая декларация oświadczenie не распространяется на Узбекистан — нужно полное разрешение на работу. Тем не менее один из самых массовых потоков."},
-   en:{n:"Poland",note:"Historically the largest market for CIS countries, but the simplified oświadczenie declaration doesn't cover Uzbekistan — a full work permit is required. Still one of the highest-volume destinations."}},
-{tier:3,c:"pt",uz:{n:"Portugaliya",note:"E8 mavsumiy vizasi (qishloq xo'jaligi, turizm, 9 oygacha) shartnomasi bor uchinchi davlat fuqarolariga ochiq. Standart jarayon, kvota yo'q."},
-   ru:{n:"Португалия",note:"Сезонная виза E8 (сельское хозяйство, туризм, до 9 месяцев) открыта для граждан третьих стран с контрактом. Стандартный процесс, без квот."},
-   en:{n:"Portugal",note:"E8 seasonal visa (agriculture, tourism, up to 9 months) is open to third-country nationals with a contract. Standard process, no quota."}},
+{tier:1,c:"bg",uz:{n:"Bolgariya",note:"2025-yilda mavsumiy ro'yxatga olish deyarli 2 barobar oshdi (19 057) — yetakchisi O'zbekiston fuqarolari. 2026-yil iyulda hukumat O'zbekiston bilan mehnat kelishuvi loyihasini ma'qulladi (ruxsatnomasiz 1 yilgacha ishlash, mavsumiy ish 9 oygacha); imzolangani haqida hali xabar yo'q. Martdan transport sohasida pilot loyiha: haydovchilar va mexaniklar (2 500 €gacha)."},
+   ru:{n:"Болгария",note:"В 2025 году сезонная регистрация выросла почти вдвое (19 057) — лидер граждане Узбекистана. В июле 2026 правительство одобрило проект соглашения с Узбекистаном (работа без разрешения до 1 года, сезонная до 9 месяцев); о подписании пока не сообщалось. С марта — пилотный проект в транспорте: водители и механики (до 2 500 €)."},
+   en:{n:"Bulgaria",note:"Seasonal registrations nearly doubled in 2025 (19,057) — led by Uzbek citizens. In July 2026 the government approved a draft labour agreement with Uzbekistan (work without a permit up to 1 year, seasonal up to 9 months); no signing reported yet. Since March, a transport pilot: drivers and mechanics (up to €2,500)."}},
+{tier:1,c:"hr",uz:{n:"Xorvatiya",note:"2025-yil yanvar–noyabrda O'zbekiston fuqarolariga 5 161 ruxsatnoma berilgan. 2026-yil may qonuni: ruxsatnomani uzaytirish uchun 1 yil ichida xorvat tilidan A1 imtihoni kerak; 6 oydan keyin ish beruvchini almashtirish mumkin; mavsumiy ruxsat 3 yilgacha. Migratsiya agentligi orqali qurilish ishlari (1 500–1 800 €) — xorijdaish.uz."},
+   ru:{n:"Хорватия",note:"В январе–ноябре 2025 гражданам Узбекистана выдано 5 161 разрешение. Закон мая 2026: для продления разрешения через год нужен экзамен по хорватскому языку A1; через 6 месяцев можно сменить работодателя; сезонное разрешение до 3 лет. Через Агентство миграции — работа в строительстве (1 500–1 800 €), xorijdaish.uz."},
+   en:{n:"Croatia",note:"5,161 permits were issued to Uzbek citizens in Jan–Nov 2025. May 2026 law: an A1 Croatian test within one year is required to renew a permit; you can change employer after 6 months; seasonal permits up to 3 years. Construction jobs via the Migration Agency (€1,500–1,800) — xorijdaish.uz."}},
+{tier:1,c:"it",uz:{n:"Italiya",note:"2027-yil kvotasi: 165 850 o'rin (89 000 mavsumiy, 76 200 mavsumiy bo'lmagan). O'zbekiston va Qirg'iziston ro'yxatda. Ish beruvchi arizani 23-oktabr – 7-dekabr 2026 oralig'ida oldindan to'ldiradi, keyin \"click-day\"da yuboradi (birinchisi 12-yanvar 2027)."},
+   ru:{n:"Италия",note:"Квота на 2027 год: 165 850 мест (89 000 сезонных, 76 200 несезонных). Узбекистан и Кыргызстан в списке. Работодатель заполняет заявку заранее с 23 октября по 7 декабря 2026, затем отправляет её в «click-day» (первый — 12 января 2027)."},
+   en:{n:"Italy",note:"2027 quota: 165,850 places (89,000 seasonal, 76,200 non-seasonal). Uzbekistan and Kyrgyzstan are on the list. Employers pre-fill applications from October 23 to December 7, 2026, then submit on \"click-day\" (the first is January 12, 2027)."}},
+{tier:2,c:"de",uz:{n:"Germaniya",note:"O'zbekiston bilan rasmiy migratsiya kelishuvi bor (2024); 2025-yilda 1 755 o'zbek Germaniyada ishni boshlagan. Malakali kadrlar uchun: Chancenkarte yoki EU Blue Card. 2026-yil kuzida Migratsiya agentligi orqali quruvchilar (200 o'rin, ~2 500 €) va C/CE haydovchilar (50 o'rin, suhbat 6 va 10-noyabr) yollanmoqda, nemis tili kursi bepul. Ariza: xorijdaish.uz."},
+   ru:{n:"Германия",note:"Есть официальное миграционное соглашение с Узбекистаном (2024); в 2025 году работу в Германии начали 1 755 узбекистанцев. Для квалифицированных: Chancenkarte или EU Blue Card. Осенью 2026 через Агентство миграции набирают строителей (200 мест, ~2 500 €) и водителей C/CE (50 мест, собеседования 6 и 10 ноября), курс немецкого бесплатно. Заявка: xorijdaish.uz."},
+   en:{n:"Germany",note:"Formal migration agreement with Uzbekistan (2024); 1,755 Uzbeks started work in Germany in 2025. Skilled route: Chancenkarte or EU Blue Card. In autumn 2026 the Migration Agency is recruiting builders (200 places, ~€2,500) and C/CE drivers (50 places, interviews on Nov 6 and 10), with free German classes. Apply: xorijdaish.uz."}},
+{tier:2,c:"cz",uz:{n:"Chexiya",note:"O'zbekiston bilan yiliga 150 ta ish vizasi bo'yicha kelishuv bor (Employee Card). 2026-yil iyulda memorandum imzolandi: hamshira va qariyalar parvarishi bo'yicha pilot dastur. Oktabrda Migratsiya agentligi shifokor va hamshiralarni Penta Hospitals klinikalariga (Chexiya, Slovakiya, Polsha) taklif qildi: 1 800–2 200 €, til kursi bepul."},
+   ru:{n:"Чехия",note:"Есть соглашение с Узбекистаном на 150 рабочих виз в год (Employee Card). В июле 2026 подписан меморандум: пилотная программа для медсестёр и сиделок. В октябре Агентство миграции пригласило врачей и медсестёр в клиники Penta Hospitals (Чехия, Словакия, Польша): 1 800–2 200 €, языковой курс бесплатно."},
+   en:{n:"Czech Republic",note:"Agreement with Uzbekistan for 150 work visas a year (Employee Card). A memorandum was signed in July 2026: a pilot for nurses and elderly carers. In October the Migration Agency invited doctors and nurses to Penta Hospitals clinics (Czechia, Slovakia, Poland): €1,800–2,200, free language course."}},
+{tier:3,c:"ro",uz:{n:"Ruminiya",note:"2026 kvotasi — 90 000. 27-apreldan avgustgacha yangi ruxsatnomalar to'xtab turdi; yangi WorkinRomania platformasi avgustdan ishlaydi, birinchi arizalar taxminan oktabrdan. Agentliklar 75 000 € kafolat qo'yishi shart — tekshirilmagan vositachilarga pul bermang. Avval ish beruvchi ruxsat oladi, keyin siz viza olasiz."},
+   ru:{n:"Румыния",note:"Квота 2026 — 90 000. С 27 апреля до августа выдача новых разрешений была заморожена; новая платформа WorkinRomania работает с августа, первые заявки — примерно с октября. Агентства обязаны внести гарантию 75 000 € — не платите непроверенным посредникам. Сначала разрешение получает работодатель, потом вы — визу."},
+   en:{n:"Romania",note:"2026 quota: 90,000. New permits were frozen from April 27 until August; the new WorkinRomania platform is live since August, first applications expected around October. Agencies must post a €75,000 guarantee — don't pay unverified middlemen. The employer gets the permit first, then you get the visa."}},
+{tier:3,c:"pl",uz:{n:"Polsha",note:"Tarixan eng katta bozor, lekin O'zbekiston uchun to'liq ish ruxsatnomasi kerak (oświadczenie amal qilmaydi). Arizalar faqat elektron — praca.gov.pl orqali, yig'im 400 PLN. Tekshiruv qattiqlashdi: 2026 I choragida ish vizalari 2022-yilga nisbatan ~8 baravar kam berilgan."},
+   ru:{n:"Польша",note:"Исторически крупнейший рынок, но для Узбекистана нужно полное разрешение на работу (oświadczenie не действует). Заявки — только электронно через praca.gov.pl, сбор 400 PLN. Проверки ужесточились: в I квартале 2026 рабочих виз выдано примерно в 8 раз меньше, чем в 2022."},
+   en:{n:"Poland",note:"Historically the largest market, but Uzbekistan needs a full work permit (oświadczenie does not apply). Applications are electronic only via praca.gov.pl, fee 400 PLN. Checks are stricter: in Q1 2026 about 8× fewer work visas were issued than in 2022."}},
+{tier:3,c:"pt",uz:{n:"Portugaliya",note:"E8 mavsumiy viza (qishloq xo'jaligi, turizm, 9 oygacha) shartnoma bilan ochiq. Lekin 2025-yil oktabrdan ish qidirish vizasi bekor qilindi, 31-dekabrdan \"manifestação de interesse\" yo'li (turist bo'lib kirib, keyin ishga rasmiylashtirish) yopildi. Endi faqat oldindan ish shartnomasi bilan."},
+   ru:{n:"Португалия",note:"Сезонная виза E8 (сельское хозяйство, туризм, до 9 месяцев) открыта при наличии контракта. Но с октября 2025 виза для поиска работы отменена, с 31 декабря закрыт путь «manifestação de interesse» (въезд туристом и оформление на работу). Теперь только с заранее подписанным контрактом."},
+   en:{n:"Portugal",note:"The E8 seasonal visa (agriculture, tourism, up to 9 months) is open with a contract. But the job-seeker visa was replaced in October 2025 and the \"manifestação de interesse\" route (enter as a tourist, then get hired) closed on December 31. Now only with a contract signed in advance."}},
 {tier:3,c:"si",uz:{n:"Sloveniya",note:"Yagona ruxsatnoma (single permit) tizimi — yashash va ish huquqi bir hujjatda. Standart EU jarayoni, maxsus cheklov yo'q."},
    ru:{n:"Словения",note:"Система единого разрешения (single permit) — право на жительство и работу в одном документе. Стандартный процесс ЕС, без особых ограничений."},
    en:{n:"Slovenia",note:"Single permit system — residence and work rights in one document. Standard EU process, no special restrictions."}},
-{tier:3,c:"sk",uz:{n:"Slovakiya",note:"120 kunlik viza tizimi joriy etilgan, VFS Global orqali arizalar tezlashtirilmoqda. Standart jarayon, O'zbekistonga ochiq."},
-   ru:{n:"Словакия",note:"Введена 120-дневная виза, заявки ускоряются через VFS Global. Стандартный процесс, открыто для Узбекистана."},
-   en:{n:"Slovakia",note:"A 120-day visa system has been introduced, applications are being sped up via VFS Global. Standard process, open to Uzbekistan."}},
+{tier:3,c:"sk",uz:{n:"Slovakiya",note:"15-iyul 2026 dan: milliy viza 120 kunga uzaytirildi, vizalarni yangi Markaziy viza organi ~40 kunda ko'rib chiqadi. Lekin yetishmayotgan hujjatni topshirish uchun atigi 15 kun beriladi — kechiksangiz ariza rad etiladi. O'zbekistonga ochiq."},
+   ru:{n:"Словакия",note:"С 15 июля 2026: национальная виза продлена до 120 дней, визы рассматривает новый Центральный визовый орган (~40 дней). Но на донесение документов даётся всего 15 дней — при опоздании заявку отклоняют. Открыто для Узбекистана."},
+   en:{n:"Slovakia",note:"From July 15, 2026: the national visa is extended to 120 days and a new Central Visa Authority handles visas (~40 days). But you get only 15 days to submit missing documents — late means rejection. Open to Uzbekistan."}},
 {tier:3,c:"ee",uz:{n:"Estoniya",note:"Ochiq, lekin 2026-yil uchun jami kvota atigi 1,292 o'rin (barcha davlatlar uchun) — juda tor. Qisqa muddatli ishga ro'yxatdan o'tish 15 kunda."},
    ru:{n:"Эстония",note:"Открыто, но общая квота на 2026 год всего 1 292 места (для всех стран) — очень узко. Регистрация краткосрочной работы — 15 дней."},
    en:{n:"Estonia",note:"Open, but the total 2026 quota is only 1,292 spots (for all countries) — very narrow. Short-term work registration takes 15 days."}},
 {tier:3,c:"nl",uz:{n:"Niderlandiya",note:"Asosan Highly Skilled Migrant dasturi orqali — ish taklifi va yuqori maosh chegarasi (30 yoshgacha ~€4,129/oy) talab qilinadi. Oddiy ish uchun deyarli yopiq."},
    ru:{n:"Нидерланды",note:"В основном через Highly Skilled Migrant — нужны предложение о работе и высокий порог зарплаты (до 30 лет ~€4 129/мес). Для обычной работы практически закрыто."},
    en:{n:"Netherlands",note:"Mainly via the Highly Skilled Migrant program — requires a job offer and a high salary threshold (under 30: ~€4,129/month). Practically closed for ordinary work."}},
-{tier:3,c:"at",uz:{n:"Avstriya",note:"Standart EU Blue Card / RWR karta tizimi, malaka va maosh chegarasi talab qilinadi. Oddiy ish uchun maxsus yo'l yo'q."},
-   ru:{n:"Австрия",note:"Стандартная система EU Blue Card / RWR карты, требуется квалификация и зарплатный порог. Особого пути для обычной работы нет."},
-   en:{n:"Austria",note:"Standard EU Blue Card / RWR card system, requires qualification and a salary threshold. No special route for ordinary work."}},
+{tier:3,c:"at",uz:{n:"Avstriya",note:"Malakali ish uchun RWR karta (minimal ~3 977 €/oy) yoki EU Blue Card. Mavsumiy ish uchun 2026 kvotasi: turizm — 5 500, qishloq va o'rmon xo'jaligi — 3 496 o'rin (ruxsatni ish beruvchi AMS orqali oladi)."},
+   ru:{n:"Австрия",note:"Для квалифицированной работы — карта RWR (минимум ~3 977 €/мес) или EU Blue Card. Сезонные квоты 2026: туризм — 5 500, сельское и лесное хозяйство — 3 496 мест (разрешение работодатель получает через AMS)."},
+   en:{n:"Austria",note:"Skilled work: RWR card (minimum ~€3,977/month) or EU Blue Card. Seasonal quotas 2026: tourism 5,500, agriculture and forestry 3,496 places (the employer obtains the permit via AMS)."}},
 {tier:3,c:"fr",uz:{n:"Fransiya",note:"Standart jarayon, konsullik navbatlari 4–8 hafta cho'zilishi mumkin. Maxsus O'rta Osiyo kanali yo'q."},
    ru:{n:"Франция",note:"Стандартный процесс, очередь в консульстве может растянуться на 4–8 недель. Отдельного канала для Центральной Азии нет."},
    en:{n:"France",note:"Standard process, consular queues can stretch to 4–8 weeks. No special channel for Central Asia."}},
 {tier:3,c:"be",uz:{n:"Belgiya",note:"Uchta mintaqaviy tizim (Flandriya, Valloniya, Bryussel) — har birining o'z chegaralari bor. Standart, murakkabroq jarayon."},
    ru:{n:"Бельгия",note:"Три региональные системы (Фландрия, Валлония, Брюссель) — у каждой свои пороги. Стандартный, более сложный процесс."},
    en:{n:"Belgium",note:"Three regional systems (Flanders, Wallonia, Brussels) — each with its own thresholds. Standard, more complex process."}},
-{tier:3,c:"fi",uz:{n:"Finlandiya",note:"Migri orqali yo'nalishga qarab turlicha ruxsatnoma. Ariza berish jarayoni odatda uzoq davom etadi."},
-   ru:{n:"Финляндия",note:"Через Migri — разные разрешения в зависимости от направления. Процесс подачи заявки обычно долгий."},
-   en:{n:"Finland",note:"Via Migri — different permits depending on the route. The application process is usually long."}},
+{tier:3,c:"fi",uz:{n:"Finlandiya",note:"Ish ruxsatnomasini Migri beradi (enterfinland.fi). Mavsumiy ish: 90 kungacha viza yoki 3–9 oylik ruxsatnoma. 2026 mavsumida yovvoyi rezavor teruvchilar arizalarining ~87% rad etildi (ish beruvchilar talablarni bajarmagani uchun) — ish beruvchini oldindan tekshiring. Ish tugasa va 3 oyda yangisi topilmasa, ruxsatnoma bekor qilinadi."},
+   ru:{n:"Финляндия",note:"Разрешение на работу выдаёт Migri (enterfinland.fi). Сезонная работа: виза до 90 дней или разрешение на 3–9 месяцев. В сезон 2026 около 87% заявок сборщиков дикоросов отклонено (работодатели не выполняли требования) — проверяйте работодателя заранее. Если работа закончилась и новая не найдена за 3 месяца, разрешение аннулируется."},
+   en:{n:"Finland",note:"Work permits are issued by Migri (enterfinland.fi). Seasonal work: a visa for up to 90 days or a 3–9 month permit. In the 2026 season about 87% of wild-berry picker applications were refused (employers failed requirements) — check the employer in advance. If your job ends and you don't find a new one within 3 months, the permit is cancelled."}},
 {tier:4,c:"es",uz:{n:"Ispaniya",note:"GECCO dasturi qonuniy ochiq, lekin amalda kontraktlarning 81%i Marokashga to'g'ri keladi. O'rta Osiyo ustuvor davlatlar ro'yxatida emas."},
    ru:{n:"Испания",note:"Программа GECCO юридически открыта, но на практике 81% контрактов приходится на Марокко. Центральная Азия не входит в приоритетный список."},
    en:{n:"Spain",note:"The GECCO program is legally open, but in practice 81% of contracts go to Morocco. Central Asia is not on the priority list."}},
-{tier:4,c:"gr",uz:{n:"Gretsiya",note:"9 oygacha mavsumiy viza rasman ochiq (2026 kvotasi ~94,240), lekin asosiy oqim — Bangladesh, Hindiston, Pokiston. O'rta Osiyo bilan yo'lga qo'yilgan kanal yo'q."},
-   ru:{n:"Греция",note:"Сезонная виза до 9 месяцев официально открыта (квота 2026 — ~94 240), но основной поток — Бангладеш, Индия, Пакистан. Налаженного канала с Центральной Азией нет."},
-   en:{n:"Greece",note:"Seasonal visa up to 9 months is officially open (2026 quota ~94,240), but the main flow is Bangladesh, India, Pakistan. No established channel with Central Asia."}},
-{tier:5,c:"hu",uz:{n:"Vengriya",note:"\"Mehmon ishchi\" dasturi (2026 kvotasi 35,000) faqat 10 davlat uchun ochiq — ular orasida O'ZBEKISTON YO'Q (faqat Qozog'iston va Qirg'iziston). Bu yo'l hozircha yopiq."},
-   ru:{n:"Венгрия",note:"Программа «гостевой рабочий» (квота 2026 — 35 000) открыта только для 10 стран — УЗБЕКИСТАНА СРЕДИ НИХ НЕТ (только Казахстан и Кыргызстан). Этот путь пока закрыт."},
-   en:{n:"Hungary",note:"The \"guest worker\" program (2026 quota: 35,000) is open to only 10 countries — Uzbekistan is NOT among them (only Kazakhstan and Kyrgyzstan). This route is currently closed."}},
-{tier:5,c:"lv",uz:{n:"Latviya",note:"IIV 2027-yil uchun uchinchi davlat fuqarolariga qattiq kvota kiritishni taklif qildi — vazir aniq O'zbekiston, Hindiston, Shri-Lanka fuqarolarini misol qilib ko'rsatdi. Yaqin kelajakda qiyinlashishi mumkin."},
-   ru:{n:"Латвия",note:"МВД предложило ввести жёсткие квоты для граждан третьих стран на 2027 год — министр прямо назвал в пример граждан Узбекистана, Индии, Шри-Ланки. В ближайшем будущем может усложниться."},
-   en:{n:"Latvia",note:"The Interior Ministry has proposed strict quotas for third-country nationals from 2027 — the minister specifically named Uzbekistan, India, and Sri Lanka as examples. Could get harder in the near future."}},
-{tier:6,c:"se",uz:{n:"Shvetsiya",note:"O'zbekiston bilan yangi mehnat kelishuvi muzokara bosqichida (2026, keyingi 4 yil rejasi qismi). Hozircha rasmiy ishlaydigan kanal emas."},
-   ru:{n:"Швеция",note:"Новое трудовое соглашение с Узбекистаном на стадии переговоров (2026, часть плана на ближайшие 4 года). Пока не является рабочим официальным каналом."},
-   en:{n:"Sweden",note:"A new labor agreement with Uzbekistan is under negotiation (2026, part of a 4-year plan). Not yet a working official channel."}},
+{tier:4,c:"gr",uz:{n:"Gretsiya",note:"Mavsumiy viza rasman ochiq (2026 kvotasi ~94,240), lekin asosiy oqim — Bangladesh, Hindiston, Pokiston. O'rta Osiyo bilan yo'lga qo'yilgan kanal yo'q."},
+   ru:{n:"Греция",note:"Сезонная виза официально открыта (квота 2026 — ~94 240), но основной поток — Бангладеш, Индия, Пакистан. Налаженного канала с Центральной Азией нет."},
+   en:{n:"Greece",note:"Seasonal visa is officially open (2026 quota ~94,240), but the main flow is Bangladesh, India, Pakistan. No established channel with Central Asia."}},
+{tier:5,c:"lt",uz:{n:"Litva",note:"2026-yil kvotasi (24 706 o'rin) 7-sentabrda tugadi. Endi ish uchun ruxsat faqat yuqori maosh bilan beriladi: o'rtacha maoshning 1,2 baravari (~2 893 €) yoki taqchil malakali kasblarda kamida o'rtacha maosh (~2 411 €). O'zbekiston, Qozog'iston va Qirg'izistondagi ariza markazlari (VFS) 1-noyabrdan yopiladi."},
+   ru:{n:"Литва",note:"Квота на 2026 год (24 706 мест) исчерпана 7 сентября. Теперь разрешение на работу дают только при высокой зарплате: 1,2 средней зарплаты (~2 893 €) или не ниже средней (~2 411 €) для дефицитных квалифицированных профессий. Центры приёма заявлений (VFS) в Узбекистане, Казахстане и Кыргызстане закрываются с 1 ноября."},
+   en:{n:"Lithuania",note:"The 2026 quota (24,706 places) was exhausted on September 7. Work permits are now issued only with a high salary: 1.2× the average wage (~€2,893), or at least the average wage (~€2,411) for skilled shortage occupations. Application centres (VFS) in Uzbekistan, Kazakhstan and Kyrgyzstan close from November 1."}},
+{tier:5,c:"hu",uz:{n:"Vengriya",note:"2026-yil 6-iyundan \"mehmon ishchi\" ruxsatnomasiga yangi arizalar butunlay to'xtatilgan — endi hech bir davlat uchun ochiq emas (avval ham O'zbekiston ro'yxatda yo'q edi). Hukumat mehnat migratsiyasi tizimini qayta ko'rib chiqmoqda."},
+   ru:{n:"Венгрия",note:"С 6 июня 2026 приём новых заявлений на разрешение «гостевого работника» полностью остановлен — программа закрыта для всех стран (Узбекистана в списке не было и раньше). Правительство пересматривает систему трудовой миграции."},
+   en:{n:"Hungary",note:"Since June 6, 2026, new guest-worker permit applications are fully suspended — the scheme is closed to all countries (Uzbekistan was never on the list). The government is reviewing its labour migration system."}},
+{tier:5,c:"lv",uz:{n:"Latviya",note:"Qiyinlashmoqda: 2026-yil avgust–oktabrda Ichki ishlar vazirligi uchinchi davlatlar uchun kvota va O'zbekiston fuqarolariga vizani vaqtincha to'xtatishni taklif qildi. Hukumat buni qabul qilmadi: oktabr holatiga viza tartibi o'zgarmagan, kvota joriy etilmagan. Vaziyat tez o'zgarishi mumkin."},
+   ru:{n:"Латвия",note:"Ужесточается: в августе–октябре 2026 МВД предложило квоты для граждан третьих стран и временную приостановку виз для граждан Узбекистана. Правительство это не приняло: на октябрь визовый порядок не изменён, квоты не введены. Ситуация может быстро измениться."},
+   en:{n:"Latvia",note:"Getting harder: in August–October 2026 the Interior Ministry proposed quotas for third-country nationals and a temporary suspension of visas for Uzbek citizens. The government did not adopt it: as of October the visa procedure is unchanged and no quota is in force. This could change quickly."}},
+{tier:6,c:"se",uz:{n:"Shvetsiya",note:"2026-yil 11-iyunda O'zbekiston va Shvetsiya migratsiya va mobillik bo'yicha birinchi kelishuvni imzoladi: sog'liqni saqlash, muhandislik, xizmat ko'rsatish va parvarish sohalari. XMT (IOM) bilan pilot dastur va shved tili kurslari rejalashtirilgan. Ishga yollash tartibi hali e'lon qilinmagan."},
+   ru:{n:"Швеция",note:"11 июня 2026 Узбекистан и Швеция подписали первое соглашение о миграции и мобильности: здравоохранение, инженерия, сфера услуг и уход. Запланированы пилотная программа с МОМ и курсы шведского языка. Порядок найма пока не объявлен."},
+   en:{n:"Sweden",note:"On June 11, 2026, Uzbekistan and Sweden signed their first migration and mobility agreement: healthcare, engineering, services and care work. A pilot with IOM and Swedish language courses are planned. The recruitment procedure has not been announced yet."}},
 {tier:6,c:"no",uz:{n:"Norvegiya",note:"Shvetsiya/Daniya bilan bir qatorda kelishuv muzokarasi doirasida. Hozircha O'zbekiston uchun maxsus yo'l yo'q."},
    ru:{n:"Норвегия",note:"В рамках тех же переговоров вместе со Швецией/Данией. Пока нет отдельного пути для Узбекистана."},
    en:{n:"Norway",note:"Part of the same negotiation track alongside Sweden/Denmark. No dedicated route for Uzbekistan yet."}},
@@ -5574,7 +5736,7 @@ var RANK_TIER_META={
 function renderCountryRank(){
   setEl("rankTitle",lang==="ru"?"&#127942; С какой страны быстрее?":lang==="en"?"&#127942; Which country is fastest?":"&#127942; Qaysi davlatdan tez?");
   setEl("rankBtnLbl",lang==="ru"?"С какой страны получить визу быстрее?":lang==="en"?"Which country is fastest for a visa?":"Qaysi davlatdan viza olish tezroq?");
-  var checkedLbl=lang==="ru"?"Проверено: 17 августа 2026":lang==="en"?"Checked: August 17, 2026":"Tekshirilgan sana: 2026-yil 17-avgust";
+  var checkedLbl=lang==="ru"?"Проверено: 27 октября 2026":lang==="en"?"Checked: October 27, 2026":"Tekshirilgan sana: 2026-yil 27-oktabr";
   var intro=lang==="ru"?"<div style='background:#f0f4ff;border-radius:10px;padding:10px 12px;margin-bottom:6px;font-size:12px;color:#445;'>Основано на официальной статистике и проверенных источниках (2026). Обновляется по мере изменений.</div><div style='font-size:10.5px;color:var(--mt);margin-bottom:14px;'>"+checkedLbl+"</div>":lang==="en"?"<div style='background:#f0f4ff;border-radius:10px;padding:10px 12px;margin-bottom:6px;font-size:12px;color:#445;'>Based on official statistics and verified sources (2026). Updated as things change.</div><div style='font-size:10.5px;color:var(--mt);margin-bottom:14px;'>"+checkedLbl+"</div>":"<div style='background:#f0f4ff;border-radius:10px;padding:10px 12px;margin-bottom:6px;font-size:12px;color:#445;'>Rasmiy statistika va tekshirilgan manbalar asosida (2026). O'zgarishlar bo'yicha yangilanib boradi.</div><div style='font-size:10.5px;color:var(--mt);margin-bottom:14px;'>"+checkedLbl+"</div>";
   var h=intro+renderVerifyChecklist()+renderKeyDeadlines()+renderWageCompare();
   var curTier=0;
@@ -5623,17 +5785,26 @@ function renderVerifyChecklist(){
 function renderKeyDeadlines(){
   var title=lang==="ru"?"&#128197; Важные сроки 2026&#8211;2027":lang==="en"?"&#128197; Key dates 2026&#8211;2027":"&#128197; Muhim sanalar 2026&#8211;2027";
   var rows=lang==="ru"?[
-    ["&#127470;&#127481; Италия","Click-day: 12 янв (ферма), 9 фев (туризм), 16 фев (не сезонная). 2027 год — даты объявят осенью 2026."],
+    ["&#127470;&#127481; Италия","Предзаполнение заявок: 23 окт – 7 дек 2026. Click-day 2027: 12 янв (ферма), 9 фев (туризм), 16 фев (несезонная), 18 фев (уход за семьёй)."],
+    ["&#127473;&#127481; Литва","Квота 2026 исчерпана. Центры VFS в Узбекистане, Казахстане и Кыргызстане закрываются с 1 ноября 2026."],
     ["&#127463;&#127468; Болгария","WorkinBulgaria работает круглый год — регистрация в любое время."],
-    ["&#127479;&#127476; Румыния","С мая 2026 — новая цифровая система WorkinRomania.gov.ro."]
+    ["&#127465;&#127466; Германия","Онлайн-собеседования с водителями (C/CE, 50 мест): 6 и 10 ноября 2026. Регистрация: xorijdaish.uz."],
+    ["&#127464;&#127487; Чехия / Словакия / Польша","Бесплатный языковой курс для врачей и медсестёр начинается в ноябре 2026 (Агентство миграции)."],
+    ["&#127479;&#127476; Румыния","С августа 2026 работает новая цифровая платформа WorkinRomania.gov.ro (заявку подаёт работодатель). Первые заявки — примерно с октября."]
   ]:lang==="en"?[
-    ["&#127470;&#127481; Italy","Click-day: Jan 12 (farm), Feb 9 (tourism), Feb 16 (non-seasonal). 2027 dates expected autumn 2026."],
+    ["&#127470;&#127481; Italy","Application pre-filling: Oct 23 – Dec 7, 2026. Click-day 2027: Jan 12 (farm), Feb 9 (tourism), Feb 16 (non-seasonal), Feb 18 (family care)."],
+    ["&#127473;&#127481; Lithuania","2026 quota exhausted. VFS centres in Uzbekistan, Kazakhstan and Kyrgyzstan close from November 1, 2026."],
     ["&#127463;&#127468; Bulgaria","WorkinBulgaria runs year-round — register anytime."],
-    ["&#127479;&#127476; Romania","From May 2026 — new digital system WorkinRomania.gov.ro."]
+    ["&#127465;&#127466; Germany","Online interviews for drivers (C/CE, 50 places): November 6 and 10, 2026. Register: xorijdaish.uz."],
+    ["&#127464;&#127487; Czechia / Slovakia / Poland","Free language course for doctors and nurses starts in November 2026 (Migration Agency)."],
+    ["&#127479;&#127476; Romania","Since August 2026 the new digital platform WorkinRomania.gov.ro is live (the employer files the application). First applications expected from around October."]
   ]:[
-    ["&#127470;&#127481; Italiya","Click-day: 12-yanvar (ferma), 9-fevral (turizm), 16-fevral (mavsumiy bo'lmagan). 2027 sanalari 2026-yil kuzida e'lon qilinadi."],
+    ["&#127470;&#127481; Italiya","Arizani oldindan to'ldirish: 23-oktabr – 7-dekabr 2026. Click-day 2027: 12-yanvar (ferma), 9-fevral (turizm), 16-fevral (mavsumiy bo'lmagan), 18-fevral (oilaviy parvarish)."],
+    ["&#127473;&#127481; Litva","2026 kvotasi tugagan. O'zbekiston, Qozog'iston va Qirg'izistondagi VFS markazlari 1-noyabr 2026 dan yopiladi."],
     ["&#127463;&#127468; Bolgariya","WorkinBulgaria yil bo'yi ishlaydi — istalgan vaqt ro'yxatdan o'ting."],
-    ["&#127479;&#127476; Ruminiya","2026-yil maydan — yangi raqamli tizim WorkinRomania.gov.ro."]
+    ["&#127465;&#127466; Germaniya","Haydovchilar (C/CE, 50 o'rin) bilan onlayn suhbat: 6 va 10-noyabr 2026. Ro'yxatdan o'tish: xorijdaish.uz."],
+    ["&#127464;&#127487; Chexiya / Slovakiya / Polsha","Shifokor va hamshiralar uchun bepul til kursi 2026-yil noyabrda boshlanadi (Migratsiya agentligi)."],
+    ["&#127479;&#127476; Ruminiya","2026-yil avgustdan yangi raqamli platforma WorkinRomania.gov.ro ishlamoqda (arizani ish beruvchi beradi). Birinchi arizalar taxminan oktabrdan."]
   ];
   var h="<div style='background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;margin-bottom:14px;'><div style='font-weight:800;font-size:13px;margin-bottom:8px;color:#92400e;'>"+title+"</div>";
   rows.forEach(function(r){h+="<div style='font-size:12px;line-height:1.5;margin-bottom:6px;color:#78350f;'><b>"+r[0]+":</b> "+r[1]+"</div>";});
@@ -5646,7 +5817,7 @@ function renderWageCompare(){
     ["&#127463;&#127468; Bolgariya","1,213 BGN/oy (~€620)"],
     ["&#127470;&#127481; Italiya","shartnoma bo'yicha (kollektiv shartnomaga qarab)"],
     ["&#127465;&#127466; Germaniya","€13.90/soat"],
-    ["&#127469;&#127479; Fransiya","~€1,802/oy (SMIC)"],
+    ["&#127467;&#127479; Fransiya","~€1,802/oy (SMIC)"],
     ["&#127477;&#127473; Polsha","~4,806 PLN/oy (~€1,120)"]
   ];
   var h="<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;margin-bottom:14px;'><div style='font-weight:800;font-size:13px;margin-bottom:8px;color:#334155;'>"+title+"</div>";
@@ -5654,6 +5825,412 @@ function renderWageCompare(){
   h+="<div style='font-size:10.5px;color:#94a3b8;margin-top:6px;'>"+(lang==="ru"?"Реальная зарплата по вакансии обычно выше минимальной.":lang==="en"?"Actual job salaries are usually above the minimum.":"Haqiqiy ish maoshi odatda minimal maoshdan yuqori bo'ladi.")+"</div></div>";
   return h;
 }
+</script>
+<script>
+/* CV xizmati: uz / ru / en tarjimalari. Ilova tili (lang) o'zgarganda avtomatik yangilanadi. */
+var CVS_T={
+uz:{back:"&#8592; Bosh",
+h1:"Professional CV, <span>bir necha daqiqada</span> tayyor",
+lead:"Europass standartida, ingliz tilida. PDF shaklida yuboramiz.",
+price:"49 000 so'm",note:"bitta CV uchun",orderBtn:"CV buyurtma berish",
+fb:"Telegramda xabar tayyor holda ochiladi. Faqat \"Yuborish\"ni bosing.",
+hSteps:"Qanday buyurtma beriladi",
+s1t:"Tugmani bosing",s1:"Telegram ochiladi va \"Tayyor resume uchun to'lov 49.000\" xabari yozilgan bo'ladi. Uni yuboring.",
+s2t:"Ma'lumotlaringizni yuboring",s2:"Ism-familiya, ish tajribasi, o'qigan joyingiz, bilgan tillaringiz va telefon raqamingiz.",
+s3t:"To'lov qiling",s3:"49 000 so'm. To'lov usulini Telegramda yozib yuboramiz.",
+s4t:"Tayyor CV ni oling",s4:"PDF fayl bir necha daqiqada Telegramga keladi.",
+hGet:"Nima olasiz",
+g1:"Europass standartida, ingliz tilida",g2:"Ish tajribangiz to'g'ri va chiroyli yoziladi",g3:"PDF fayl, telefondan ham, kompyuterdan ham ochiladi",
+hLang:"Boshqa tillarda ham",l1:"Nemis",l2:"Polyak",l3:"Chex",l4:"Litva",l5:"Boshqa tillar",
+langNote:"Qaysi davlatga ketayotgan bo'lsangiz, CV ni o'sha davlat tilida tayyorlaymiz. Ish e'lonida til ko'rsatilgan bo'lsa, shu tilda yuborish ishonchni oshiradi.",
+tgNote:"Telegram ochilmasa: <a href=\"https://t.me/Evropagoo\" target=\"_blank\" rel=\"noopener\">t.me/Evropagoo</a> ga o'zingiz yozing.",
+barBtn:"CV buyurtma berish: 49 000 so'm",
+welcomeBtn:"Faqat CV yozib berish xizmati: 49 000 so'm",
+calcBtn:"Ketish xarajatlari kalkulyatori",
+ctryNav:"Davlatlar bo'yicha ishchi viza qo'llanmasi",
+helpT:"Agar o'zingiz mustaqil CV to'ldira olmasangiz",
+helpS:"CV ni siz uchun tayyorlab beramiz: Europass standartida, PDF shaklida, bir necha daqiqada.",
+helpBtn:"CV tayyorlab berish: 49 000 so'm",
+tgMsg:"Assalomu alaykum! Tayyor resume uchun to'lov 49.000 so'm. CV buyurtma bermoqchiman."},
+ru:{back:"&#8592; Главная",
+h1:"Профессиональное резюме, <span>готово за несколько минут</span>",
+lead:"По стандарту Europass, на английском языке. Отправим в формате PDF.",
+price:"49 000 сум",note:"за одно резюме",orderBtn:"Заказать резюме",
+fb:"В Telegram откроется готовое сообщение. Просто нажмите «Отправить».",
+hSteps:"Как оформить заказ",
+s1t:"Нажмите кнопку",s1:"Откроется Telegram с готовым сообщением «Оплата за готовое резюме 49 000». Отправьте его.",
+s2t:"Отправьте свои данные",s2:"Имя и фамилия, опыт работы, образование, знание языков и номер телефона.",
+s3t:"Оплатите",s3:"49 000 сум. Способ оплаты пришлём в Telegram.",
+s4t:"Получите готовое резюме",s4:"PDF-файл придёт в Telegram за несколько минут.",
+hGet:"Что вы получите",
+g1:"По стандарту Europass, на английском",g2:"Ваш опыт работы будет описан правильно и аккуратно",g3:"PDF-файл открывается и на телефоне, и на компьютере",
+hLang:"И на других языках",l1:"Немецкий",l2:"Польский",l3:"Чешский",l4:"Литовский",l5:"Другие языки",
+langNote:"Подготовим резюме на языке страны, в которую вы едете. Если в объявлении указан язык, отправка резюме на нём повышает доверие.",
+tgNote:"Если Telegram не открылся, напишите сами: <a href=\"https://t.me/Evropagoo\" target=\"_blank\" rel=\"noopener\">t.me/Evropagoo</a>",
+barBtn:"Заказать резюме: 49 000 сум",
+welcomeBtn:"Только услуга составления резюме: 49 000 сум",
+calcBtn:"Калькулятор расходов на переезд",
+ctryNav:"Рабочая виза по странам (на узбекском)",
+helpT:"Если не получается заполнить резюме самостоятельно",
+helpS:"Мы подготовим резюме за вас: по стандарту Europass, в формате PDF, за несколько минут.",
+helpBtn:"Заказать готовое резюме: 49 000 сум",
+tgMsg:"Здравствуйте! Хочу заказать готовое резюме, оплата 49 000 сум."},
+en:{back:"&#8592; Home",
+h1:"A professional CV, <span>ready in minutes</span>",
+lead:"Europass format, in English. Delivered as a PDF.",
+price:"49,000 UZS",note:"per CV",orderBtn:"Order your CV",
+fb:"Telegram opens with the message ready. Just press \"Send\".",
+hSteps:"How to order",
+s1t:"Tap the button",s1:"Telegram opens with the message \"Payment for a ready CV, 49,000\" already typed. Send it.",
+s2t:"Send your details",s2:"Full name, work experience, education, languages you speak and your phone number.",
+s3t:"Pay",s3:"49,000 UZS. We will send you the payment method in Telegram.",
+s4t:"Get your finished CV",s4:"The PDF arrives in Telegram within minutes.",
+hGet:"What you get",
+g1:"Europass format, in English",g2:"Your work experience, written clearly and correctly",g3:"A PDF that opens on both phone and computer",
+hLang:"Other languages too",l1:"German",l2:"Polish",l3:"Czech",l4:"Lithuanian",l5:"Other languages",
+langNote:"We prepare your CV in the language of the country you are going to. If a job ad states a language, sending your CV in it builds trust.",
+tgNote:"If Telegram doesn't open, write to us yourself: <a href=\"https://t.me/Evropagoo\" target=\"_blank\" rel=\"noopener\">t.me/Evropagoo</a>",
+barBtn:"Order your CV: 49,000 UZS",
+welcomeBtn:"CV writing service only: 49,000 UZS",
+calcBtn:"Moving cost calculator",
+ctryNav:"Work visa guide by country (in Uzbek)",
+helpT:"Can't fill in the CV yourself?",
+helpS:"We will prepare it for you: Europass format, PDF, within minutes.",
+helpBtn:"Get a ready CV: 49,000 UZS",
+tgMsg:"Hello! I'd like to order a ready CV, payment 49,000 UZS."}
+};
+function cvsApplyLang(){
+  var l=(typeof lang!=="undefined"&&CVS_T[lang])?lang:"uz";
+  var T=CVS_T[l];
+  document.querySelectorAll("[data-cvs]").forEach(function(el){
+    var v=T[el.getAttribute("data-cvs")];
+    if(v!==undefined)el.innerHTML=v;
+  });
+  var url="https://t.me/Evropagoo?text="+encodeURIComponent(T.tgMsg).replace(/'/g,"%27");
+  document.querySelectorAll("a[data-cvs-tg]").forEach(function(a){a.href=url;});
+}
+(function(){
+  // Ilovaning til almashtirish funksiyasiga ulanamiz
+  if(typeof applyLang==="function"){
+    var _al=applyLang;
+    applyLang=function(){var r=_al.apply(this,arguments);try{cvsApplyLang();}catch(e){}return r;};
+  }
+  // "Tayyor CV shabloni" oynasi ochilganda ham tilni yangilaymiz
+  if(typeof openCv==="function"){
+    var _oc=openCv;
+    openCv=function(){var r=_oc.apply(this,arguments);try{cvsApplyLang();}catch(e){}return r;};
+  }
+  try{cvsApplyLang();}catch(e){}
+})();
+</script>
+
+<!-- ISH BERUVCHILAR RO'YXATI TEPASIDA DAVLAT HOLATI -->
+<script>
+(function(){
+var CS_T={
+ uz:{checked:"Tekshirilgan: 2026-yil 27-oktabr",all:"Qaysi davlatga ariza yuborsa bo'ladi?",allSub:"Har bir davlatning hozirgi holati.",back:"Barcha davlatlar",
+     v:{ok:"Ariza yuborsa bo'ladi",hard:"Mumkin, lekin imkoniyat kam",closed:"Yopiq yoki juda qiyin, avval shartlarni o'qing",future:"Hali ishlamaydi"},
+     g:{ok:"✅ Ariza yuborsa bo'ladi",hard:"⚠️ Mumkin, lekin qiyin",closed:"⛔ Hozir yopiq yoki juda qiyin",future:"⏳ Hali ishlamaydi"}},
+ ru:{checked:"Проверено: 27 октября 2026",all:"В какую страну можно подать заявку?",allSub:"Текущий статус каждой страны.",back:"Все страны",
+     v:{ok:"Можно подавать заявку",hard:"Можно, но шансы низкие",closed:"Закрыто или очень сложно, сначала прочитайте условия",future:"Пока не работает"},
+     g:{ok:"✅ Можно подавать",hard:"⚠️ Можно, но сложно",closed:"⛔ Сейчас закрыто или очень сложно",future:"⏳ Пока не работает"}},
+ en:{checked:"Checked: October 27, 2026",all:"Which countries can you apply to?",allSub:"Current status of each country.",back:"All countries",
+     v:{ok:"You can apply",hard:"Possible, but low chances",closed:"Closed or very hard, read the conditions first",future:"Not working yet"},
+     g:{ok:"✅ You can apply",hard:"⚠️ Possible but hard",closed:"⛔ Closed or very hard now",future:"⏳ Not working yet"}}
+};
+var COL={ok:["#ecfdf5","#10b981","#065f46"],hard:["#fffbeb","#f59e0b","#92400e"],closed:["#fef2f2","#ef4444","#991b1b"],future:["#f5f3ff","#8b5cf6","#5b21b6"]};
+function L(){return (typeof lang!=="undefined"&&CS_T[lang])?lang:"uz";}
+function verdict(t){return t<=3?"ok":t===4?"hard":t===5?"closed":"future";}
+function rankOf(c){for(var i=0;i<COUNTRY_RANK.length;i++){if(COUNTRY_RANK[i].c===c)return COUNTRY_RANK[i];}return null;}
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+window.renderCtryStatus=function(flt){
+  var box=document.getElementById("ctryStatus"); if(!box||typeof COUNTRY_RANK==="undefined")return;
+  var l=L(),T=CS_T[l],r=rankOf(flt),h="";
+  if(r){
+    var v=verdict(r.tier),c=COL[v],d=r[l]||r.uz,meta=(RANK_TIER_META[r.tier]&&(RANK_TIER_META[r.tier][l]||RANK_TIER_META[r.tier].uz))||"";
+    h="<div style='background:"+c[0]+";border:1px solid "+c[1]+";border-left:5px solid "+c[1]+";border-radius:12px;padding:12px 14px;margin-bottom:16px;color:#1f2937;'>"+
+      "<div style='font-size:11px;font-weight:800;letter-spacing:.3px;color:"+c[2]+";margin-bottom:4px;'>"+meta+"</div>"+
+      "<div style='font-size:15px;font-weight:800;color:#101F4A;margin-bottom:5px;'>"+esc(d.n)+": "+T.v[v]+"</div>"+
+      "<div style='font-size:12.5px;line-height:1.55;color:#374151;'>"+esc(d.note)+"</div>"+
+      "<div style='display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px;font-size:11px;color:#6b7280;'><span>"+T.checked+"</span>"+
+      "</div></div>";
+  } else {
+    var groups={ok:[],hard:[],closed:[],future:[]};
+    COUNTRY_RANK.forEach(function(x){groups[verdict(x.tier)].push(x);});
+    h="<div style='background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:16px;color:#1f2937;'>"+
+      "<div style='font-size:15px;font-weight:800;color:#101F4A;margin-bottom:2px;'>"+T.all+"</div>"+
+      "<div style='font-size:12px;color:#6b7280;margin-bottom:8px;'>"+T.allSub+"</div>";
+    ["ok","hard","closed","future"].forEach(function(k){
+      if(!groups[k].length)return;
+      var c=COL[k];
+      h+="<div style='font-size:12px;font-weight:800;color:"+c[2]+";margin:8px 0 5px;'>"+T.g[k]+"</div><div style='display:flex;flex-wrap:wrap;gap:6px;'>";
+      groups[k].forEach(function(x){var d=x[l]||x.uz;
+        h+="<span style='background:"+c[0]+";border:1px solid "+c[1]+";color:"+c[2]+";font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;'>"+esc(d.n)+"</span>";});
+      h+="</div>";
+    });
+    h+="<div style='font-size:11px;color:#9ca3af;margin-top:9px;'>"+T.checked+"</div></div>";
+  }
+  box.innerHTML=h;
+};
+function badgeFirms(){
+  if(typeof JOBSTEPS==="undefined")return;
+  var l=L(),T=CS_T[l];
+  document.querySelectorAll("#fb .fcountry").forEach(function(el){
+    if(el.getAttribute("data-cs"))return;
+    var txt=el.textContent.trim(),code=null;
+    for(var k in JOBSTEPS){var n=JOBSTEPS[k].name;if(n&&(n[l]===txt||n.uz===txt)){code=k;break;}}
+    var r=code&&rankOf(code); if(!r)return;
+    var v=verdict(r.tier),c=COL[v];
+    el.setAttribute("data-cs","1");
+    el.innerHTML=esc(txt)+" <span style='display:inline-block;margin-left:4px;background:"+c[0]+";color:"+c[2]+";border:1px solid "+c[1]+";font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:6px;'>"+T.g[v]+"</span>";
+  });
+}
+if(typeof renderFirms==="function"){
+  var _rf=renderFirms;
+  renderFirms=function(flt){var r=_rf.apply(this,arguments);try{renderCtryStatus(flt);badgeFirms();}catch(e){}return r;};
+}
+try{renderCtryStatus(typeof ff2!=="undefined"?ff2:"all");badgeFirms();}catch(e){}
+})();
+</script>
+
+<!-- MAVSUMIY ISH MUDDATLARI -->
+<script>
+var SEASONAL={"bg": {"uz": "9 oygacha (90 kungacha — ruxsatsiz, ish beruvchi ro'yxatdan o'tkazadi)", "ru": "до 9 месяцев (до 90 дней — без разрешения, работодатель регистрирует)", "en": "up to 9 months (up to 90 days without a permit; the employer registers you)"}, "hr": {"uz": "90 kungacha yoki ish turiga qarab yiliga 9 oygacha; ruxsat 3 yilgacha (2026 qonuni)", "ru": "до 90 дней или до 9 месяцев в год в зависимости от вида работы; разрешение до 3 лет (закон 2026)", "en": "up to 90 days, or up to 9 months a year depending on the job; permit up to 3 years (2026 law)"}, "it": {"uz": "yiliga 9 oygacha; ko'p yillik ruxsat 3 yilgacha. Click-day: ferma 12-yanvar, turizm 9-fevral 2027", "ru": "до 9 месяцев в год; многолетнее разрешение до 3 лет. Click-day: ферма 12 января, туризм 9 февраля 2027", "en": "up to 9 months a year; multi-year permit up to 3 years. Click-day: farm Jan 12, tourism Feb 9, 2027"}, "de": {"uz": "O'zbekiston uchun mavsumiy dastur yo'q (joylashtirish kelishuvi yo'q)", "ru": "для Узбекистана сезонной программы нет (нет соглашения о трудоустройстве)", "en": "no seasonal scheme for Uzbekistan (no placement agreement)"}, "cz": {"uz": "6 oygacha (90 kungacha qisqa muddatli viza ham bor)", "ru": "до 6 месяцев (есть и краткосрочная виза до 90 дней)", "en": "up to 6 months (a short-term visa up to 90 days also exists)"}, "ro": {"uz": "12 oyda 6 oygacha; ruxsatni ish beruvchi oladi", "ru": "до 6 месяцев за 12 месяцев; разрешение получает работодатель", "en": "up to 6 months in 12; the employer obtains the permit"}, "pl": {"uz": "kalendar yilida 9 oygacha: qishloq xo'jaligi, bog'dorchilik, turizm", "ru": "до 9 месяцев в календарном году: сельское хозяйство, садоводство, туризм", "en": "up to 9 months per calendar year: agriculture, horticulture, tourism"}, "pt": {"uz": "12 oyda 9 oygacha, faqat ish shartnomasi bilan", "ru": "до 9 месяцев за 12 месяцев, только с трудовым договором", "en": "up to 9 months in 12, only with a work contract"}, "si": {"uz": "yiliga 90 kungacha yoki yagona ruxsat bilan 6 oygacha", "ru": "до 90 дней в году или до 6 месяцев по единому разрешению", "en": "up to 90 days a year, or up to 6 months with a single permit"}, "sk": {"uz": "12 oyda 180 kungacha (90 kungacha — ish ruxsatnomasi bilan)", "ru": "до 180 дней за 12 месяцев (до 90 дней — по разрешению на работу)", "en": "up to 180 days in 12 months (up to 90 days with a work permit)"}, "ee": {"uz": "365 kunda 270 kungacha (~9 oy); ish beruvchi ro'yxatdan o'tkazadi", "ru": "до 270 дней за 365 дней (~9 месяцев); работодатель регистрирует", "en": "up to 270 days in 365 (~9 months); the employer registers you"}, "nl": {"uz": "24 haftagacha, uzaytirilmaydi", "ru": "до 24 недель, без продления", "en": "up to 24 weeks, not extendable"}, "at": {"uz": "12 oyda 9 oygacha (bitta ruxsat 6 oygacha); turizm, qishloq va o'rmon xo'jaligi, kvota bilan", "ru": "до 9 месяцев за 12 (одно разрешение до 6 месяцев); туризм, сельское и лесное хозяйство, по квоте", "en": "up to 9 months in 12 (one permit up to 6 months); tourism, agriculture and forestry, quota-based"}, "fr": {"uz": "12 oyda 6 oygacha; ruxsat 3 yilgacha", "ru": "до 6 месяцев за 12; разрешение до 3 лет", "en": "up to 6 months in 12; permit up to 3 years"}, "be": {"uz": "365 kunda 150 kungacha: qishloq xo'jaligi, bog'dorchilik, umumiy ovqatlanish (mintaqaga qarab)", "ru": "до 150 дней за 365: сельское хозяйство, садоводство, общепит (зависит от региона)", "en": "up to 150 days in 365: agriculture, horticulture, catering (depends on region)"}, "fi": {"uz": "90 kungacha viza yoki 3–9 oylik ruxsatnoma (12 oyda 9 oydan oshmaydi)", "ru": "виза до 90 дней или разрешение на 3–9 месяцев (не более 9 месяцев за 12)", "en": "a visa up to 90 days or a 3–9 month permit (max 9 months in 12)"}, "lt": {"uz": "yiliga 6 oygacha", "ru": "до 6 месяцев в году", "en": "up to 6 months a year"}, "lv": {"uz": "yiliga 6 oygacha", "ru": "до 6 месяцев в году", "en": "up to 6 months a year"}, "gr": {"uz": "yiliga 6 oygacha (EU rasmiy portali ma'lumoti)", "ru": "до 6 месяцев в году (по данным официального портала ЕС)", "en": "up to 6 months a year (per the official EU portal)"}, "es": {"uz": "kalendar yilida 9 oygacha (GECCO, asosan qishloq xo'jaligi)", "ru": "до 9 месяцев в календарном году (GECCO, в основном сельское хозяйство)", "en": "up to 9 months per calendar year (GECCO, mainly agriculture)"}, "hu": {"uz": "hozir yopiq — yangi arizalar qabul qilinmaydi", "ru": "сейчас закрыто — новые заявки не принимаются", "en": "currently closed — no new applications"}, "se": {"uz": "12 oyda 9 oygacha (ish beruvchi almashsa — 6 oy); rezavor terish ham shu ruxsat bilan", "ru": "до 9 месяцев за 12 (при смене работодателя — 6); сбор ягод тоже по этому разрешению", "en": "up to 9 months in 12 (6 if you change employer); berry picking uses this permit too"}, "no": {"uz": "12 oyda 6 oygacha: qishloq, o'rmon xo'jaligi, baliq qayta ishlash, restoran, turizm", "ru": "до 6 месяцев за 12: сельское и лесное хозяйство, рыбопереработка, рестораны, туризм", "en": "up to 6 months in 12: agriculture, forestry, fish processing, restaurants, tourism"}, "dk": {"uz": "EU mavsumiy ish qoidalari Daniyada amal qilmaydi — shartlarni nyidanmark.dk dan aniqlang", "ru": "правила ЕС о сезонной работе в Дании не действуют — уточняйте на nyidanmark.dk", "en": "EU seasonal-work rules don't apply in Denmark — check nyidanmark.dk"}};
+var SEASONAL_T={"uz": {"title": "🌾 Mavsumiy ish: qachon va qancha muddat", "when": ["Qishloq xo'jaligi va bog'dorchilik: odatda mart–noyabr (yig'im-terim cho'qqisi iyun–sentabr).", "Yozgi turizm (dengiz bo'yi): odatda may–oktabr.", "Qishki turizm (chang'i kurortlari): odatda dekabr–aprel.", "Rezavor terish (Finlandiya, Shvetsiya): odatda iyul–sentabr; qulupnay — iyun–avgust.", "Ariza: ish boshlanishidan kamida 2–4 oy oldin (Italiyada — click-day kunlari)."], "max": "Ruxsat etilgan eng uzoq muddat", "note": "Sanalar taxminiy, aniq muddat shartnoma va ruxsatnomada yoziladi. Manba: EU rasmiy migratsiya portali va davlat saytlari, 2026-yil oktabr.", "one": "🌾 Mavsumiy ish"}, "ru": {"title": "🌾 Сезонная работа: когда и на какой срок", "when": ["Сельское хозяйство и садоводство: обычно март–ноябрь (пик урожая июнь–сентябрь).", "Летний туризм (побережье): обычно май–октябрь.", "Зимний туризм (горнолыжные курорты): обычно декабрь–апрель.", "Сбор ягод (Финляндия, Швеция): обычно июль–сентябрь; клубника — июнь–август.", "Заявка: минимум за 2–4 месяца до начала работы (в Италии — в дни click-day)."], "max": "Максимально разрешённый срок", "note": "Сроки примерные, точный срок указывается в договоре и разрешении. Источник: официальный миграционный портал ЕС и государственные сайты, октябрь 2026.", "one": "🌾 Сезонная работа"}, "en": {"title": "🌾 Seasonal work: when and for how long", "when": ["Agriculture and horticulture: usually March–November (harvest peak June–September).", "Summer tourism (coast): usually May–October.", "Winter tourism (ski resorts): usually December–April.", "Berry picking (Finland, Sweden): usually July–September; strawberries June–August.", "Apply at least 2–4 months before the job starts (in Italy — on click-days)."], "max": "Maximum allowed period", "note": "Dates are approximate; the exact period is in your contract and permit. Source: official EU migration portal and government sites, October 2026.", "one": "🌾 Seasonal work"}};
+function renderSeasonalCard(){
+  var l=(typeof lang!=="undefined"&&SEASONAL_T[lang])?lang:"uz",T=SEASONAL_T[l];
+  var h="<div style='background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 12px;margin-bottom:14px;'><div style='font-weight:800;font-size:13px;margin-bottom:8px;color:#166534;'>"+T.title+"</div>";
+  T.when.forEach(function(w){h+="<div style='font-size:12px;line-height:1.5;margin-bottom:4px;color:#14532d;'>&#8226; "+w+"</div>";});
+  h+="<div style='font-weight:800;font-size:12px;margin:10px 0 6px;color:#166534;'>"+T.max+":</div>";
+  COUNTRY_RANK.forEach(function(x){var v=SEASONAL[x.c];if(!v)return;var d=x[l]||x.uz;
+    h+="<div style='font-size:12px;line-height:1.5;margin-bottom:5px;color:#14532d;'><b>"+d.n+":</b> "+(v[l]||v.uz)+"</div>";});
+  h+="<div style='font-size:10.5px;color:#4d7c0f;margin-top:6px;'>"+T.note+"</div></div>";
+  return h;
+}
+(function(){
+  if(typeof renderKeyDeadlines==="function"){
+    var _rk=renderKeyDeadlines;
+    renderKeyDeadlines=function(){var r=_rk.apply(this,arguments);try{r+=renderSeasonalCard();}catch(e){}return r;};
+  }
+  if(typeof window.renderCtryStatus==="function"){
+    var _cs=window.renderCtryStatus;
+    window.renderCtryStatus=function(flt){_cs.apply(this,arguments);try{
+      var v=SEASONAL[flt],box=document.getElementById("ctryStatus");if(!v||!box||!box.firstChild)return;
+      var l=(typeof lang!=="undefined"&&SEASONAL_T[lang])?lang:"uz";
+      var el=document.createElement("div");
+      el.style.cssText="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.15);font-size:12.5px;line-height:1.5;color:#14532d;";
+      el.innerHTML="<b>"+SEASONAL_T[l].one+":</b> "+(v[l]||v.uz);
+      var card=box.firstChild,last=card.lastChild;card.insertBefore(el,last);
+    }catch(e){}};
+    try{window.renderCtryStatus(typeof ff2!=="undefined"?ff2:"all");}catch(e){}
+  }
+})();
+</script>
+
+<!-- REYESTRLAR, KALENDAR, TO'LOV TARTIBI, MIJOZ FIKRLARI -->
+<script>
+var REG_DOM={"de": "handelsregister.de", "pl": "ekrs.ms.gov.pl", "cz": "or.justice.cz", "sk": "orsr.sk", "hu": "e-cegjegyzek.hu", "it": "italianbusinessregister.it", "es": "registradores.org", "fr": "infogreffe.com", "be": "kbopub.economie.fgov.be", "nl": "kvk.nl", "at": "justiz.gv.at", "se": "bolagsverket.se", "no": "brreg.no", "dk": "datacvr.virk.dk", "fi": "ytj.fi", "lt": "registrucentras.lt", "lv": "ur.gov.lv", "ee": "ariregister.rik.ee", "pt": "irn.justica.gov.pt", "gr": "businessportal.gr", "ro": "onrc.ro", "hr": "sudreg.pravosudje.hr", "si": "ajpes.si", "bg": "portal.registryagency.bg"}, REG_URL={"de": "https://www.handelsregister.de/rp_web/welcome.do?language=en", "pl": "https://ekrs.ms.gov.pl/web/wyszukiwarka-krs/strona-glowna/index.html", "cz": "https://or.justice.cz/ias/ui/rejstrik", "sk": "https://www.orsr.sk/Default.asp?lan=en", "hu": "https://occsz.e-cegjegyzek.hu/info/page/ceginfo", "it": "https://italianbusinessregister.it", "es": "https://www.registradores.org", "fr": "https://www.infogreffe.com/", "be": "https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?lang=en", "nl": "https://www.kvk.nl/english/", "at": "https://www.justiz.gv.at/service/datenbanken/firmenbuch/firmenbuchabfrage.2c9484852308c2a601240b693e1c0860.de.html", "se": "https://www.bolagsverket.se/en", "no": "https://www.brreg.no", "dk": "https://datacvr.virk.dk/", "fi": "https://www.ytj.fi", "lt": "https://www.registrucentras.lt", "lv": "https://www.ur.gov.lv/en/", "ee": "https://ariregister.rik.ee/eng", "pt": "https://irn.justica.gov.pt/", "gr": "https://www.businessportal.gr/home/index_en", "ro": "https://www.onrc.ro/index.php/en", "hr": "https://sudreg.pravosudje.hr/", "si": "https://www.ajpes.si/prs/Default.asp?language=english", "bg": "https://portal.registryagency.bg"}, REG_T={"uz": {"one": "🔎 Ish beruvchini tekshiring", "oneSub": "davlatning rasmiy kompaniyalar reyestri — firma nomini yozib qidiring", "title": "🔎 Rasmiy kompaniyalar reyestrlari", "sub": "Shartnoma imzolashdan oldin firma nomini shu yerda qidiring. Topilmasa — ehtiyot bo'ling."}, "ru": {"one": "🔎 Проверьте работодателя", "oneSub": "официальный реестр компаний страны — введите название фирмы", "title": "🔎 Официальные реестры компаний", "sub": "Перед подписанием договора найдите фирму здесь. Не нашлась — будьте осторожны."}, "en": {"one": "🔎 Check the employer", "oneSub": "the country's official company register — search by company name", "title": "🔎 Official company registers", "sub": "Search for the company here before signing a contract. Not found — be careful."}}, CAL_EV=[["Italiya click-day: ferma (mavsumiy)", "Италия click-day: ферма (сезонная)", "Italy click-day: farm (seasonal)", "20270112T080000Z", "20270112T090000Z"], ["Italiya click-day: turizm (mavsumiy)", "Италия click-day: туризм (сезонная)", "Italy click-day: tourism (seasonal)", "20270209T080000Z", "20270209T090000Z"], ["Italiya click-day: mavsumiy bo'lmagan ish", "Италия click-day: несезонная работа", "Italy click-day: non-seasonal work", "20270216T080000Z", "20270216T090000Z"], ["Italiya: arizani oldindan to'ldirish tugaydi", "Италия: конец предзаполнения заявок", "Italy: application pre-filling closes", "20261207T180000Z", "20261207T190000Z"], ["Germaniya: haydovchilar bilan onlayn suhbat", "Германия: онлайн-собеседование для водителей", "Germany: online interview for drivers", "20261106", "20261107"], ["Germaniya: haydovchilar bilan onlayn suhbat (2-kun)", "Германия: онлайн-собеседование для водителей (2-й день)", "Germany: online interview for drivers (day 2)", "20261110", "20261111"]], CAL_T={"uz": {"title": "📅 Eslatma qo'ying", "sub": "Tugmani bosing — sana telefoningiz kalendariga (Google Calendar) qo'shiladi."}, "ru": {"title": "📅 Поставьте напоминание", "sub": "Нажмите — дата добавится в календарь телефона (Google Calendar)."}, "en": {"title": "📅 Set a reminder", "sub": "Tap — the date is added to your phone calendar (Google Calendar)."}}, PAY_T={"uz": {"rec": "Tavsiya etiladi", "or": "yoki Telegram / WhatsApp orqali", "rv": "⭐ Mijozlar fikri"}, "ru": {"rec": "Рекомендуется", "or": "или через Telegram / WhatsApp", "rv": "⭐ Отзывы клиентов"}, "en": {"rec": "Recommended", "or": "or via Telegram / WhatsApp", "rv": "⭐ Customer reviews"}};
+function _L(){return (typeof lang!=="undefined"&&(lang==="ru"||lang==="en"))?lang:"uz";}
+function _esc(t){return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+/* 1) Ish beruvchilar ro'yxati tepasidagi kartaga rasmiy reyestr havolasi */
+(function(){
+  if(typeof window.renderCtryStatus!=="function")return;
+  var _p=window.renderCtryStatus;
+  window.renderCtryStatus=function(flt){_p.apply(this,arguments);try{
+    var d=REG_DOM[flt],box=document.getElementById("ctryStatus");if(!d||!box||!box.firstChild)return;
+    var T=REG_T[_L()],el=document.createElement("div");
+    el.style.cssText="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.15);font-size:12.5px;line-height:1.5;color:#1e3a8a;";
+    el.innerHTML="<b>"+T.one+":</b> <a href='"+REG_URL[flt]+"' target='_blank' rel='noopener' style='color:#1d4ed8;font-weight:700;'>"+d+" &#8599;</a><br><span style='font-size:11.5px;color:#475569;'>"+T.oneSub+"</span>";
+    var card=box.firstChild;card.insertBefore(el,card.lastChild);
+  }catch(e){}};
+  try{window.renderCtryStatus(typeof ff2!=="undefined"?ff2:"all");}catch(e){}
+})();
+/* 2) "Qaysi davlatdan tez?" oynasiga: reyestrlar ro'yxati va kalendar eslatmalari */
+function _calUrl(ev,l){
+  var t=ev[l==="ru"?1:l==="en"?2:0];
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(t)+"&dates="+ev[3]+"/"+ev[4]+"&details="+encodeURIComponent("EvropaGo — evropago.uz");
+}
+function renderRemindersCard(){
+  var l=_L(),T=CAL_T[l],h="<div style='background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 12px;margin-bottom:14px;'><div style='font-weight:800;font-size:13px;margin-bottom:4px;color:#1e3a8a;'>"+T.title+"</div><div style='font-size:11.5px;color:#475569;margin-bottom:8px;'>"+T.sub+"</div>";
+  CAL_EV.forEach(function(ev){
+    var t=ev[l==="ru"?1:l==="en"?2:0],d=ev[3].slice(6,8)+"."+ev[3].slice(4,6)+"."+ev[3].slice(0,4);
+    h+="<a href='"+_calUrl(ev,l)+"' target='_blank' rel='noopener' style='display:flex;justify-content:space-between;gap:8px;align-items:center;background:#fff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 10px;margin-bottom:6px;text-decoration:none;color:#1e3a8a;font-size:12px;font-weight:700;'><span>"+_esc(t)+"</span><span style='white-space:nowrap;color:#2563eb;'>"+d+" &#43;</span></a>";
+  });
+  return h+"</div>";
+}
+function renderRegistriesCard(){
+  var l=_L(),T=REG_T[l],h="<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;margin-bottom:14px;'><div style='font-weight:800;font-size:13px;margin-bottom:4px;color:#334155;'>"+T.title+"</div><div style='font-size:11.5px;color:#64748b;margin-bottom:8px;'>"+T.sub+"</div>";
+  COUNTRY_RANK.forEach(function(x){var d=REG_DOM[x.c];if(!d)return;var n=(x[l]||x.uz).n;
+    h+="<div style='display:flex;justify-content:space-between;gap:8px;font-size:12px;line-height:1.7;'><span style='color:#334155;'>"+_esc(n)+"</span><a href='"+REG_URL[x.c]+"' target='_blank' rel='noopener' style='color:#1d4ed8;font-weight:700;text-align:right;'>"+d+"</a></div>";});
+  return h+"</div>";
+}
+(function(){
+  if(typeof renderKeyDeadlines!=="function")return;
+  var _k=renderKeyDeadlines;
+  renderKeyDeadlines=function(){var r=_k.apply(this,arguments);try{r+=renderRegistriesCard();}catch(e){}return r;};
+})();
+/* 3) To'lov sahifasi: O'zbekistondan bo'lsa Click birinchi; boshqa davlatlardan — Telegram/karta birinchi */
+(function(){
+  if(typeof reorderPayMethods!=="function")return;
+  var _r=reorderPayMethods;
+  reorderPayMethods=function(){
+    var res=_r.apply(this,arguments);
+    try{
+      var tg=document.getElementById("tgBlock"),dv=document.getElementById("orDivider"),ck=document.getElementById("clickBlock");
+      var bT=document.getElementById("recBadgeTg"),bC=document.getElementById("recBadgeClick");
+      if(!tg||!dv||!ck)return res;
+      var l=_L(),uzUser=(typeof userOrigin==="undefined"||!userOrigin||userOrigin==="uz");
+      var parent=tg.parentNode;
+      if(uzUser){
+        parent.insertBefore(ck,tg); parent.insertBefore(dv,tg);
+        if(bT)bT.style.display="none"; if(bC)bC.style.display="block";
+        var txt=document.getElementById("recBadgeClickTxt"); if(txt)txt.innerHTML=PAY_T[l].rec;
+        setEl("orLbl",PAY_T[l].or);
+      } else {
+        parent.insertBefore(tg,ck); parent.insertBefore(dv,ck);
+        if(bT){bT.style.display="block";bT.innerHTML="<span style='background:#dcfce7;color:#166534;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;'>&#9989; "+PAY_T[l].rec+"</span>";} if(bC)bC.style.display="none";
+      }
+    }catch(e){}
+    return res;
+  };
+})();
+/* 4) To'lov sahifasida haqiqiy (moderatsiyadan o'tgan) mijoz fikrlari */
+var _payRvLoaded=false;
+function loadPayReviews(){
+  if(_payRvLoaded)return; _payRvLoaded=true;
+  fetch("/api/reviews").then(function(r){return r.json();}).then(function(d){
+    if(!d||!d.ok||!d.reviews||!d.reviews.length)return;
+    var list=d.reviews.filter(function(r){return r&&r.text&&(r.stars||0)>=4;});
+    list.sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+    list=list.slice(0,3); if(!list.length)return;
+    var box=document.getElementById("payReviews"); if(!box)return;
+    var h="<div style='font-size:11px;font-weight:800;color:var(--mt);text-transform:uppercase;margin-bottom:6px;'>"+PAY_T[_L()].rv+"</div>";
+    list.forEach(function(r){
+      var nm=_esc(r.name||"");
+      h+="<div style='background:var(--c);border:1px solid var(--bd);border-radius:10px;padding:9px 11px;margin-bottom:6px;'><div style='display:flex;justify-content:space-between;font-size:12px;font-weight:700;'><span>"+nm+(r.country?" · "+_esc(r.country):"")+"</span><span>"+"&#11088;".repeat(Math.max(1,Math.min(5,r.stars||5)))+"</span></div><div style='font-size:12px;color:var(--mt);margin-top:3px;line-height:1.45;'>"+_esc(r.text)+"</div></div>";
+    });
+    box.innerHTML=h; box.style.display="block";
+  }).catch(function(){});
+}
+</script>
+
+<!-- XARAJATLAR KALKULYATORI -->
+<script>
+var CALC_FEES={"de": [["Milliy viza (D)", "Национальная виза (D)", "National visa (D)", 75, "EUR", "auswaertiges-amt.de"]], "pl": [["Milliy viza (D), 2026-yildan", "Национальная виза (D), с 2026 г.", "National visa (D), from 2026", 200, "EUR", "gov.pl"]], "cz": [["Xodim kartasi (Employee Card)", "Карта сотрудника (Employee Card)", "Employee Card", 232, "USD", "mzv.gov.cz (oktabr 2026)"]], "sk": [["Ish uchun vaqtinchalik yashash ruxsati", "ВНЖ для работы", "Temporary residence for employment", 250, "EUR", "mzv.sk"]], "it": [["Milliy viza (D), yollanma ish", "Национальная виза (D), работа по найму", "National visa (D), employment", 116, "EUR", "Italiya elchixonasi jadvali, 2026"]], "fr": [["Yashash ruxsati (\"employed worker\")", "Вид на жительство («employed worker»)", "Residence permit (\"employed worker\")", 269, "EUR", "EU Immigration Portal"]], "hr": [["Yashash va ish ruxsati", "Разрешение на проживание и работу", "Stay and work permit", 74.32, "EUR", "EU Immigration Portal"], ["Biometrik karta (oddiy)", "Биометрическая карта (обычная)", "Biometric card (standard)", 41.14, "EUR", "EU Immigration Portal"]], "lt": [["Milliy viza (D)", "Национальная виза (D)", "National visa (D)", 140, "EUR", "migracija.lrv.lt"]], "lv": [["Uzoq muddatli viza (D)", "Долгосрочная виза (D)", "Long-stay visa (D)", 90, "EUR", "pmlp.gov.lv"], ["Vaqtinchalik yashash ruxsati (30 kunda)", "ВНЖ (за 30 дней)", "Temporary residence permit (30 days)", 160, "EUR", "pmlp.gov.lv"]], "ee": [["Uzoq muddatli viza (D)", "Долгосрочная виза (D)", "Long-stay visa (D)", 120, "EUR", "vm.ee"]], "fi": [["Ish uchun yashash ruxsati (onlayn), 2026", "ВНЖ для работы (онлайн), 2026", "Residence permit for work (online), 2026", 750, "EUR", "migri.fi"]], "dk": [["Ish ruxsati (Positive List / Pay Limit)", "Разрешение на работу (Positive List / Pay Limit)", "Work permit (Positive List / Pay Limit)", 912.87, "EUR", "nyidanmark.dk (6 810 DKK)"]], "bg": [["Uzoq muddatli viza (D)", "Долгосрочная виза (D)", "Long-stay visa (D)", 100, "EUR", "mfa.bg"]], "pt": [["Milliy viza (D)", "Национальная виза (D)", "National visa (D)", 110, "EUR", "2025 ma'lumoti (Jobbatical)"]], "se": [["Ish ruxsatnomasi arizasi (2 200 SEK)", "Заявление на разрешение на работу (2 200 SEK)", "Work permit application (SEK 2,200)", 0, "SEK2200", "migrationsverket.se"]], "no": [["Malakali ishchi ruxsati (6 300 NOK)", "Разрешение квалифицированного работника (6 300 NOK)", "Skilled worker permit (NOK 6,300)", 0, "NOK6300", "UDI, 2026"]]}, CALC_T={"uz": {"btn": "💶 Ketish xarajatlari kalkulyatori", "title": "💶 Ketish xarajatlari kalkulyatori", "country": "Davlat", "official": "Rasmiy yig'imlar (davlat saytlaridan tekshirilgan)", "unknown": "Bu davlat yig'imini rasmiy manbadan tasdiqlay olmadik — elchixona saytidan aniqlang:", "sekNote": "Krona/kronani so'mga o'zingiz aylantirib, quyidagi \"Boshqa\" qatoriga yozing.", "yours": "O'zingiz kiritadigan xarajatlar (so'mda)", "vac": "Viza markazi xizmat haqi (VFS/TLS)", "tr": "Hujjatlar tarjimasi va notarius", "ins": "Tibbiy sug'urta", "fl": "Aviachipta", "home": "Birinchi oy: turar joy va ovqat", "other": "Boshqa", "rate": "1 yevro kursi (so'm)", "rateNote": "O'zbekiston Markaziy banki, 2026-yil 24-oktabr. O'zgartirsangiz bo'ladi.", "total": "Jami taxminiy xarajat", "note": "Rasmiy yig'imlar 2026-yil oktabr holatiga. Ular o'zgarishi mumkin — to'lashdan oldin elchixona saytidan tekshiring. Viza markazi haqi, chipta va turar joy narxini o'zingiz aniqlab yozing.", "cardLink": "💶 Ketish xarajatlarini hisoblash", "src": "manba", "cur": "so'm"}, "ru": {"btn": "💶 Калькулятор расходов на переезд", "title": "💶 Калькулятор расходов на переезд", "country": "Страна", "official": "Официальные сборы (проверено по госсайтам)", "unknown": "Сбор этой страны не удалось подтвердить официальным источником — уточните на сайте посольства:", "sekNote": "Переведите кроны в сумы сами и впишите в строку «Другое».", "yours": "Ваши расходы (в сумах)", "vac": "Сервисный сбор визового центра (VFS/TLS)", "tr": "Перевод документов и нотариус", "ins": "Медицинская страховка", "fl": "Авиабилет", "home": "Первый месяц: жильё и питание", "other": "Другое", "rate": "Курс 1 евро (сум)", "rateNote": "Центральный банк Узбекистана, 24 октября 2026. Можно изменить.", "total": "Итого примерно", "note": "Официальные сборы — на октябрь 2026 и могут меняться: перед оплатой проверьте на сайте посольства. Сбор визового центра, билет и жильё уточните и впишите сами.", "cardLink": "💶 Посчитать расходы на переезд", "src": "источник", "cur": "сум"}, "en": {"btn": "💶 Moving cost calculator", "title": "💶 Moving cost calculator", "country": "Country", "official": "Official fees (checked on government sites)", "unknown": "We could not confirm this country's fee from an official source — check the embassy website:", "sekNote": "Convert the krona amount to so'm yourself and enter it under \"Other\".", "yours": "Your own costs (in so'm)", "vac": "Visa centre service fee (VFS/TLS)", "tr": "Document translation and notary", "ins": "Health insurance", "fl": "Flight ticket", "home": "First month: housing and food", "other": "Other", "rate": "1 euro rate (so'm)", "rateNote": "Central Bank of Uzbekistan, 24 October 2026. You can change it.", "total": "Estimated total", "note": "Official fees as of October 2026 and may change — check the embassy website before paying. Find out and enter the visa centre fee, ticket and housing yourself.", "cardLink": "💶 Calculate moving costs", "src": "source", "cur": "UZS"}}, CALC_RATE={"EUR": 13248.94, "USD": 11838.92};
+var _calcC=null,_calcVals={vac:0,tr:0,ins:0,fl:0,home:0,other:0},_calcRate=CALC_RATE.EUR;
+function _cl(){return (typeof lang!=="undefined"&&CALC_T[lang])?lang:"uz";}
+function _fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g," ");}
+function calcOpen(c){
+  _calcC=c||(typeof selC!=="undefined"&&selC)||_calcC||"de";
+  calcRender(); openModal("calcOvl");
+  try{if(window.gtag)gtag("event","calc_open",{country:_calcC});}catch(e){}
+}
+function _feeSom(f){ if(f[4]==="EUR")return f[3]*_calcRate; if(f[4]==="USD")return f[3]*CALC_RATE.USD; return 0; }
+function calcRender(){
+  var l=_cl(),T=CALC_T[l],c=_calcC,box=document.getElementById("calcBody"); if(!box)return;
+  setEl("calcTitle",T.title);
+  var opts="";COUNTRY_RANK.forEach(function(x){var d=x[l]||x.uz;opts+="<option value='"+x.c+"'"+(x.c===c?" selected":"")+">"+d.n+"</option>";});
+  var h="<label style='font-size:11px;font-weight:800;color:var(--mt);text-transform:uppercase;'>"+T.country+"</label>"+
+    "<select id='calcCountry' onchange='_calcC=this.value;calcRender();' style='width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);margin:4px 0 12px;font-size:14px;background:var(--c);color:var(--tx);'>"+opts+"</select>";
+  var fees=CALC_FEES[c]||[],sumOfficial=0,hasSek=false;
+  h+="<div style='background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 12px;margin-bottom:12px;color:#14532d;'><div style='font-weight:800;font-size:12.5px;margin-bottom:6px;'>"+T.official+"</div>";
+  if(fees.length){
+    fees.forEach(function(f){
+      var name=f[l==="ru"?1:l==="en"?2:0],som=_feeSom(f);sumOfficial+=som;
+      if(f[4].indexOf("SEK")===0||f[4].indexOf("NOK")===0)hasSek=true;
+      var amt=f[4]==="EUR"?(f[3]+" €"):f[4]==="USD"?("$"+f[3]):"";
+      h+="<div style='display:flex;justify-content:space-between;gap:8px;font-size:12.5px;margin-bottom:4px;'><span>"+name+"<br><span style='font-size:10.5px;color:#4d7c0f;'>"+T.src+": "+f[5]+"</span></span><b style='white-space:nowrap;'>"+(amt?amt+"<br><span style='font-weight:600;font-size:11px;'>≈ "+_fmt(som)+" "+T.cur+"</span>":"")+"</b></div>";
+    });
+    if(hasSek)h+="<div style='font-size:11px;color:#92400e;margin-top:4px;'>"+T.sekNote+"</div>";
+  } else {
+    var e=(typeof EMB!=="undefined"&&EMB.uz&&EMB.uz[c])?EMB.uz[c].site:"";
+    h+="<div style='font-size:12px;'>"+T.unknown+(e?" <a href='https://"+e+"' target='_blank' rel='noopener' style='color:#166534;font-weight:700;'>"+e+"</a>":"")+"</div>";
+  }
+  h+="</div><div style='font-weight:800;font-size:12.5px;margin-bottom:6px;'>"+T.yours+"</div>";
+  ["vac","tr","ins","fl","home","other"].forEach(function(k){
+    h+="<label style='display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;margin-bottom:6px;'><span>"+T[k]+"</span><input type='number' inputmode='numeric' min='0' value='"+(_calcVals[k]||"")+"' placeholder='0' oninput='_calcVals[\""+k+"\"]=+this.value||0;calcTotal();' style='width:120px;padding:8px;border-radius:8px;border:1px solid var(--bd);text-align:right;background:var(--c);color:var(--tx);'></label>";
+  });
+  h+="<label style='display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;margin:10px 0 2px;'><span>"+T.rate+"</span><input type='number' min='1' value='"+_calcRate+"' oninput='_calcRate=+this.value||CALC_RATE.EUR;calcRender();' style='width:120px;padding:8px;border-radius:8px;border:1px solid var(--bd);text-align:right;background:var(--c);color:var(--tx);'></label>"+
+     "<div style='font-size:10.5px;color:var(--mt);margin-bottom:10px;'>"+T.rateNote+"</div>";
+  h+="<div id='calcTotalBox' style='background:#101F4A;color:#fff;border-radius:12px;padding:12px 14px;margin-bottom:8px;'></div>";
+  h+="<div style='font-size:10.5px;color:var(--mt);line-height:1.5;'>"+T.note+"</div>";
+  box.innerHTML=h; box.setAttribute("data-official",sumOfficial); calcTotal();
+}
+function calcTotal(){
+  var l=_cl(),T=CALC_T[l],box=document.getElementById("calcBody"),tb=document.getElementById("calcTotalBox"); if(!box||!tb)return;
+  var off=+box.getAttribute("data-official")||0,own=0; for(var k in _calcVals)own+=(+_calcVals[k]||0);
+  var tot=off+own;
+  tb.innerHTML="<div style='font-size:11px;opacity:.8;text-transform:uppercase;font-weight:800;'>"+T.total+"</div><div style='font-size:24px;font-weight:800;color:#F2C14E;'>"+_fmt(tot)+" "+T.cur+"</div><div style='font-size:12px;opacity:.85;'>≈ "+_fmt(tot/_calcRate)+" €</div>";
+}
+/* ish beruvchilar ro'yxati tepasidagi kartaga havola */
+(function(){
+  if(typeof window.renderCtryStatus!=="function")return;
+  var _p=window.renderCtryStatus;
+  window.renderCtryStatus=function(flt){_p.apply(this,arguments);try{
+    var box=document.getElementById("ctryStatus");if(!box||!box.firstChild||!COUNTRY_RANK.some(function(x){return x.c===flt;}))return;
+    var el=document.createElement("div");
+    el.style.cssText="margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.15);";
+    el.innerHTML="<a href='#' onclick='calcOpen(\""+flt+"\");return false;' style='font-size:12.5px;font-weight:800;color:#101F4A;'>"+CALC_T[_cl()].cardLink+" &#8594;</a>";
+    var card=box.firstChild;card.insertBefore(el,card.lastChild);
+  }catch(e){}};
+  try{window.renderCtryStatus(typeof ff2!=="undefined"?ff2:"all");}catch(e){}
+})();
+</script>
+
+<!-- SAYTDAN FOYDALANISH: ANIMATSIYALI QADAMLAR -->
+<style>
+@keyframes egStepIn{from{opacity:0;transform:translateX(28px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes egPop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes egBar{from{width:0}}
+.eg-step{animation:egStepIn .45s ease both}
+.eg-ico{animation:egPop .5s ease both .1s}
+.eg-gbtn{display:inline-block;margin-top:8px;background:#101F4A;color:#F2C14E;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.eg-step,.eg-ico{animation:none}}
+</style>
+<script>
+var EG_GUIDES={"xorijdaish.uz": {"uz": [["🌐", "Saytni oching", "xorijdaish.uz ni oching yoki Migratsiya agentligining Telegram kanalidagi vakansiya havolasini bosing."], ["🔑", "Ro'yxatdan o'ting", "Saytdagi ko'rsatmalar bo'yicha ro'yxatdan o'ting va tizimga kiring. Bu bepul."], ["📝", "Anketani to'ldiring", "Shaxsiy ma'lumotlar, ish tajribasi, ta'lim va bilgan tillaringizni kiriting. Ma'lumot to'liq va to'g'ri bo'lsin."], ["🔎", "Vakansiya tanlang", "Davlatlar bo'yicha bo'sh ish o'rinlarini ko'ring: maosh, talablar va shartlarni o'qing."], ["📨", "Ariza yuboring", "Mos vakansiyaga ariza yuboring va agentlik xabarini kuting. Suhbat sanasi odatda Telegram kanal va saytda e'lon qilinadi."]], "ru": [["🌐", "Откройте сайт", "Откройте xorijdaish.uz или ссылку на вакансию из Telegram-канала Агентства миграции."], ["🔑", "Зарегистрируйтесь", "Пройдите регистрацию по инструкции на сайте и войдите в систему. Это бесплатно."], ["📝", "Заполните анкету", "Укажите личные данные, опыт работы, образование и языки. Данные должны быть полными и точными."], ["🔎", "Выберите вакансию", "Смотрите вакансии по странам: зарплата, требования и условия."], ["📨", "Отправьте заявку", "Подайте заявку на подходящую вакансию и ждите ответа агентства. Даты собеседований обычно публикуются в Telegram-канале и на сайте."]], "en": [["🌐", "Open the site", "Open xorijdaish.uz or the vacancy link from the Migration Agency's Telegram channel."], ["🔑", "Register", "Register following the site's instructions and log in. It's free."], ["📝", "Fill in the profile", "Enter personal details, work experience, education and languages. Keep it complete and accurate."], ["🔎", "Choose a vacancy", "Browse vacancies by country: salary, requirements and conditions."], ["📨", "Apply", "Apply for a suitable vacancy and wait for the agency's reply. Interview dates are usually posted on the Telegram channel and the site."]]}, "indeed.com": {"uz": [["👤", "Hisob oching", "indeed.com da \"Sign in\" ni bosing va elektron pochtangiz bilan hisob oching."], ["🔎", "Ish qidiring", "Kasb va shahar/davlat nomini yozing. E'londa viza yoki ish ruxsatnomasi bo'yicha yordam yozilganini tekshiring."], ["▶️", "\"Apply now\" ni bosing", "Ariza Indeed ichida ochiladi. Telefon raqamingizni tasdiqlash so'ralishi mumkin."], ["📄", "CV ni yuklang", "Yangi CV faylni yuklang yoki profilingizdagi CV ni tanlang. Ish beruvchi savollariga javob bering."], ["✅", "Yuboring", "Ma'lumotlarni tekshirib, \"Submit your application\" ni bosing. Arizalar \"My jobs\" → \"Applied\" bo'limida ko'rinadi."]], "ru": [["👤", "Создайте аккаунт", "На indeed.com нажмите «Sign in» и создайте аккаунт по электронной почте."], ["🔎", "Ищите работу", "Введите профессию и город/страну. Проверьте, указана ли в вакансии помощь с визой или разрешением на работу."], ["▶️", "Нажмите «Apply now»", "Заявка откроется внутри Indeed. Может понадобиться подтвердить номер телефона."], ["📄", "Загрузите CV", "Загрузите новый файл CV или выберите CV из профиля. Ответьте на вопросы работодателя."], ["✅", "Отправьте", "Проверьте данные и нажмите «Submit your application». Заявки видны в разделе «My jobs» → «Applied»."]], "en": [["👤", "Create an account", "On indeed.com tap \"Sign in\" and create an account with your email."], ["🔎", "Search for jobs", "Enter the job title and city/country. Check whether the listing mentions visa or work-permit support."], ["▶️", "Tap \"Apply now\"", "The application opens on Indeed. You may need to verify your phone number."], ["📄", "Upload your CV", "Upload a new CV file or pick the one on your profile. Answer the employer's questions."], ["✅", "Submit", "Review and tap \"Submit your application\". Track it under \"My jobs\" → \"Applied\"."]]}, "eures.europa.eu": {"uz": [["🔑", "EU Login hisob oching", "Elektron pochta va parol bilan EU Login hisob oching. Facebook kabi ijtimoiy tarmoq orqali kirish EURES uchun ishlamaydi."], ["📱", "Ikki bosqichli himoyani yoqing", "EU Login sozlamalarida ikki bosqichli tasdiqlashni yoqing. SMS hamma davlatda ishlamasligi mumkin — EU Login mobil ilovasi tavsiya etiladi."], ["🧾", "EURES'da ro'yxatdan o'ting", "\"My EURES\" orqali kiring va ish izlovchi (jobseeker) hisobini tanlang."], ["📄", "CV tayyorlang", "Europass orqali Yevropa standartidagi CV yarating."], ["🔎", "Qidiring va murojaat qiling", "Davlat va kasb bo'yicha vakansiya qidiring. E'londagi ko'rsatma bo'yicha ish beruvchiga murojaat qiling."]], "ru": [["🔑", "Создайте EU Login", "Создайте аккаунт EU Login с электронной почтой и паролем. Вход через соцсети (Facebook) для EURES не подходит."], ["📱", "Включите двухфакторную защиту", "В настройках EU Login включите 2FA. SMS работают не во всех странах — рекомендуется приложение EU Login."], ["🧾", "Зарегистрируйтесь в EURES", "Войдите через «My EURES» и выберите аккаунт соискателя (jobseeker)."], ["📄", "Подготовьте CV", "Создайте CV европейского образца через Europass."], ["🔎", "Ищите и откликайтесь", "Ищите вакансии по стране и профессии. Связывайтесь с работодателем по инструкции в объявлении."]], "en": [["🔑", "Create an EU Login", "Create an EU Login account with email and password. Social sign-in (Facebook) doesn't work for EURES."], ["📱", "Turn on 2-factor security", "Enable 2FA in EU Login settings. SMS may not work everywhere — the EU Login mobile app is recommended."], ["🧾", "Register on EURES", "Log in via \"My EURES\" and choose the jobseeker account."], ["📄", "Prepare your CV", "Create a European-standard CV with Europass."], ["🔎", "Search and apply", "Search vacancies by country and job. Contact the employer as the listing instructs."]]}, "arbeitsagentur.de/jobsuche": {"uz": [["🔎", "Hisobsiz qidiring", "Qidirish va vakansiya tafsilotlarini ko'rish uchun hisob shart emas."], ["🔑", "Ro'yxatdan o'ting", "\"Jetzt registrieren\" ni bosing va hisob oching."], ["📝", "Profil to'ldiring", "Bewerberprofil: shaxsiy ma'lumot, CV (Lebenslauf), ko'nikmalar (Fähigkeiten) va qanday ish izlayotganingiz (Stellengesuche)."], ["📢", "Profilni e'lon qiling", "Profilni e'lon qilsangiz, ish beruvchilar sizni o'zlari topishi mumkin. Mos ishlarni email orqali olish ham mumkin."], ["📨", "Onlayn ariza bering", "Hisob bilan vakansiyaga bir necha bosishda ariza va hujjatlaringizni yuborasiz."]], "ru": [["🔎", "Ищите без аккаунта", "Для поиска и просмотра вакансий аккаунт не нужен."], ["🔑", "Зарегистрируйтесь", "Нажмите «Jetzt registrieren» и создайте аккаунт."], ["📝", "Заполните профиль", "Bewerberprofil: личные данные, CV (Lebenslauf), навыки (Fähigkeiten) и какую работу ищете (Stellengesuche)."], ["📢", "Опубликуйте профиль", "Опубликованный профиль могут найти работодатели. Можно получать подходящие вакансии на email."], ["📨", "Подайте заявку онлайн", "С аккаунтом заявка и документы отправляются в несколько кликов."]], "en": [["🔎", "Search without an account", "You don't need an account to search and view vacancy details."], ["🔑", "Register", "Tap \"Jetzt registrieren\" and create an account."], ["📝", "Fill in your profile", "Bewerberprofil: personal data, CV (Lebenslauf), skills (Fähigkeiten) and the job you want (Stellengesuche)."], ["📢", "Publish your profile", "Once published, employers can find you. You can also get matching jobs by email."], ["📨", "Apply online", "With an account you send your application and documents in a few clicks."]]}, "make-it-in-germany.com": {"uz": [["🌐", "Vakansiyalar sahifasini oching", "make-it-in-germany.com → \"Job listings\" (ish e'lonlari)."], ["🔎", "Kalit so'z yozing", "Kasb, ko'nikma yoki kompaniya nomini yozing."], ["🎛", "Saralang", "Soha, federal yer (shtat) va e'lon sanasi bo'yicha filtrlang. Talab yuqori kasblar uchun tayyor havolalar bor."], ["⭐", "Saqlab qo'ying", "Yoqqan e'lonni \"Bookmark Job\" bilan saqlang."], ["📄", "Tafsilotlarni o'qing", "\"View details\" ni bosing: ariza qanday berilishi va aloqa ma'lumotlari shu yerda."]], "ru": [["🌐", "Откройте вакансии", "make-it-in-germany.com → «Job listings»."], ["🔎", "Введите ключевое слово", "Профессия, навык или название компании."], ["🎛", "Отфильтруйте", "По отрасли, федеральной земле и дате публикации. Есть готовые ссылки на востребованные профессии."], ["⭐", "Сохраните", "Понравившуюся вакансию сохраните через «Bookmark Job»."], ["📄", "Читайте детали", "Нажмите «View details»: там указано, как подать заявку и контакты."]], "en": [["🌐", "Open job listings", "make-it-in-germany.com → \"Job listings\"."], ["🔎", "Enter a keyword", "Job title, skill or company name."], ["🎛", "Filter", "By sector, federal state and posting date. There are shortcuts for in-demand professions."], ["⭐", "Bookmark", "Save a listing with \"Bookmark Job\"."], ["📄", "Read the details", "Tap \"View details\" for how to apply and contacts."]]}, "mpsv.gov.cz/hledani-volnych-mist-2": {"uz": [["🌐", "Bazani oching", "\"Volná místa - cizinci\" bazasi faqat xorijlikni olishga tayyor ish beruvchilarni ko'rsatadi — filtr allaqachon qo'yilgan."], ["🔎", "Qidiring", "Kasb va hudud bo'yicha qidiring, maosh va shartlarni o'qing."], ["📝", "CV ingizni joylang", "mpsv.gov.cz/registrace-zajemcu-o-praci sahifasida ro'yxatdan o'tib, CV e'lon qiling — ish beruvchilar sizni topa oladi."], ["❓", "Employee Card'ni so'rang", "Ish Employee Card (xodim kartasi) bilan ochiqmi — e'londan yoki ish beruvchidan aniqlang."]], "ru": [["🌐", "Откройте базу", "База «Volná místa - cizinci» показывает только места, куда работодатель готов взять иностранца — фильтр уже стоит."], ["🔎", "Ищите", "Ищите по профессии и региону, читайте зарплату и условия."], ["📝", "Разместите CV", "Зарегистрируйтесь на mpsv.gov.cz/registrace-zajemcu-o-praci и опубликуйте CV — работодатели смогут вас найти."], ["❓", "Уточните Employee Card", "Подходит ли место для Employee Card (карты сотрудника) — уточните в объявлении или у работодателя."]], "en": [["🌐", "Open the database", "The \"Volná místa - cizinci\" database only shows jobs employers will fill with foreigners — the filter is preset."], ["🔎", "Search", "Search by job and region; read pay and conditions."], ["📝", "Post your CV", "Register at mpsv.gov.cz/registrace-zajemcu-o-praci and publish your CV so employers can find you."], ["❓", "Ask about the Employee Card", "Check in the listing or with the employer whether the job is open to Employee Card holders."]]}, "sezonski.hzz.hr": {"uz": [["🌐", "Portalni oching", "sezonski.hzz.hr — Xorvatiya bandlik xizmatining mavsumiy ish portali. Bepul, ro'yxatdan o'tish shart emas."], ["🔎", "Ish qidiring", "Asosan turizm, mehmonxona va restoran, shuningdek qishloq xo'jaligi ishlari. Sayt xorvat tilida — brauzerda tarjimani yoqing."], ["📄", "E'lonni o'qing", "Ish joyi, muddat, maosh va aloqa ma'lumotlariga qarang."], ["📨", "Ish beruvchiga yozing", "E'londagi aloqa orqali murojaat qiling. Ruxsatnomani ish beruvchi rasmiylashtiradi."]], "ru": [["🌐", "Откройте портал", "sezonski.hzz.hr — портал сезонной работы службы занятости Хорватии. Бесплатно, без регистрации."], ["🔎", "Ищите работу", "В основном туризм, гостиницы и рестораны, а также сельское хозяйство. Сайт на хорватском — включите перевод в браузере."], ["📄", "Читайте объявление", "Место, срок, зарплата и контакты."], ["📨", "Напишите работодателю", "Свяжитесь по контактам из объявления. Разрешение оформляет работодатель."]], "en": [["🌐", "Open the portal", "sezonski.hzz.hr — the Croatian Employment Service seasonal jobs portal. Free, no registration."], ["🔎", "Search", "Mainly tourism, hotels and restaurants, plus agriculture. The site is in Croatian — turn on browser translation."], ["📄", "Read the listing", "Location, period, pay and contacts."], ["📨", "Contact the employer", "Use the contacts in the listing. The employer arranges the permit."]]}, "burzarada.hzz.hr": {"uz": [["🌐", "Burza rada'ni oching", "burzarada.hzz.hr — Xorvatiya bandlik xizmatining rasmiy vakansiyalar bazasi."], ["🔎", "Qidiring", "Kasb va hudud bo'yicha qidiring. Sayt xorvat tilida — brauzerda tarjimani yoqing."], ["📄", "E'lonni o'qing", "Talablar, maosh va ish beruvchi aloqa ma'lumotlarini ko'ring."], ["📨", "Murojaat qiling", "E'londagi ko'rsatma bo'yicha ish beruvchiga yozing. Ruxsatnomani ish beruvchi oladi."]], "ru": [["🌐", "Откройте Burza rada", "burzarada.hzz.hr — официальная база вакансий службы занятости Хорватии."], ["🔎", "Ищите", "По профессии и региону. Сайт на хорватском — включите перевод в браузере."], ["📄", "Читайте объявление", "Требования, зарплата и контакты работодателя."], ["📨", "Откликайтесь", "Пишите работодателю по инструкции в объявлении. Разрешение получает работодатель."]], "en": [["🌐", "Open Burza rada", "burzarada.hzz.hr — the Croatian Employment Service's official vacancy database."], ["🔎", "Search", "By job and region. The site is in Croatian — turn on browser translation."], ["📄", "Read the listing", "Requirements, pay and employer contacts."], ["📨", "Apply", "Contact the employer as the listing says. The employer obtains the permit."]]}, "az.government.bg": {"uz": [["🌐", "Saytni oching", "az.government.bg — Bolgariya Bandlik agentligining rasmiy sayti."], ["🔎", "Vakansiyalarni ko'ring", "\"Elektron ish yarmarkalari\" (Electronic Career Days) bo'limida bo'sh ish o'rinlari va yaqin yarmarkalar e'lon qilinadi."], ["📨", "Ish beruvchi bilan bog'laning", "Ish beruvchi topilgach, 90 kundan 9 oygacha mavsumiy ish uchun ruxsatni ish beruvchi so'raydi."], ["🛂", "Viza oling", "Ruxsat tasdiqlangach, Bolgariya elchixonasida D turdagi viza uchun ariza berasiz."]], "ru": [["🌐", "Откройте сайт", "az.government.bg — официальный сайт Агентства занятости Болгарии."], ["🔎", "Смотрите вакансии", "В разделе «Электронные ярмарки вакансий» (Electronic Career Days) публикуются вакансии и ближайшие ярмарки."], ["📨", "Свяжитесь с работодателем", "Когда работодатель найден, разрешение на сезонную работу (от 90 дней до 9 месяцев) запрашивает он."], ["🛂", "Получите визу", "После одобрения подаёте на визу типа D в посольстве Болгарии."]], "en": [["🌐", "Open the site", "az.government.bg — Bulgaria's Employment Agency official site."], ["🔎", "Browse vacancies", "The \"Electronic Career Days\" section lists vacancies and upcoming fairs."], ["📨", "Contact the employer", "Once you have an employer, they request the seasonal permit (90 days to 9 months)."], ["🛂", "Get the visa", "After approval you apply for a type D visa at the Bulgarian embassy."]]}, "tyomarkkinatori.fi": {"uz": [["🔎", "Hisobsiz ko'ring", "Job Market Finland'da barcha ochiq vakansiyalarni kirmasdan ko'rish mumkin."], ["🔑", "Tizimga kiring", "Profil ochish uchun \"Login\" orqali kiring. Finlandiya ID'si bo'lmaganlar uchun saytda alohida ro'yxatdan o'tish ko'rsatmasi bor."], ["📝", "Profil yarating", "\"My job path\" bo'limida ish izlovchi profilini yarating."], ["💡", "Takliflarni oling", "Tizim ko'nikmalaringizga mos ishlarni taklif qiladi, ish beruvchilar sizga xabar yozishi mumkin."]], "ru": [["🔎", "Смотрите без входа", "На Job Market Finland все открытые вакансии можно смотреть без входа."], ["🔑", "Войдите", "Для профиля войдите через «Login». Для тех, у кого нет финского ID, на сайте есть отдельная инструкция по регистрации."], ["📝", "Создайте профиль", "В разделе «My job path» создайте профиль соискателя."], ["💡", "Получайте предложения", "Система предложит подходящие вакансии, работодатели могут вам написать."]], "en": [["🔎", "Browse without login", "On Job Market Finland you can view all open jobs without logging in."], ["🔑", "Log in", "Log in via \"Login\" to create a profile. There are separate registration instructions for people without a Finnish ID."], ["📝", "Create a profile", "Create a job seeker profile under \"My job path\"."], ["💡", "Get suggestions", "The service suggests matching jobs and employers can message you."]]}}, EG_GT={"uz": {"btn": "▶ Qanday foydalanish?", "next": "Keyingi", "prev": "Orqaga", "open": "Saytni ochish", "step": "Qadam", "note": "Saytlar dizaynini o'zgartirib turadi — tugma nomlari biroz farq qilishi mumkin."}, "ru": {"btn": "▶ Как пользоваться?", "next": "Далее", "prev": "Назад", "open": "Открыть сайт", "step": "Шаг", "note": "Сайты иногда меняют дизайн — названия кнопок могут немного отличаться."}, "en": {"btn": "▶ How to use it?", "next": "Next", "prev": "Back", "open": "Open the site", "step": "Step", "note": "Sites change their design from time to time — button names may differ slightly."}};
+var _eg={key:null,i:0,name:""};
+function _gl(){return (typeof lang!=="undefined"&&EG_GT[lang])?lang:"uz";}
+function guideOpen(key,name){_eg={key:key,i:0,name:name||key};guideRender();openModal("guideOvl");try{if(window.gtag)gtag("event","guide_open",{site:key});}catch(e){}}
+function guideGo(d){var st=EG_GUIDES[_eg.key][_gl()];_eg.i=Math.max(0,Math.min(st.length-1,_eg.i+d));guideRender();}
+function guideRender(){
+  var l=_gl(),T=EG_GT[l],st=EG_GUIDES[_eg.key][l],i=_eg.i,s=st[i],n=st.length,box=document.getElementById("guideBody");if(!box)return;
+  setEl("guideTitle",_eg.name);
+  var dots="";for(var k=0;k<n;k++)dots+="<span style='display:inline-block;width:"+(k===i?"22px":"8px")+";height:8px;border-radius:8px;margin:0 3px;background:"+(k<=i?"#F2C14E":"#cbd5e1")+";transition:width .3s'></span>";
+  var h="<div style='height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-bottom:14px;'><div style='height:100%;width:"+Math.round((i+1)/n*100)+"%;background:#F2C14E;animation:egBar .5s ease'></div></div>"+
+    "<div class='eg-step' key='"+i+"' style='background:linear-gradient(160deg,#101F4A,#1e3a6e);color:#fff;border-radius:16px;padding:22px 18px;min-height:190px;text-align:center;'>"+
+      "<div class='eg-ico' style='font-size:44px;line-height:1;margin-bottom:10px;'>"+s[0]+"</div>"+
+      "<div style='font-size:11px;font-weight:800;letter-spacing:.5px;color:#F2C14E;text-transform:uppercase;'>"+T.step+" "+(i+1)+" / "+n+"</div>"+
+      "<div style='font-size:18px;font-weight:800;margin:6px 0 8px;'>"+s[1]+"</div>"+
+      "<div style='font-size:13.5px;line-height:1.55;color:#dbe4ff;'>"+s[2]+"</div></div>"+
+    "<div style='text-align:center;margin:12px 0;'>"+dots+"</div>"+
+    "<div style='display:flex;gap:8px;'>"+
+      "<button onclick='guideGo(-1)' "+(i===0?"disabled":"")+" style='flex:1;padding:12px;border-radius:10px;border:1px solid var(--bd);background:var(--c);color:var(--tx);font-weight:700;opacity:"+(i===0?".4":"1")+";'>&#8592; "+T.prev+"</button>"+
+      (i<n-1?"<button onclick='guideGo(1)' style='flex:2;padding:12px;border-radius:10px;border:none;background:#F2C14E;color:#101F4A;font-weight:800;'>"+T.next+" &#8594;</button>"
+            :"<a href='https://"+_eg.key+"' target='_blank' rel='noopener' style='flex:2;padding:12px;border-radius:10px;background:#16a34a;color:#fff;font-weight:800;text-align:center;text-decoration:none;'>"+T.open+" &#8599;</a>")+
+    "</div><div style='font-size:11px;color:var(--mt);text-align:center;margin-top:10px;'>"+T.note+"</div>";
+  box.innerHTML=h;
+}
+function addGuideButtons(){
+  var l=_gl();
+  document.querySelectorAll("#fb .fcard").forEach(function(card){
+    if(card.getAttribute("data-eg"))return;
+    var a=card.querySelector("a[href^='https://']"); if(!a)return;
+    var key=a.getAttribute("href").replace(/^https:\/\//,"").replace(/\/$/,"");
+    if(!EG_GUIDES[key])return;
+    card.setAttribute("data-eg","1");
+    var nm=(card.querySelector(".fname")||{}).childNodes; var name=nm&&nm[0]?nm[0].textContent:key;
+    var b=document.createElement("button"); b.className="eg-gbtn"; b.innerHTML=EG_GT[l].btn;
+    b.onclick=function(){guideOpen(key,name);};
+    a.parentNode.insertBefore(b,a.nextSibling); a.style.marginRight="8px";
+  });
+}
+(function(){
+  if(typeof renderFirms!=="function")return;
+  var _rf2=renderFirms;
+  renderFirms=function(){var r=_rf2.apply(this,arguments);try{addGuideButtons();}catch(e){}return r;};
+  try{addGuideButtons();}catch(e){}
+})();
 </script>
 </body>
 </html>
