@@ -1,0 +1,12 @@
+{
+  "name": "EvropaGo — Yevropaga ishga rasmiy yo'l",
+  "short_name": "EvropaGo",
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "background_color": "#0B2E25",
+  "theme_color": "#0B2E25",
+  "icons": [
+    {"src": "/favicon-192.png", "sizes": "480x480", "type": "image/png", "purpose": "any"},
+    {"src": "/apple-touch-icon.png", "sizes": "480x480", "type": "image/png", "purpose": "any"}
+  ]
+}
