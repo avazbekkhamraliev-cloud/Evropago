@@ -588,7 +588,7 @@ nav .nb{background:rgba(245,239,227,.06)!important;border:1px solid rgba(212,175
 nav .nb[onclick*="faqOvl"]{color:var(--eg-gold-l)!important;border-color:rgba(212,175,106,.55)!important;}
 nav .nb-text{font-size:10.5px!important;line-height:1.25;min-width:64px;max-width:118px;}
 nav .nb.act{background:var(--eg-metal-s)!important;color:#0B2E25!important;border-color:transparent!important;box-shadow:0 4px 12px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.55)!important;}
-#sc-cvsvc nav .logo,#sc-life nav .logo{color:var(--eg-cream)!important;}
+#sc-cvsvc nav .logo,#sc-life nav .logo,#sc-korea nav .logo{color:var(--eg-cream)!important;}
 
 /* TICKER, YANGILIKLAR, YO'NALISH */
 .ticker{background:var(--tickbg);border-bottom:1px solid rgba(212,175,106,.16);}
@@ -743,8 +743,8 @@ html #faqOvl .eg-fqa{color:#D5DDD6;}
 #sc-welcome .path-life .pb-role{background:rgba(226,192,138,.14);border:1px solid rgba(226,192,138,.4);color:#F2DDB0;}
 #sc-welcome .path-life .pb-arr{background:var(--eg-metal-s);color:#101F4A;box-shadow:0 4px 10px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.55);}
 #sc-welcome .path-life .pb-sub{color:#C9D2E8;font-weight:500;}
-.eg-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"rank calc" "fraud fraud" "cv cv";gap:12px;}
-#rankBtn{grid-area:rank;}#calcBtn{grid-area:calc;}#fraudBtn{grid-area:fraud;}#cvsBtn{grid-area:cv;}
+.eg-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"rank calc" "fraud fraud" "cv cv" "kr kr";gap:12px;}
+#rankBtn{grid-area:rank;}#calcBtn{grid-area:calc;}#fraudBtn{grid-area:fraud;}#cvsBtn{grid-area:cv;}#krBtn{grid-area:kr;}
 .eg-tile{min-height:132px;border-radius:20px;background:var(--eg-card);border:1px solid var(--eg-line);padding:16px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:14px;text-align:left;color:var(--eg-cream);font-size:14px;line-height:1.35;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);}
 .eg-ico{width:42px;height:42px;border-radius:14px;background:rgba(212,175,106,.14);border:1px solid rgba(212,175,106,.32);color:var(--eg-gold);display:flex;align-items:center;justify-content:center;flex:none;}
 .eg-ico svg{width:21px;height:21px;}
@@ -754,7 +754,7 @@ html #faqOvl .eg-fqa{color:#D5DDD6;}
 .eg-chev{color:#F08A7E;display:flex;flex:none;}
 .eg-cv{min-height:76px;border:1px solid rgba(212,175,106,.45);border-radius:20px;background:linear-gradient(135deg,#1B5040 0%,#133D31 100%);padding:14px 14px 14px 16px;display:flex;align-items:center;gap:14px;text-align:left;color:var(--eg-cream);font-size:15px;line-height:1.35;font-weight:800;cursor:pointer;box-shadow:0 12px 24px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.06);}
 .eg-cv .eg-ico{width:46px;height:46px;background:var(--eg-metal);border:0;color:#0B2E25;box-shadow:inset 0 1px 0 rgba(255,255,255,.55);}
-.eg-cv #cvsBtnLbl{flex:1;}
+.eg-cv #cvsBtnLbl{flex:1;}.eg-cv #krBtnLbl{flex:1;}
 .eg-go{width:40px;height:40px;flex:none;border-radius:999px;background:var(--eg-metal-s);color:#0B2E25;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.55);}
 .eg-foot{text-align:center;padding:26px 20px 28px;margin-top:28px;border-top:1px solid rgba(212,175,106,.16);font-size:12.5px;color:var(--eg-muted);}
 .eg-foot-nav{display:flex;flex-direction:column;align-items:center;gap:2px;margin:0 0 12px;}
@@ -887,7 +887,7 @@ html[data-egnav] .page.active{animation:egIn .45s var(--eg-ease) both;}
 .eg-enter :is(.dcard,.jcard,.stage,.fcard,.el-card):nth-child(7){animation-delay:.44s}
 .eg-enter :is(.dcard,.jcard,.stage,.fcard,.el-card):nth-child(8){animation-delay:.5s}
 .eg-enter :is(.dcard,.jcard,.stage,.fcard,.el-card):nth-child(n+9){animation-delay:.56s}
-.eg-enter #rankBtn{animation-delay:.22s}.eg-enter #calcBtn{animation-delay:.28s}.eg-enter #fraudBtn{animation-delay:.34s}.eg-enter #cvsBtn{animation-delay:.4s}
+.eg-enter #rankBtn{animation-delay:.22s}.eg-enter #calcBtn{animation-delay:.28s}.eg-enter #fraudBtn{animation-delay:.34s}.eg-enter #cvsBtn{animation-delay:.4s}.eg-enter #krBtn{animation-delay:.46s}
 .eg-enter .pay-top{animation-delay:.06s}.eg-enter .pay-price-box{animation-delay:.14s}.eg-enter .oother{animation-delay:.42s}.eg-enter .eg-faqbtn{animation-delay:.3s}
 
 /* Tanlanganda "pop" */
@@ -981,11 +981,15 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--eg-gold-l);outline-
         <span class="eg-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span> <span id="cvsBtnLbl" data-cvs="welcomeBtn">Faqat CV yozib berish xizmati: 49 000 so'm</span>
         <span class="eg-go" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </button>
+      <button onclick="goScreen('sc-korea')" id="krBtn" class="eg-cv">
+        <span class="eg-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/></svg></span> <span id="krBtnLbl">KoreyaGo: Koreyaga ishga borish yo'li (EPS-TOPIK)</span>
+        <span class="eg-go" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </button>
     </div>
   </div>
   <footer class="eg-foot">
     <div role="navigation" aria-label="Davlatlar" class="eg-foot-nav"><a href="/davlatlar"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF6A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Davlatlar bo'yicha ishchi viza qo'llanmasi</a><a href="/strany" lang="ru">Рабочая виза по странам</a></div>
-    <div role="navigation" aria-label="Qo'llanmalar" class="eg-foot-topics"><a href="/yevropa-ish-saytlari">Yevropa ish saytlari</a><a href="/yevropaga-ishchi-viza">Yevropaga ishchi viza</a><a href="/mavsumiy-ish">Mavsumiy ish 2026</a><a href="/xorijda-ish">Xorijda ish</a><a href="/angliyaga-mavsumiy-ish">Angliyaga mavsumiy ish</a><a href="/sajty-raboty-v-evrope" lang="ru">Сайты работы в Европе</a><a href="/rabochaya-viza-v-evropu" lang="ru">Рабочая виза в Европу</a><a href="/sezonnaya-rabota-v-evrope" lang="ru">Сезонная работа</a><a href="/sezonnaya-rabota-v-anglii" lang="ru">Работа в Англии</a></div>
+    <div role="navigation" aria-label="Qo'llanmalar" class="eg-foot-topics"><a href="/yevropa-ish-saytlari">Yevropa ish saytlari</a><a href="/yevropaga-ishchi-viza">Yevropaga ishchi viza</a><a href="/mavsumiy-ish">Mavsumiy ish 2026</a><a href="/xorijda-ish">Xorijda ish</a><a href="/green-card">Green Card 2027</a><a href="/angliyaga-mavsumiy-ish">Angliyaga mavsumiy ish</a><a href="/sajty-raboty-v-evrope" lang="ru">Сайты работы в Европе</a><a href="/rabochaya-viza-v-evropu" lang="ru">Рабочая виза в Европу</a><a href="/sezonnaya-rabota-v-evrope" lang="ru">Сезонная работа</a><a href="/sezonnaya-rabota-v-anglii" lang="ru">Работа в Англии</a></div>
     <p id="footCopy">&#169; 2026 evropago.uz. Barcha huquqlar himoyalangan.</p>
     <p>
       <a href="#privacy-policy" onclick="openModal('privacyOvl');return false;" id="footPrivacyLink">Maxfiylik siyosati</a>
@@ -1088,6 +1092,122 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--eg-gold-l);outline-
 <script>
 function cvsTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}:{});}catch(e){}}
 function cvsOpen(){cvsTrack('cv_page_open');goScreen('sc-cvsvc');}
+</script>
+
+<!-- SCREEN: KOREYAGO (EPS-TOPIK, Koreyaga ishga) — evropago.uz/#korea -->
+<style>
+#sc-korea{background:#0B2E25;color:#fff;font-family:inherit;line-height:1.5;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px));}
+#sc-korea *,#sc-korea *::before,#sc-korea *::after{box-sizing:border-box;}
+#sc-korea .kr-wrap{width:100%;max-width:640px;margin:0 auto;padding:0 20px;}
+#sc-korea .cvs-hero{padding:30px 0;}
+#sc-korea .kr-tag{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E2C08A;font-weight:700;margin:0 0 12px;}
+#sc-korea h1.cvs-h1{font-size:clamp(32px,9vw,50px);line-height:1.05;letter-spacing:-1.2px;margin:0 0 16px;font-weight:800;color:#fff;text-wrap:balance;}
+#sc-korea h1.cvs-h1 span{color:#E2C08A;}
+#sc-korea .kr-lead{color:#B9C6BE;font-size:17px;margin:0 0 20px;max-width:36ch;}
+#sc-korea .kr-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 22px;}
+#sc-korea .kr-fact{background:#133D31;border:1px solid rgba(212,175,106,.22);border-radius:14px;padding:10px 12px;}
+#sc-korea .kr-fact b{display:block;font-size:20px;font-weight:800;color:#E2C08A;font-variant-numeric:tabular-nums;line-height:1.2;}
+#sc-korea .kr-fact small{display:block;color:#B9C6BE;font-size:12px;line-height:1.3;margin-top:2px;}
+#sc-korea .cvs-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+#sc-korea .cvs-price{font-size:42px;font-weight:800;letter-spacing:-1px;color:#E2C08A;line-height:1;}
+#sc-korea .cvs-note{color:#B9C6BE;font-size:15px;}
+#sc-korea a.cvs-btn{display:flex;align-items:center;justify-content:center;text-align:center;gap:10px;background:#E2C08A linear-gradient(135deg,#B8905A 0%,#E2C08A 36%,#F3E0B5 52%,#D6B074 74%,#B8905A 100%);box-shadow:0 10px 22px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.6);color:#0B2E25;font-weight:800;font-size:18px;text-decoration:none;padding:18px 24px;border-radius:14px;}
+#sc-korea a.cvs-btn:active{transform:scale(.985);}
+#sc-korea a.cvs-btn:focus-visible{outline:3px solid #fff;outline-offset:3px;}
+#sc-korea a.cvs-btn svg{width:22px;height:22px;flex:none;}
+#sc-korea .cvs-fb{display:block;margin-top:12px;color:#B9C6BE;font-size:14px;}
+#sc-korea section.cvs-sec{padding:28px 0;border-top:1px solid rgba(212,175,106,.22);}
+#sc-korea h2.cvs-h2{font-size:25px;letter-spacing:-.5px;margin:0 0 6px;line-height:1.15;color:#fff;font-weight:800;text-wrap:balance;}
+#sc-korea .kr-sub{color:#B9C6BE;font-size:15px;margin:0 0 16px;}
+#sc-korea .kr-box{background:#133D31;border:1px solid rgba(212,175,106,.22);border-radius:16px;padding:16px;}
+#sc-korea .kr-q{display:grid;gap:8px;padding:12px 0;border-bottom:1px solid rgba(212,175,106,.16);}
+#sc-korea .kr-q:first-child{padding-top:0;}
+#sc-korea .kr-q p{margin:0;font-size:16px;font-weight:600;color:#fff;}
+#sc-korea .kr-opts{display:flex;gap:8px;}
+#sc-korea .kr-opt{flex:1;min-height:44px;border-radius:12px;border:1.5px solid rgba(212,175,106,.28);background:#0B2E25;color:#B9C6BE;font:inherit;font-size:15px;font-weight:700;cursor:pointer;}
+#sc-korea .kr-opt[aria-pressed="true"]{border-color:#E2C08A;background:#1B5040;color:#fff;}
+#sc-korea .kr-sec-btn{width:100%;min-height:48px;margin-top:14px;border-radius:12px;border:1px solid rgba(212,175,106,.55);background:#1B5040;color:#F5EFE3;font:inherit;font-size:16px;font-weight:800;cursor:pointer;}
+#sc-korea .kr-res{margin-top:12px;border-radius:12px;padding:12px 14px;font-size:15px;}
+#sc-korea .kr-res.good{background:rgba(127,209,166,.12);border:1px solid rgba(127,209,166,.5);color:#C9F0DB;}
+#sc-korea .kr-res.warn{background:rgba(240,138,126,.1);border:1px solid rgba(240,138,126,.55);color:#F8CEC7;}
+#sc-korea .kr-res ul{margin:6px 0 0;padding-left:18px;}
+#sc-korea .kr-tq{display:grid;gap:9px;padding:12px 0;border-bottom:1px solid rgba(212,175,106,.16);}
+#sc-korea .kr-tq:first-child{padding-top:0;}
+#sc-korea .kr-qt{margin:0;font-weight:700;color:#fff;}
+#sc-korea .kr-qt .n{color:#E2C08A;margin-right:4px;font-variant-numeric:tabular-nums;}
+#sc-korea .kr-ko{font-size:1.15em;}
+#sc-korea .kr-ans{display:grid;gap:7px;}
+#sc-korea .kr-ans button{text-align:left;min-height:44px;border-radius:12px;border:1.5px solid rgba(212,175,106,.22);background:#0B2E25;color:#F5EFE3;padding:8px 12px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;}
+#sc-korea .kr-ans button.ok{border-color:#7FD1A6;background:rgba(127,209,166,.14);}
+#sc-korea .kr-ans button.no{border-color:#F08A7E;background:rgba(240,138,126,.12);}
+#sc-korea .kr-ans button:disabled{cursor:default;}
+#sc-korea .kr-score{margin:12px 0 0;font-weight:800;text-align:center;color:#E2C08A;}
+#sc-korea .kr-format{margin:12px 0 0;font-size:14px;color:#B9C6BE;background:#0B2E25;border-radius:12px;padding:10px 12px;}
+#sc-korea .kr-funnel{display:grid;gap:12px;}
+#sc-korea .kr-frow{display:grid;gap:5px;}
+#sc-korea .kr-flab{display:flex;justify-content:space-between;gap:8px;font-size:15px;color:#F5EFE3;}
+#sc-korea .kr-flab b{font-variant-numeric:tabular-nums;color:#fff;}
+#sc-korea .kr-track{height:12px;border-radius:6px;background:#0B2E25;overflow:hidden;}
+#sc-korea .kr-bar{height:100%;border-radius:6px;background:rgba(226,192,138,.5);}
+#sc-korea .kr-bar.pass{background:linear-gradient(135deg,#B8905A 0%,#E2C08A 36%,#F3E0B5 52%,#D6B074 74%,#B8905A 100%);}
+#sc-korea .kr-fnote{margin:12px 0 0;font-size:14px;color:#B9C6BE;}
+#sc-korea ol.kr-tl{list-style:none;margin:0;padding:0;}
+#sc-korea ol.kr-tl li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:11px 0;border-bottom:1px solid rgba(212,175,106,.16);}
+#sc-korea ol.kr-tl li:last-child{border-bottom:0;padding-bottom:0;}
+#sc-korea ol.kr-tl li:first-child{padding-top:0;}
+#sc-korea ol.kr-tl .d{font-size:13px;font-weight:700;color:#E2C08A;padding-top:2px;font-variant-numeric:tabular-nums;}
+#sc-korea ol.kr-tl b{display:block;font-size:16px;color:#fff;}
+#sc-korea ol.kr-tl span{font-size:14px;color:#B9C6BE;}
+#sc-korea ol.kr-tl a{font-size:12.5px;color:#E8CE96;}
+#sc-korea ol.kr-tl li.next .d{color:#F08A7E;}
+#sc-korea .kr-warn{border:1px solid rgba(240,138,126,.6);background:rgba(240,138,126,.08);border-radius:16px;padding:16px;display:grid;gap:8px;}
+#sc-korea .kr-warn h2{margin:0;font-size:20px;font-weight:800;color:#F6B2A8;}
+#sc-korea .kr-warn p{margin:0;font-size:15px;color:#F5EFE3;}
+#sc-korea .kr-warn a{color:#F6B2A8;}
+#sc-korea .kr-warn ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:15px;color:#F5EFE3;}
+#sc-korea .kr-cons{display:grid;gap:8px;}
+#sc-korea .kr-con{display:flex;align-items:center;gap:10px;background:#133D31;border:1px solid rgba(212,175,106,.22);border-radius:14px;padding:10px 12px;}
+#sc-korea .kr-con div{flex:1;min-width:0;}
+#sc-korea .kr-con small{display:block;color:#B9C6BE;font-size:13px;}
+#sc-korea .kr-con .num{font-size:18px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;user-select:all;-webkit-user-select:all;}
+#sc-korea .kr-copy{flex:none;border-radius:10px;border:1px solid rgba(212,175,106,.45);background:#0B2E25;color:#E8CE96;padding:8px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+#sc-korea ol.kr-steps{list-style:none;margin:0;padding:0;counter-reset:krstep;}
+#sc-korea ol.kr-steps li{position:relative;padding:0 0 20px 52px;counter-increment:krstep;}
+#sc-korea ol.kr-steps li:last-child{padding-bottom:0;}
+#sc-korea ol.kr-steps li::before{content:counter(krstep);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;background:#E2C08A;color:#0B2E25;font-weight:800;display:grid;place-items:center;}
+#sc-korea ol.kr-steps li:not(:last-child)::after{content:"";position:absolute;left:17px;top:40px;bottom:4px;width:2px;background:rgba(212,175,106,.22);}
+#sc-korea ol.kr-steps strong{display:block;font-size:17px;margin-bottom:2px;color:#fff;}
+#sc-korea ol.kr-steps span{color:#B9C6BE;font-size:15px;}
+#sc-korea .kr-pay{margin-top:18px;background:linear-gradient(160deg,#1B5040 0%,#133D31 100%);border:1px solid rgba(212,175,106,.5);border-radius:18px;padding:20px 18px;display:grid;gap:12px;}
+#sc-korea .kr-pay .cvs-price-row{margin:0;}
+#sc-korea ul.kr-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+#sc-korea ul.kr-list li{display:flex;gap:10px;align-items:flex-start;font-size:16px;color:#fff;}
+#sc-korea ul.kr-list svg{width:20px;height:20px;flex:none;margin-top:2px;color:#E2C08A;}
+#sc-korea .kr-small{color:#B9C6BE;font-size:14px;margin:0;}
+#sc-korea .kr-small a{color:#fff;}
+#sc-korea .kr-disc{padding:24px 0 8px;border-top:1px solid rgba(212,175,106,.22);display:grid;gap:6px;font-size:13px;color:#B9C6BE;}
+#sc-korea .kr-disc p{margin:0;}
+#sc-korea .kr-disc b{color:#F5EFE3;}
+#sc-korea .kr-disc a{color:#E8CE96;}
+#sc-korea .cvs-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(7,32,25,.96);border-top:1px solid rgba(212,175,106,.22);padding:12px 20px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));}
+#sc-korea .cvs-bar a.cvs-btn{max-width:600px;margin:0 auto;padding:15px 12px;font-size:16px;text-align:center;white-space:nowrap;}
+#sc-korea button:focus-visible{outline:2px solid #E2C08A;outline-offset:2px;}
+@media (max-width:380px){#sc-korea .kr-facts{grid-template-columns:1fr;}#sc-korea ol.kr-tl li{grid-template-columns:1fr;gap:2px;}}
+</style>
+<div class="screen" id="sc-korea">
+  <nav>
+    <div class="logo" onclick="goScreen('sc-welcome')" style="font-weight:800;font-size:17px;color:#101F4A;">Koreya<span style="color:#C9A227;">Go</span></div>
+    <div class="nav-r">
+      <button class="nb" onclick="goScreen('sc-welcome')" data-kr="back">&#8592; Bosh</button>
+    </div>
+  </nav>
+  <div class="kr-wrap" id="krRoot"></div>
+  <div class="cvs-bar">
+    <a class="cvs-btn" data-kr-tg href="https://t.me/Evropagoo?text=Assalomu%20alaykum!%20KoreyaGo%20to%27liq%20qo%27llanmasi%20uchun%20to%27lov%2049.000%20so%27m.%20Qo%27llanmani%20olmoqchiman." target="_blank" rel="noopener" onclick="krTrack('kr_order_click','sticky')" data-kr="barBtn">To'liq qo'llanmani olish: 49 000 so'm</a>
+  </div>
+</div>
+<script>
+function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}:{});}catch(e){}}
 </script>
 
 <!-- SCREEN: EUROPALIFE -->
@@ -3901,6 +4021,9 @@ if(tokenInUrl && !hasAccess){
 } else if(location.hash==="#cv"){
   // evropago.uz/#cv — CV xizmati ekranini to'g'ridan-to'g'ri ochish (reklama havolasi uchun)
   goScreen("sc-cvsvc"); cvsTrack("cv_page_open");
+} else if(location.hash==="#korea"){
+  // evropago.uz/#korea — KoreyaGo ekranini to'g'ridan-to'g'ri ochish (reklama havolasi uchun)
+  goScreen("sc-korea"); krTrack("kr_page_open","link");
 } else if(hasAccess){
   // localStorage orqali kirish allaqachon tasdiqlangan — to'g'ridan-to'g'ri ilovaga kiritamiz,
   // Bosh sahifada qoldirib, mijozni qayta tanlov qilishga majburlamaymiz.
@@ -6371,6 +6494,329 @@ function cvsApplyLang(){
 })();
 </script>
 
+<script>
+/* KoreyaGo ekrani: uz / ru / en matnlari va chizish. Ilova tili (lang) o'zgarganda avtomatik yangilanadi.
+   To'lov: faqat Telegram (@Evropagoo) orqali, 49 000 so'm. Click/token mantiqiga tegilmagan. */
+(function(){
+var SRC={
+  a:"https://gov.uz/uz/migration/news/view/139363",
+  b:"https://gov.uz/uz/migration/news/view/145926",
+  c:"https://gov.uz/oz/migration/news/view/171091",
+  d:"https://gov.uz/oz/migration/news/view/197042",
+  e:"https://gov.uz/oz/migration/news/view/199012",
+  f:"https://gov.uz/uz/migration/news/view/235252",
+  g:"https://yuz.uz/uz/news/koreiaga-isga-bormoqci-blgan-63-nafar-zbekistonlik-firibgar"
+};
+var OFF='<a href="https://gov.uz/uz/migration" target="_blank" rel="noopener">gov.uz/migration</a>, <a href="https://xorijdaish.uz" target="_blank" rel="noopener">xorijdaish.uz</a>, <a href="https://eps.go.kr" target="_blank" rel="noopener">eps.go.kr</a>';
+var TGA='<a href="https://t.me/Evropagoo" target="_blank" rel="noopener">t.me/Evropagoo</a>';
+var NEED=["y","y","n","n"];
+var KO=[["회사",1],["안전모",1],["월급",0],["위험",1],["근로계약서",2]];
+var BARS=[100,79.3,23];
+
+var KR_T={
+uz:{back:"&#8592; Bosh",tile:"KoreyaGo: Koreyaga ishga borish yo'li (EPS-TOPIK)",
+tag:"KoreyaGo · EPS-TOPIK · E-9 viza",h1:"Koreyaga ishga <span>rasmiy yo'l</span>",
+lead:"Ro'yxatdan o'tishdan Koreyada ishlashgacha. Faqat rasmiy manbalar asosida, oddiy tilda.",
+facts:[["18–40","yosh, ro'yxat kuniga"],["$28","ro'yxat to'lovi, so'mda"],["29%","2026'da imtihondan o'tdi"]],
+price:"49 000 so'm",note:"to'liq qo'llanma, bir marta",orderBtn:"To'liq qo'llanmani olish",
+fb:"Telegramda xabar tayyor holda ochiladi. Faqat \"Yuborish\"ni bosing.",
+eligH:"Men mos kelamanmi?",eligSub:"2026 rasmiy talablari asosida 4 savol. Bepul.",yes:"Ha",no:"Yo'q",
+qs:[["Yoshingiz 18–40 oralig'idami?","Yosh: ro'yxat kuni 18 dan katta va 40 dan kichik bo'lish kerak."],
+["Amaldagi xorijga chiqish pasportingiz bormi?","Amaldagi xorijga chiqish pasporti shart. Avval pasport oling."],
+["Sudlanganlik yoki jinoiy javobgarlik bormi?","O'zbekistonda sudlanganlik yoki jinoiy javobgarlik bo'lmasligi kerak."],
+["Ranglarni ajratishda muammo (daltonizm) bormi?","Daltonizm: 2026 natijalarida bunday nomzodlar balidan qat'i nazar o'tmagan deb hisoblandi."]],
+check:"Tekshirish",allAns:"Barcha savollarga javob bering",
+good:"<b>Siz asosiy shartlarga mos kelasiz.</b><br>Keyingi qadam: hujjat fayllarini tayyorlash va ro'yxat e'lonini kuzatish.",bad:"Mos kelmaydigan shart:",
+testH:"EPS-TOPIK mini-test",testSub:"Ish joyida eng ko'p uchraydigan 5 so'z. Bepul.",
+tq:[["so'zi nimani anglatadi?",["Maktab","Kompaniya","Kasalxona","Bozor"]],
+["ish joyida bu nima?",["Qo'lqop","Xavfsizlik kaskasi","Etik","Ko'zoynak"]],
+["so'zining ma'nosi?",["Oylik maosh","Dam olish kuni","Soliq","Ta'til"]],
+["yozuvi nimani bildiradi?",["Chiqish","Xavfli","Ovqatlanish joyi","Kirish"]],
+["bu qaysi hujjat?",["Pasport","Viza","Mehnat shartnomasi","Ish haqi varaqasi"]]],
+score:"Natija",scoreGood:"Yaxshi boshlanish.",scoreBad:"Standart darslikdan boshlang.",
+format:"Haqiqiy imtihon: o'qish va tinglash, 50 savol, 70 daqiqa, planshet yoki kompyuterda. Savollar HRD Korea'ning rasmiy standart darsligidan olinadi.",
+numH:"2026 yil raqamlarda",numSub:"Ishlab chiqarish va xizmat ko'rsatish sohalari birgalikda.",
+fun:[["Onlayn ro'yxatdan o'tdi","8 158"],["Imtihonga keldi","6 468"],["Imtihondan o'tdi","1 878"]],
+fnote:"Ro'yxatdan o'tganlarning 1 690 nafari imtihonga kelmagan. O'tganlar: ishlab chiqarish 1 653, xizmat 225. Imtihonga kelganlarning har 10 tasidan 3 tasi o'tdi.",
+tlH:"2026 xronologiyasi va yangiliklar",tlSub:"29-oktabr 2026 holati. Har bir sana rasmiy e'londan olingan.",src:"manba",
+tl:[["5-mart","EPS-TOPIK 2026 e'lon qilindi","Talablar, fayl formatlari va $28 to'lov e'lon qilindi.","a"],
+["9–12-mart","Onlayn ro'yxat, 4 kun","8 158 kishi: ishlab chiqarish 7 624, xizmat 534.","b"],
+["6–23-aprel","Imtihon","Ishlab chiqarish 6–22-aprel, xizmat 23-aprel. 6 468 kishi qatnashdi.",""],
+["26-may","Natijalar chiqdi","1 878 kishi o'tdi. Daltonizm aniqlanganlar o'tmagan deb hisoblandi.","c"],
+["24-iyul","Agentlikning rasmiy munosabati","SPAS bazasida ma'lumot 2 yil turadi. Agentlik uni o'zgartira yoki 3-yilga uzaytira olmaydi. Nomzodni faqat koreys ish beruvchi tanlaydi.","d"],
+["28-iyul","Skill Test boshlandi","1 878 nomzod uchun kasbiy malaka sinovi. Undan o'tish ham ishga kafolat emas.","e"],
+["19-oktabr","130 kishi Koreyaga jo'nadi","EPS orqali ishlab chiqarish sohasiga, vaqtinchalik ishga.","f"],
+["2027","Ro'yxat sanasi hali e'lon qilinmagan","2026'da e'lon ro'yxatdan 4 kun oldin chiqqan. Yil boshidan rasmiy kanalni kuzating.","",1]],
+warnH:"Ishga joylashtiraman deganlarga pul bermang",
+warnP:"14-may 2026: Koreyaga ishga yuborishni va'da qilib, 6 viloyatdagi 63 kishidan qariyb $408 800 yig'ilgan. Jinoyat ishi qo'zg'atildi.",
+warnL:["Ro'yxatdan o'zingiz o'tasiz. Ro'yxat to'lovi $28, Markaziy bank kursida so'mda.","SPAS bazasidagi joyni hech kim uzaytira, o'zgartira yoki kafolatlay olmaydi.","\"Kafolatli ish\" yoki \"tanlovdan o'tkazib beraman\" degan va'da yolg'on. KoreyaGo ham ishga joylashtirmaydi, faqat yo'lni tushuntiradi."],
+conH:"Rasmiy aloqa",conSub:"Savolingiz bo'lsa, shu raqamlarga to'g'ridan-to'g'ri qo'ng'iroq qiling. Bepul.",
+cons:["Migratsiya agentligi","Ishonch telefoni, qisqa raqam","Koreyada: chet ellik ishchilar markazi, o'zbekcha ham"],
+copy:"Nusxa",copied:"Raqam nusxalandi",selected:"Raqam belgilandi, nusxa oling",
+roadH:"To'liq qo'llanmada nima bor",roadSub:"Ro'yxatdan Koreyada ishlashgacha 9 bosqich, har biri batafsil.",
+steps:[["Hujjatlarni tayyorlash","Pasport nusxasi va rasm fayllarining aniq o'lchami, formati va telefonda tayyorlash usuli."],
+["Ro'yxatdan o'tish kuni","Ro'yxat bir necha kun ochiq. Qanday tayyor turish, ma'lumotni xatosiz kiritish va $28 to'lov."],
+["EPS-TOPIK imtihoni","Format, imtihon kuni qoidalari, nima olib borish va qanday tayyorlanish."],
+["Natija va Skill Test","Natija qachon chiqadi, Skill Test nima, agentlikning bepul kurslari."],
+["SPAS bazasi, 2 yil","Ish beruvchi sizni qanday topadi va 2 yil ichida nima qilish kerak."],
+["Tanlov va shartnoma","Standart mehnat shartnomasini (근로계약서) qanday o'qish va nimaga e'tibor berish."],
+["Viza va tibbiy ko'rik","E-9 viza, tibbiy ko'rik va ketishdan oldingi o'qish."],
+["Uchish va kelish","Guruh bo'lib jo'nash, Koreyadagi birinchi kunlar va ARC karta."],
+["Koreyada ishlash","EPS kabineti, huquqlaringiz, ish joyini almashtirish qoidalari va yordam raqamlari."]],
+howH:"Qanday olinadi",
+how:[["Tugmani bosing","Telegram ochiladi va \"KoreyaGo to'liq qo'llanmasi uchun to'lov 49.000\" xabari yozilgan bo'ladi. Uni yuboring."],
+["To'lov qiling","49 000 so'm. To'lov usulini Telegramda yozib yuboramiz."],
+["Qo'llanmani oling","To'liq qo'llanma Telegramga yuboriladi."]],
+payNote:"bir marta to'lov",
+payList:["9 bosqichning har biri batafsil","Fayl o'lchamlari va ro'yxat kuni tartibi","Imtihon va Skill Test qoidalari","Koreyadagi yordam raqamlari"],
+tgNote:"Telegram ochilmasa: "+TGA+" ga o'zingiz yozing.",
+barBtn:"To'liq qo'llanmani olish: 49 000 so'm",
+disc1:"<b>KoreyaGo davlat organi emas</b> va ishga joylashtirmaydi. Bu rasmiy e'lonlar asosidagi mustaqil yo'riqnoma.",
+disc2:"Sana va talablar har yili o'zgaradi. Tekshiring: "+OFF+".",
+tgMsg:"Assalomu alaykum! KoreyaGo to'liq qo'llanmasi uchun to'lov 49.000 so'm. Qo'llanmani olmoqchiman."},
+
+ru:{back:"&#8592; Главная",tile:"KoreyaGo: работа в Корее (EPS-TOPIK)",
+tag:"KoreyaGo · EPS-TOPIK · виза E-9",h1:"Работа в Корее: <span>официальный путь</span>",
+lead:"От регистрации до работы в Корее. Только по официальным источникам, простым языком.",
+facts:[["18–40","лет на день регистрации"],["$28","сбор за регистрацию, в сумах"],["29%","сдали экзамен в 2026"]],
+price:"49 000 сум",note:"полное руководство, один раз",orderBtn:"Получить полное руководство",
+fb:"Telegram откроется с готовым сообщением. Просто нажмите «Отправить».",
+eligH:"Подхожу ли я?",eligSub:"4 вопроса по официальным требованиям 2026 года. Бесплатно.",yes:"Да",no:"Нет",
+qs:[["Вам от 18 до 40 лет?","Возраст: на день регистрации больше 18 и меньше 40 лет."],
+["У вас есть действующий загранпаспорт?","Нужен действующий загранпаспорт. Сначала оформите его."],
+["Есть ли судимость или уголовная ответственность?","В Узбекистане не должно быть судимости или уголовной ответственности."],
+["Есть ли проблемы с различением цветов (дальтонизм)?","Дальтонизм: по итогам 2026 года такие кандидаты считались не сдавшими, независимо от баллов."]],
+check:"Проверить",allAns:"Ответьте на все вопросы",
+good:"<b>Вы подходите по основным требованиям.</b><br>Следующий шаг: подготовить файлы документов и следить за объявлением о регистрации.",bad:"Не выполнено условие:",
+testH:"Мини-тест EPS-TOPIK",testSub:"5 самых частых слов на работе. Бесплатно.",
+tq:[["что означает это слово?",["Школа","Компания","Больница","Рынок"]],
+["что это на работе?",["Перчатки","Защитная каска","Сапоги","Очки"]],
+["значение слова?",["Месячная зарплата","Выходной","Налог","Отпуск"]],
+["что означает эта надпись?",["Выход","Опасно","Столовая","Вход"]],
+["какой это документ?",["Паспорт","Виза","Трудовой договор","Расчётный лист"]]],
+score:"Результат",scoreGood:"Хорошее начало.",scoreBad:"Начните со стандартного учебника.",
+format:"Настоящий экзамен: чтение и аудирование, 50 вопросов, 70 минут, на планшете или компьютере. Вопросы берутся из официального стандартного учебника HRD Korea.",
+numH:"2026 год в цифрах",numSub:"Производство и сфера услуг вместе.",
+fun:[["Зарегистрировались онлайн","8 158"],["Пришли на экзамен","6 468"],["Сдали экзамен","1 878"]],
+fnote:"1 690 зарегистрированных не пришли на экзамен. Сдали: производство 1 653, сфера услуг 225. Из пришедших сдали 3 из 10.",
+tlH:"Хронология 2026 и новости",tlSub:"Состояние на 29 октября 2026. Каждая дата взята из официального объявления.",src:"источник",
+tl:[["5 марта","Объявлен EPS-TOPIK 2026","Объявлены требования, форматы файлов и сбор $28.","a"],
+["9–12 марта","Онлайн-регистрация, 4 дня","8 158 человек: производство 7 624, услуги 534.","b"],
+["6–23 апреля","Экзамен","Производство 6–22 апреля, услуги 23 апреля. Участвовали 6 468 человек.",""],
+["26 мая","Результаты","Сдали 1 878 человек. Кандидаты с дальтонизмом считались не сдавшими.","c"],
+["24 июля","Официальное заявление агентства","Данные хранятся в базе SPAS 2 года. Агентство не может их изменить или продлить на 3-й год. Кандидата выбирает только корейский работодатель.","d"],
+["28 июля","Начался Skill Test","Проверка профессиональных навыков для 1 878 кандидатов. Его сдача тоже не гарантирует работу.","e"],
+["19 октября","130 человек уехали в Корею","По EPS, в сферу производства, на временную работу.","f"],
+["2027","Дата регистрации ещё не объявлена","В 2026 году объявление вышло за 4 дня до регистрации. Следите за официальным каналом с начала года.","",1]],
+warnH:"Не платите тем, кто обещает трудоустройство",
+warnP:"14 мая 2026: обещая отправить на работу в Корею, у 63 человек из 6 областей собрали около $408 800. Возбуждено уголовное дело.",
+warnL:["Регистрацию вы проходите сами. Сбор $28, в сумах по курсу ЦБ.","Место в базе SPAS никто не может продлить, изменить или гарантировать.","Обещание «гарантированной работы» или «проведу через отбор» — ложь. KoreyaGo тоже не трудоустраивает, а только объясняет путь."],
+conH:"Официальные контакты",conSub:"Если есть вопросы, звоните прямо по этим номерам. Бесплатно.",
+cons:["Агентство миграции","Телефон доверия, короткий номер","В Корее: центр для иностранных работников, есть узбекский"],
+copy:"Копировать",copied:"Номер скопирован",selected:"Номер выделен, скопируйте его",
+roadH:"Что в полном руководстве",roadSub:"9 этапов от регистрации до работы в Корее, каждый подробно.",
+steps:[["Подготовка документов","Точный размер и формат файлов паспорта и фото, как подготовить их на телефоне."],
+["День регистрации","Регистрация открыта несколько дней. Как подготовиться, ввести данные без ошибок и оплатить $28."],
+["Экзамен EPS-TOPIK","Формат, правила в день экзамена, что взять с собой и как готовиться."],
+["Результаты и Skill Test","Когда выходят результаты, что такое Skill Test, бесплатные курсы агентства."],
+["База SPAS, 2 года","Как работодатель находит вас и что делать в течение 2 лет."],
+["Отбор и договор","Как читать стандартный трудовой договор (근로계약서) и на что обратить внимание."],
+["Виза и медосмотр","Виза E-9, медосмотр и обучение перед отъездом."],
+["Вылет и прибытие","Отъезд группой, первые дни в Корее и карта ARC."],
+["Работа в Корее","Кабинет EPS, ваши права, правила смены работы и номера помощи."]],
+howH:"Как получить",
+how:[["Нажмите кнопку","Откроется Telegram с сообщением «Оплата 49 000 сум за полное руководство KoreyaGo». Отправьте его."],
+["Оплатите","49 000 сум. Способ оплаты напишем в Telegram."],
+["Получите руководство","Полное руководство придёт вам в Telegram."]],
+payNote:"оплата один раз",
+payList:["Каждый из 9 этапов подробно","Размеры файлов и порядок в день регистрации","Правила экзамена и Skill Test","Номера помощи в Корее"],
+tgNote:"Если Telegram не открылся, напишите сами: "+TGA,
+barBtn:"Получить руководство: 49 000 сум",
+disc1:"<b>KoreyaGo не государственный орган</b> и не трудоустраивает. Это независимое руководство на основе официальных объявлений.",
+disc2:"Даты и требования меняются каждый год. Проверяйте: "+OFF+".",
+tgMsg:"Здравствуйте! Оплата 49 000 сум за полное руководство KoreyaGo. Хочу получить руководство."},
+
+en:{back:"&#8592; Home",tile:"KoreyaGo: working in Korea (EPS-TOPIK)",
+tag:"KoreyaGo · EPS-TOPIK · E-9 visa",h1:"Work in Korea: <span>the official route</span>",
+lead:"From registration to working in Korea. Based only on official sources, in plain language.",
+facts:[["18–40","age on registration day"],["$28","registration fee, paid in UZS"],["29%","passed the exam in 2026"]],
+price:"49,000 UZS",note:"full guide, one-time",orderBtn:"Get the full guide",
+fb:"Telegram opens with the message ready. Just tap \"Send\".",
+eligH:"Am I eligible?",eligSub:"4 questions based on the official 2026 requirements. Free.",yes:"Yes",no:"No",
+qs:[["Are you between 18 and 40?","Age: on registration day you must be over 18 and under 40."],
+["Do you have a valid international passport?","A valid international passport is required. Get one first."],
+["Do you have a criminal record or criminal liability?","You must have no criminal record or criminal liability in Uzbekistan."],
+["Do you have trouble telling colours apart (colour blindness)?","Colour blindness: in the 2026 results, such candidates were counted as failed regardless of score."]],
+check:"Check",allAns:"Answer all the questions",
+good:"<b>You meet the basic requirements.</b><br>Next step: prepare your document files and watch for the registration announcement.",bad:"Requirement not met:",
+testH:"EPS-TOPIK mini-test",testSub:"5 of the most common workplace words. Free.",
+tq:[["what does this word mean?",["School","Company","Hospital","Market"]],
+["what is this at work?",["Gloves","Safety helmet","Boots","Glasses"]],
+["what does the word mean?",["Monthly salary","Day off","Tax","Vacation"]],
+["what does this sign mean?",["Exit","Danger","Canteen","Entrance"]],
+["which document is this?",["Passport","Visa","Employment contract","Payslip"]]],
+score:"Result",scoreGood:"Good start.",scoreBad:"Start with the standard textbook.",
+format:"The real exam: reading and listening, 50 questions, 70 minutes, on a tablet or computer. Questions come from HRD Korea's official standard textbook.",
+numH:"2026 in numbers",numSub:"Manufacturing and services combined.",
+fun:[["Registered online","8,158"],["Sat the exam","6,468"],["Passed the exam","1,878"]],
+fnote:"1,690 registered candidates did not sit the exam. Passed: manufacturing 1,653, services 225. Of those who sat it, 3 in 10 passed.",
+tlH:"2026 timeline and news",tlSub:"As of 29 October 2026. Every date comes from an official announcement.",src:"source",
+tl:[["5 March","EPS-TOPIK 2026 announced","Requirements, file formats and the $28 fee were announced.","a"],
+["9–12 March","Online registration, 4 days","8,158 people: manufacturing 7,624, services 534.","b"],
+["6–23 April","Exam","Manufacturing 6–22 April, services 23 April. 6,468 people took part.",""],
+["26 May","Results published","1,878 people passed. Candidates found to be colour-blind were counted as failed.","c"],
+["24 July","Official statement from the agency","Data stays in the SPAS database for 2 years. The agency cannot change it or extend it to a 3rd year. Only a Korean employer selects a candidate.","d"],
+["28 July","Skill Test began","A professional skills test for 1,878 candidates. Passing it does not guarantee a job either.","e"],
+["19 October","130 people left for Korea","Through EPS, into manufacturing, for temporary work.","f"],
+["2027","Registration date not announced yet","In 2026 the announcement came out 4 days before registration. Watch the official channel from the start of the year.","",1]],
+warnH:"Don't pay anyone who promises you a job",
+warnP:"14 May 2026: by promising jobs in Korea, about $408,800 was collected from 63 people in 6 regions. A criminal case was opened.",
+warnL:["You register yourself. The registration fee is $28, paid in UZS at the Central Bank rate.","Nobody can extend, change or guarantee your place in the SPAS database.","A promise of a \"guaranteed job\" or \"I'll get you through selection\" is false. KoreyaGo doesn't place people in jobs either; it only explains the route."],
+conH:"Official contacts",conSub:"If you have questions, call these numbers directly. Free.",
+cons:["Migration Agency","Trust hotline, short number","In Korea: foreign workers centre, Uzbek spoken"],
+copy:"Copy",copied:"Number copied",selected:"Number selected, copy it",
+roadH:"What's in the full guide",roadSub:"9 stages from registration to working in Korea, each in detail.",
+steps:[["Preparing documents","Exact size and format of the passport and photo files, and how to prepare them on a phone."],
+["Registration day","Registration is open for only a few days. How to be ready, enter your details without mistakes and pay the $28."],
+["The EPS-TOPIK exam","Format, exam-day rules, what to bring and how to prepare."],
+["Results and Skill Test","When results come out, what the Skill Test is, and the agency's free courses."],
+["SPAS database, 2 years","How employers find you and what to do during those 2 years."],
+["Selection and contract","How to read the standard employment contract (근로계약서) and what to check."],
+["Visa and medical check","The E-9 visa, the medical check and pre-departure training."],
+["Departure and arrival","Leaving as a group, your first days in Korea and the ARC card."],
+["Working in Korea","The EPS account, your rights, job-change rules and help numbers."]],
+howH:"How to get it",
+how:[["Tap the button","Telegram opens with the message \"Payment 49,000 UZS for the full KoreyaGo guide\". Send it."],
+["Pay","49,000 UZS. We'll send you the payment method in Telegram."],
+["Get the guide","The full guide is sent to you in Telegram."]],
+payNote:"one-time payment",
+payList:["Each of the 9 stages in detail","File sizes and the registration-day routine","Exam and Skill Test rules","Help numbers in Korea"],
+tgNote:"If Telegram doesn't open, write to us yourself: "+TGA,
+barBtn:"Get the full guide: 49,000 UZS",
+disc1:"<b>KoreyaGo is not a government body</b> and does not place people in jobs. It's an independent guide based on official announcements.",
+disc2:"Dates and requirements change every year. Check: "+OFF+".",
+tgMsg:"Hello! Payment 49,000 UZS for the full KoreyaGo guide. I'd like to get the guide."}
+};
+
+var NUMS=[["71 202-33-55","712023355"],["1282","1282"],["1577-0071","15770071"]];
+var TG_ICO='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 3.3 2.9 10.5c-1.3.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.8.7.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.8c.3-1.3-.5-1.9-1.3-1.5Zm-3.6 3.9-8.3 7.5-.3 3.4-1.4-4.5 10-6.4Z"/></svg>';
+var CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>';
+
+function L(){return (typeof lang!=="undefined"&&KR_T[lang])?lang:"uz";}
+function tgUrl(T){return "https://t.me/Evropagoo?text="+encodeURIComponent(T.tgMsg).replace(/'/g,"%27");}
+function msg(m){try{if(typeof toast==="function"){toast(m);return;}}catch(e){}}
+
+function render(){
+  var root=document.getElementById("krRoot");if(!root)return;
+  var T=KR_T[L()],url=tgUrl(T),h="",i;
+  /* hero */
+  h+='<div class="cvs-hero"><p class="kr-tag">'+T.tag+'</p><h1 class="cvs-h1">'+T.h1+'</h1><p class="kr-lead">'+T.lead+'</p>';
+  h+='<div class="kr-facts">';for(i=0;i<3;i++)h+='<div class="kr-fact"><b>'+T.facts[i][0]+'</b><small>'+T.facts[i][1]+'</small></div>';h+='</div>';
+  h+='<div class="cvs-price-row"><div class="cvs-price">'+T.price+'</div><div class="cvs-note">'+T.note+'</div></div>';
+  h+='<a class="cvs-btn" data-kr-tg data-kr-src="top" href="'+url+'" target="_blank" rel="noopener">'+TG_ICO+'<span>'+T.orderBtn+'</span></a>';
+  h+='<span class="cvs-fb">'+T.fb+'</span></div>';
+  /* eligibility */
+  h+='<section class="cvs-sec"><h2 class="cvs-h2">'+T.eligH+'</h2><p class="kr-sub">'+T.eligSub+'</p><div class="kr-box" id="krElig">';
+  for(i=0;i<4;i++){h+='<div class="kr-q" data-need="'+NEED[i]+'" data-i="'+i+'"><p>'+T.qs[i][0]+'</p><div class="kr-opts"><button type="button" class="kr-opt" id="kr-q'+i+'-y" data-v="y" aria-pressed="false">'+T.yes+'</button><button type="button" class="kr-opt" id="kr-q'+i+'-n" data-v="n" aria-pressed="false">'+T.no+'</button></div></div>';}
+  h+='<button type="button" class="kr-sec-btn" id="krEligBtn">'+T.check+'</button><div class="kr-res" id="krEligRes" hidden></div></div></section>';
+  /* mini test */
+  h+='<section class="cvs-sec"><h2 class="cvs-h2">'+T.testH+'</h2><p class="kr-sub">'+T.testSub+'</p><div class="kr-box"><div id="krTest">';
+  for(i=0;i<KO.length;i++){
+    h+='<div class="kr-tq" data-c="'+KO[i][1]+'"><p class="kr-qt"><span class="n">'+(i+1)+'.</span><span class="kr-ko" lang="ko">"'+KO[i][0]+'"</span> '+T.tq[i][0]+'</p><div class="kr-ans">';
+    for(var j=0;j<4;j++)h+='<button type="button" id="kr-t'+i+'-'+j+'" data-j="'+j+'">'+T.tq[i][1][j]+'</button>';
+    h+='</div></div>';
+  }
+  h+='</div><p class="kr-score" id="krScore" hidden></p><p class="kr-format">'+T.format+'</p></div></section>';
+  /* numbers */
+  h+='<section class="cvs-sec"><h2 class="cvs-h2">'+T.numH+'</h2><p class="kr-sub">'+T.numSub+'</p><div class="kr-box"><div class="kr-funnel">';
+  for(i=0;i<3;i++)h+='<div class="kr-frow"><div class="kr-flab"><span>'+T.fun[i][0]+'</span><b>'+T.fun[i][1]+'</b></div><div class="kr-track"><div class="kr-bar'+(i===2?' pass':'')+'" style="width:'+BARS[i]+'%"></div></div></div>';
+  h+='</div><p class="kr-fnote">'+T.fnote+'</p></div></section>';
+  /* timeline */
+  h+='<section class="cvs-sec"><h2 class="cvs-h2">'+T.tlH+'</h2><p class="kr-sub">'+T.tlSub+'</p><div class="kr-box"><ol class="kr-tl">';
+  T.tl.forEach(function(r){h+='<li'+(r[4]?' class="next"':'')+'><span class="d">'+r[0]+'</span><div><b>'+r[1]+'</b><span>'+r[2]+'</span>'+(r[3]?' <a href="'+SRC[r[3]]+'" target="_blank" rel="noopener">'+T.src+'</a>':'')+'</div></li>';});
+  h+='</ol></div></section>';
+  /* warning */
+  h+='<section class="cvs-sec"><div class="kr-warn"><h2>'+T.warnH+'</h2><p>'+T.warnP+' <a href="'+SRC.g+'" target="_blank" rel="noopener">'+T.src+'</a></p><ul>';
+  T.warnL.forEach(function(x){h+='<li>'+x+'</li>';});
+  h+='</ul></div></section>';
+  /* contacts */
+  h+='<section class="cvs-sec"><h2 class="cvs-h2">'+T.conH+'</h2><p class="kr-sub">'+T.conSub+'</p><div class="kr-cons">';
+  for(i=0;i<3;i++)h+='<div class="kr-con"><div><small>'+T.cons[i]+'</small><span class="num">'+NUMS[i][0]+'</span></div><button type="button" class="kr-copy" id="kr-copy'+i+'" data-copy="'+NUMS[i][1]+'">'+T.copy+'</button></div>';
+  h+='</div></section>';
+  /* full guide contents */
+  h+='<section class="cvs-sec"><h2 class="cvs-h2">'+T.roadH+'</h2><p class="kr-sub">'+T.roadSub+'</p><ol class="kr-steps">';
+  T.steps.forEach(function(s){h+='<li><strong>'+s[0]+'</strong><span>'+s[1]+'</span></li>';});
+  h+='</ol>';
+  h+='<div class="kr-pay"><div class="cvs-price-row"><div class="cvs-price">'+T.price+'</div><div class="cvs-note">'+T.payNote+'</div></div><ul class="kr-list">';
+  T.payList.forEach(function(x){h+='<li>'+CHK+'<span>'+x+'</span></li>';});
+  h+='</ul><a class="cvs-btn" data-kr-tg data-kr-src="box" href="'+url+'" target="_blank" rel="noopener">'+TG_ICO+'<span>'+T.orderBtn+'</span></a></div></section>';
+  /* how to get */
+  h+='<section class="cvs-sec"><h2 class="cvs-h2">'+T.howH+'</h2><ol class="kr-steps" style="margin-top:12px">';
+  T.how.forEach(function(s){h+='<li><strong>'+s[0]+'</strong><span>'+s[1]+'</span></li>';});
+  h+='</ol><p class="kr-small" style="margin-top:14px">'+T.tgNote+'</p></section>';
+  /* disclaimer */
+  h+='<div class="kr-disc"><p>'+T.disc1+'</p><p>'+T.disc2+'</p></div>';
+  root.innerHTML=h;
+  wire(T);
+  /* screen chrome + welcome tile */
+  document.querySelectorAll("[data-kr]").forEach(function(el){var v=T[el.getAttribute("data-kr")];if(typeof v==="string")el.innerHTML=v;});
+  document.querySelectorAll("a[data-kr-tg]").forEach(function(a){a.href=url;});
+  var lb=document.getElementById("krBtnLbl");if(lb)lb.innerHTML=T.tile;
+}
+
+function wire(T){
+  var root=document.getElementById("krRoot");
+  /* order buttons: tracking */
+  root.querySelectorAll("a[data-kr-tg]").forEach(function(a){a.addEventListener("click",function(){krTrack("kr_order_click",a.getAttribute("data-kr-src"));});});
+  /* eligibility */
+  root.querySelectorAll("#krElig .kr-q").forEach(function(q){
+    q.querySelectorAll(".kr-opt").forEach(function(o){o.addEventListener("click",function(){
+      q.querySelectorAll(".kr-opt").forEach(function(x){x.setAttribute("aria-pressed","false");});
+      o.setAttribute("aria-pressed","true");q.setAttribute("data-a",o.getAttribute("data-v"));
+    });});
+  });
+  document.getElementById("krEligBtn").addEventListener("click",function(){
+    var qs=[].slice.call(root.querySelectorAll("#krElig .kr-q"));
+    if(qs.some(function(q){return !q.getAttribute("data-a");})){msg(T.allAns);return;}
+    var fails=qs.filter(function(q){return q.getAttribute("data-a")!==q.getAttribute("data-need");});
+    var r=document.getElementById("krEligRes");r.hidden=false;
+    if(!fails.length){r.className="kr-res good";r.innerHTML=T.good;}
+    else{r.className="kr-res warn";var s="<b>"+T.bad+"</b><ul>";fails.forEach(function(q){s+="<li>"+T.qs[+q.getAttribute("data-i")][1]+"</li>";});r.innerHTML=s+"</ul>";}
+    krTrack("kr_elig_check",fails.length?"fail":"ok");
+    try{r.scrollIntoView({behavior:"smooth",block:"nearest"});}catch(e){}
+  });
+  /* mini test */
+  var answered=0,correct=0,total=KO.length;
+  root.querySelectorAll(".kr-tq").forEach(function(tq){
+    var c=+tq.getAttribute("data-c"),btns=[].slice.call(tq.querySelectorAll(".kr-ans button"));
+    btns.forEach(function(b){b.addEventListener("click",function(){
+      btns.forEach(function(x){x.disabled=true;});
+      var j=+b.getAttribute("data-j");
+      if(j===c){b.classList.add("ok");correct++;}else{b.classList.add("no");btns[c].classList.add("ok");}
+      answered++;
+      if(answered===total){var s=document.getElementById("krScore");s.textContent=T.score+": "+correct+" / "+total+". "+(correct>=4?T.scoreGood:T.scoreBad);s.hidden=false;krTrack("kr_test_done",String(correct));}
+    });});
+  });
+  /* copy numbers */
+  root.querySelectorAll(".kr-copy").forEach(function(btn){btn.addEventListener("click",function(){
+    var v=btn.getAttribute("data-copy");
+    function fb(){try{var el=btn.parentNode.querySelector(".num"),rg=document.createRange();rg.selectNodeContents(el);var sl=window.getSelection();sl.removeAllRanges();sl.addRange(rg);}catch(e){}msg(T.selected);}
+    try{navigator.clipboard.writeText(v).then(function(){msg(T.copied);},fb);}catch(e){fb();}
+  });});
+}
+
+window.krApplyLang=render;
+if(typeof applyLang==="function"){
+  var _krAl=applyLang;
+  applyLang=function(){var r=_krAl.apply(this,arguments);try{render();}catch(e){}return r;};
+}
+/* Bosh sahifadagi KoreyaGo tugmasi: sahifa ochilishini kuzatish (animatsiya qayta bosishini hisobga olmaydi) */
+var kb=document.getElementById("krBtn");
+if(kb)kb.addEventListener("click",function(){if(!kb._egBusy)krTrack("kr_page_open","welcome");});
+try{render();}catch(e){}
+})();
+</script>
+
 <!-- ISH BERUVCHILAR RO'YXATI TEPASIDA DAVLAT HOLATI -->
 <script>
 (function(){
@@ -6721,7 +7167,7 @@ function addGuideButtons(){
 /* EvropaGo premium: faqat animatsiya uchun (mantiqqa tegmaydi) */
 (function(){try{
   document.addEventListener("touchstart",function(){},{passive:true});
-  var ORDER=["sc-welcome","sc-cvsvc","sc-life","sc-origin","sc-dest","sc-job","sc-app","sc-pay"],prev=null,root=document.documentElement;
+  var ORDER=["sc-welcome","sc-cvsvc","sc-korea","sc-life","sc-origin","sc-dest","sc-job","sc-app","sc-pay"],prev=null,root=document.documentElement;
   function enter(el){
     if(prev===null){prev=el.id;return;} /* birinchi ochilishda animatsiya yo'q: sahifa tezroq ko'rinadi */
     var a=ORDER.indexOf(prev),b=ORDER.indexOf(el.id);
