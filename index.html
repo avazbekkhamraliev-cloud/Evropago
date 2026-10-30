@@ -7251,6 +7251,10 @@ function addGuideButtons(){
 /* CV varag'i — oq qog'oz (Europass uslubi) */
 #aicvSheet{background:#fff!important;color:#1d1d1f!important;border-radius:10px;padding:26px 24px;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.35);margin-top:4px;}
 #aicvSheet *{color:inherit;}
+#aicvSheet{overflow-wrap:anywhere;word-break:break-word;}
+.aicv-phrow{display:flex;align-items:center;gap:10px;margin:0 0 6px;}
+.aicv-phrow img{width:46px;height:56px;object-fit:cover;border-radius:6px;}
+.aicv-phrow .aicv-del{position:static;}
 #aicvSheet .cv-top{display:flex;gap:16px;align-items:flex-start;border-bottom:2px solid #1f3c88;padding-bottom:12px;margin-bottom:10px;}
 #aicvSheet .cv-ph{width:92px;height:112px;object-fit:cover;border-radius:4px;flex:none;}
 #aicvSheet .cv-name{font-size:23px;font-weight:700;color:#1f3c88!important;margin:0 0 6px;line-height:1.15;}
@@ -7287,14 +7291,21 @@ function L(){return (typeof lang!=="undefined"&&(lang==="ru"||lang==="en"))?lang
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function getN(){var v=0;try{v=parseInt((typeof psGet==="function"?psGet(KEY_N):localStorage.getItem(KEY_N))||"0",10)||0;}catch(e){}return v;}
 function setN(v){try{if(typeof psSet==="function")psSet(KEY_N,String(v));else localStorage.setItem(KEY_N,String(v));}catch(e){}}
-function loadF(){try{return JSON.parse(localStorage.getItem(KEY_F)||"null");}catch(e){return null;}}
+function loadF(){try{var o=JSON.parse(localStorage.getItem(KEY_F)||"null");if(!o||typeof o!=="object"||!Array.isArray(o.jobs)||!Array.isArray(o.edu)||!Array.isArray(o.langs))return null;return o;}catch(e){return null;}}
+var BUSY=false,LAST_OK=true,KEY_LAST="eg_aicv_last";
+function okPhoto(p){return typeof p==="string"&&p.length<400000&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(p);}
+function cut(x,n){return String(x==null?"":x).slice(0,n);}
+function clean(html){try{var d=new DOMParser().parseFromString("<div>"+String(html||"")+"</div>","text/html"),root=d.body.firstChild;if(!root)return "";root.querySelectorAll("script,iframe,object,embed,link,style,meta,form,input,button,svg,math").forEach(function(n){n.parentNode.removeChild(n);});root.querySelectorAll("*").forEach(function(n){for(var i=n.attributes.length-1;i>=0;i--){var a=n.attributes[i],k=a.name.toLowerCase(),v=String(a.value||"");if(k.indexOf("on")===0||((k==="src"||k==="href")&&!/^(data:image\/|https?:|#)/i.test(v.trim())))n.removeAttribute(a.name);}});return root.innerHTML;}catch(e){return "";}}
+function getLast(){try{var o=JSON.parse(localStorage.getItem(KEY_LAST)||"null");return o&&typeof o.h==="string"&&o.h.length>20?o:null;}catch(e){return null;}}
+function saveLast(){try{var sh=document.getElementById("aicvSheet");if(sh)localStorage.setItem(KEY_LAST,JSON.stringify({h:sh.innerHTML,ok:LAST_OK,t:Date.now()}));}catch(e){}}
+var _svT=0;function bindSheet(){var sh=document.getElementById("aicvSheet");if(sh)sh.addEventListener("input",function(){clearTimeout(_svT);_svT=setTimeout(saveLast,600);});}
 function saveF(f){try{localStorage.setItem(KEY_F,JSON.stringify(f));}catch(e){}}
 
 var UI={
 uz:{title:"&#129302; AI bilan Europass CV",lead:"Ma'lumotlaringizni o'zbek yoki rus tilida yozing — AI ularni bir necha daqiqada Europass formatidagi professional CV qilib beradi. AI faqat siz yozgan ma'lumotdan foydalanadi.",
  left:"AI bilan yozish: {n} ta urinish qoldi (jami 2 ta)",target:"Qayerga va qanday ishga",country:"Davlat",job:"Ish / lavozim",cvlang:"CV tili",
  pers:"Shaxsiy ma'lumotlar",name:"Ism familiya (pasportdagidek, lotin harflarida)",dob:"Tug'ilgan sana",nat:"Fuqarolik",phone:"Telefon",email:"Email",addr:"Shahar, davlat",photo:"Rasm (ixtiyoriy)",
- work:"Ish tajribasi",wtitle:"Lavozim",wtitlePh:"Masalan: santexnik, payvandchi",wcoPh:"Masalan: Farg'ona Qurilish MChJ yoki xususiy",wcityPh:"Masalan: Farg'ona, O'zbekiston",wdescPh:"Masalan: quvurlar o'rnatdim, ta'mirladim. Muddatni yuqoridagi oy/yil maydonlariga yozing.",eorgPh:"Masalan: 5-maktab, Farg'ona",resetT:"&#128260; Sinov: urinishlarni nolga qaytarish (faqat admin)",wco:"Ish joyi (kompaniya)",wcity:"Shahar, davlat",from:"Boshlangan (oy/yil)",to:"Tugagan (oy/yil)",now:"Hozir ham shu yerda ishlayman",wdesc:"Nima ish qilgansiz? (oddiy so'zlar bilan)",addw:"+ Yana ish joyi qo'shish",
+ work:"Ish tajribasi",wtitle:"Lavozim",wtitlePh:"Masalan: santexnik, payvandchi",wcoPh:"Masalan: Farg'ona Qurilish MChJ yoki xususiy",wcityPh:"Masalan: Farg'ona, O'zbekiston",wdescPh:"Masalan: quvurlar o'rnatdim, ta'mirladim. Muddatni yuqoridagi oy/yil maydonlariga yozing.",eorgPh:"Masalan: 5-maktab, Farg'ona",resetT:"&#128260; Sinov: urinishlarni nolga qaytarish (faqat admin)",lastCv:"&#128196; Oxirgi tayyor CV ni ochish",photoErr:"Rasmni ochib bo'lmadi — boshqa rasm (JPG yoki PNG) tanlang.",busy:"AI hali yozmoqda — biroz kuting.",wco:"Ish joyi (kompaniya)",wcity:"Shahar, davlat",from:"Boshlangan (oy/yil)",to:"Tugagan (oy/yil)",now:"Hozir ham shu yerda ishlayman",wdesc:"Nima ish qilgansiz? (oddiy so'zlar bilan)",addw:"+ Yana ish joyi qo'shish",
  edu:"Ta'lim",etitle:"Mutaxassislik / ma'lumot (masalan: o'rta maxsus, elektrik)",eorg:"O'quv yurti",adde:"+ Yana o'quv yurti",
  langs:"Tillar",mother:"Ona tili",lname:"Til",llvl:"Daraja",addl:"+ Yana til qo'shish",
  skills:"Ko'nikmalar",skillsPh:"Masalan: payvandlash, forklift, Excel, jamoada ishlash",drive:"Haydovchilik toifasi",drivePh:"Masalan: B, C",
@@ -7308,7 +7319,7 @@ uz:{title:"&#129302; AI bilan Europass CV",lead:"Ma'lumotlaringizni o'zbek yoki 
 ru:{title:"&#129302; Europass CV с помощью ИИ",lead:"Напишите данные на русском или узбекском — ИИ за несколько минут сделает профессиональное CV в формате Europass. ИИ использует только то, что вы написали.",
  left:"Генерация ИИ: осталось {n} (всего 2)",target:"Куда и на какую работу",country:"Страна",job:"Работа / должность",cvlang:"Язык CV",
  pers:"Личные данные",name:"Имя и фамилия (как в паспорте, латиницей)",dob:"Дата рождения",nat:"Гражданство",phone:"Телефон",email:"Email",addr:"Город, страна",photo:"Фото (необязательно)",
- work:"Опыт работы",wtitle:"Должность",wtitlePh:"Например: сантехник, сварщик",wcoPh:"Например: ООО «Фергана Курилиш» или частная работа",wcityPh:"Например: Фергана, Узбекистан",wdescPh:"Например: устанавливал и ремонтировал трубы. Сроки укажите в полях месяц/год выше.",eorgPh:"Например: школа №5, Фергана",resetT:"&#128260; Тест: сбросить попытки (только админ)",wco:"Место работы (компания)",wcity:"Город, страна",from:"Начало (месяц/год)",to:"Окончание (месяц/год)",now:"Работаю здесь сейчас",wdesc:"Чем занимались? (простыми словами)",addw:"+ Добавить место работы",
+ work:"Опыт работы",wtitle:"Должность",wtitlePh:"Например: сантехник, сварщик",wcoPh:"Например: ООО «Фергана Курилиш» или частная работа",wcityPh:"Например: Фергана, Узбекистан",wdescPh:"Например: устанавливал и ремонтировал трубы. Сроки укажите в полях месяц/год выше.",eorgPh:"Например: школа №5, Фергана",resetT:"&#128260; Тест: сбросить попытки (только админ)",lastCv:"&#128196; Открыть последнее готовое CV",photoErr:"Не удалось открыть фото — выберите другое (JPG или PNG).",busy:"ИИ ещё пишет — немного подождите.",wco:"Место работы (компания)",wcity:"Город, страна",from:"Начало (месяц/год)",to:"Окончание (месяц/год)",now:"Работаю здесь сейчас",wdesc:"Чем занимались? (простыми словами)",addw:"+ Добавить место работы",
  edu:"Образование",etitle:"Специальность / образование (например: среднее специальное, электрик)",eorg:"Учебное заведение",adde:"+ Добавить учебное заведение",
  langs:"Языки",mother:"Родной язык",lname:"Язык",llvl:"Уровень",addl:"+ Добавить язык",
  skills:"Навыки",skillsPh:"Например: сварка, погрузчик, Excel, работа в команде",drive:"Категория прав",drivePh:"Например: B, C",
@@ -7322,7 +7333,7 @@ ru:{title:"&#129302; Europass CV с помощью ИИ",lead:"Напишите 
 en:{title:"&#129302; Europass CV with AI",lead:"Type your details in any language — AI turns them into a professional Europass-format CV in a few minutes. AI uses only what you write.",
  left:"AI generations left: {n} (of 2)",target:"Target country and job",country:"Country",job:"Job / position",cvlang:"CV language",
  pers:"Personal details",name:"Full name (as in passport, Latin letters)",dob:"Date of birth",nat:"Nationality",phone:"Phone",email:"Email",addr:"City, country",photo:"Photo (optional)",
- work:"Work experience",wtitle:"Position",wtitlePh:"E.g. plumber, welder",wcoPh:"E.g. Fergana Construction LLC or self-employed",wcityPh:"E.g. Fergana, Uzbekistan",wdescPh:"E.g. installed and repaired pipes. Put the dates in the month/year fields above.",eorgPh:"E.g. School No. 5, Fergana",resetT:"&#128260; Test: reset attempts (admin only)",wco:"Employer (company)",wcity:"City, country",from:"From (month/year)",to:"To (month/year)",now:"I still work here",wdesc:"What did you do? (simple words)",addw:"+ Add another job",
+ work:"Work experience",wtitle:"Position",wtitlePh:"E.g. plumber, welder",wcoPh:"E.g. Fergana Construction LLC or self-employed",wcityPh:"E.g. Fergana, Uzbekistan",wdescPh:"E.g. installed and repaired pipes. Put the dates in the month/year fields above.",eorgPh:"E.g. School No. 5, Fergana",resetT:"&#128260; Test: reset attempts (admin only)",lastCv:"&#128196; Open my last CV",photoErr:"Couldn't open the photo — please choose another one (JPG or PNG).",busy:"AI is still writing — please wait.",wco:"Employer (company)",wcity:"City, country",from:"From (month/year)",to:"To (month/year)",now:"I still work here",wdesc:"What did you do? (simple words)",addw:"+ Add another job",
  edu:"Education",etitle:"Qualification / field (e.g. vocational, electrician)",eorg:"School / college",adde:"+ Add another school",
  langs:"Languages",mother:"Mother tongue",lname:"Language",llvl:"Level",addl:"+ Add another language",
  skills:"Skills",skillsPh:"E.g. welding, forklift, Excel, teamwork",drive:"Driving licence",drivePh:"E.g. B, C",
@@ -7377,46 +7388,48 @@ function defaults(){
 function cc(){try{return CC;}catch(e){return [];}}
 function countryName(id){var c=cc().filter(function(x){return x.id===id;})[0];return c?(c[L()]||c.uz):id;}
 
-function inp(path,label,val,type,ph,full){return '<div class="aicv-f'+(full?' full':'')+'"><label>'+label+'</label><input data-p="'+path+'" type="'+(type||"text")+'" value="'+esc(val)+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+'></div>';}
-function ta(path,label,val,ph){return '<div class="aicv-f full"><label>'+label+'</label><textarea data-p="'+path+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+'>'+esc(val)+'</textarea></div>';}
+function inp(path,label,val,type,ph,full,ml){type=type||"text";return '<div class="aicv-f'+(full?' full':'')+'"><label>'+label+'</label><input data-p="'+path+'" type="'+type+'" value="'+esc(val)+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+(type==="text"||type==="tel"||type==="email"?' maxlength="'+(ml||80)+'"':'')+'></div>';}
+function ta(path,label,val,ph,ml){return '<div class="aicv-f full"><label>'+label+'</label><textarea data-p="'+path+'" maxlength="'+(ml||700)+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+'>'+esc(val)+'</textarea></div>';}
 function sel(path,label,val,opts,full){return '<div class="aicv-f'+(full?' full':'')+'"><label>'+label+'</label><select data-p="'+path+'">'+opts.map(function(o){return '<option value="'+esc(o[0])+'"'+(o[0]===val?' selected':'')+'>'+esc(o[1])+'</option>';}).join("")+'</select></div>';}
 
 function renderForm(){
   var t=UI[L()],f=F,left=Math.max(0,MAXN-getN());
   var cl=[["en",t.en]];var dl=C2L[f.country];if(dl&&dl!=="en")cl.push([dl,uiLangName(dl)]);
   if(cl.map(function(x){return x[0];}).indexOf(f.cvl)<0)f.cvl="en";
-  var h='<p class="aicv-lead">'+t.lead+'</p>';
+  var h='<p class="aicv-lead">'+t.lead+'</p>'+(getLast()?'<button class="aicv-btn2" style="margin:0 0 12px;" onclick="aicvShowLast()">'+t.lastCv+'</button>':'');
   h+=left>0?'<div class="aicv-left">&#9889; '+t.left.replace("{n}",left)+'</div>':'<div class="aicv-limit">'+t.limit+'<a class="aicv-btn2" href="'+TG+'" target="_blank" rel="noopener" onclick="aicvSvc()">'+t.svc+'</a></div>';
   h+='<div class="aicv-sec"><h4>&#127919; '+t.target+'</h4><div class="aicv-g">'+sel("country",t.country,f.country,cc().map(function(c){return [c.id,c[L()]||c.uz];}))+inp("job",t.job,f.job)+sel("cvl",t.cvlang,f.cvl,cl,true)+'</div></div>';
   var nat=Object.keys(ORIG2REG).map(function(k){return [k,dn(ORIG2REG[k],L(),"region")];});
-  h+='<div class="aicv-sec"><h4>&#128100; '+t.pers+'</h4><div class="aicv-g">'+inp("name",t.name,f.name,"text","",true)+inp("dob",t.dob,f.dob,"date")+sel("nat",t.nat,f.nat,nat)+inp("phone",t.phone,f.phone,"tel","+998")+inp("email",t.email,f.email,"email")+inp("addr",t.addr,f.addr,"text","",true)
-    +'<div class="aicv-f full"><label>'+t.photo+'</label><input id="aicvPhoto" type="file" accept="image/*"></div></div></div>';
+  h+='<div class="aicv-sec"><h4>&#128100; '+t.pers+'</h4><div class="aicv-g">'+inp("name",t.name,f.name,"text","",true)+inp("dob",t.dob,f.dob,"date")+sel("nat",t.nat,f.nat,nat)+inp("phone",t.phone,f.phone,"tel","+998",false,30)+inp("email",t.email,f.email,"email")+inp("addr",t.addr,f.addr,"text","",true,120)
+    +'<div class="aicv-f full"><label>'+t.photo+'</label>'+(okPhoto(f.photo)?'<div class="aicv-phrow"><img src="'+f.photo+'" alt=""><button type="button" class="aicv-del" onclick="aicvPhotoDel()">'+t.del+'</button></div>':'')+'<input id="aicvPhoto" type="file" accept="image/*"></div></div></div>';
   h+='<div class="aicv-sec"><h4>&#128188; '+t.work+'</h4>';
   f.jobs.forEach(function(j,i){h+='<div class="aicv-item">'+(f.jobs.length>1?'<button class="aicv-del" onclick="aicvDel(\'jobs\','+i+')">'+t.del+'</button>':'')+'<div class="aicv-g">'+inp("jobs."+i+".title",t.wtitle,j.title,"text",t.wtitlePh)+inp("jobs."+i+".co",t.wco,j.co,"text",t.wcoPh)+inp("jobs."+i+".city",t.wcity,j.city,"text",t.wcityPh,true)+inp("jobs."+i+".from",t.from,j.from,"month")+(j.now?'':inp("jobs."+i+".to",t.to,j.to,"month"))+'<label class="aicv-chk full"><input type="checkbox" data-p="jobs.'+i+'.now"'+(j.now?' checked':'')+'> '+t.now+'</label>'+ta("jobs."+i+".desc",t.wdesc,j.desc,t.wdescPh)+'</div></div>';});
   if(f.jobs.length<5)h+='<button class="aicv-add" onclick="aicvAdd(\'jobs\')">'+t.addw+'</button>';
   h+='</div><div class="aicv-sec"><h4>&#127891; '+t.edu+'</h4>';
-  f.edu.forEach(function(e,i){h+='<div class="aicv-item">'+(f.edu.length>1?'<button class="aicv-del" onclick="aicvDel(\'edu\','+i+')">'+t.del+'</button>':'')+'<div class="aicv-g">'+inp("edu."+i+".title",t.etitle,e.title,"text","",true)+inp("edu."+i+".org",t.eorg,e.org,"text",t.eorgPh,true)+inp("edu."+i+".from",t.from,e.from,"month")+inp("edu."+i+".to",t.to,e.to,"month")+'</div></div>';});
+  f.edu.forEach(function(e,i){h+='<div class="aicv-item">'+(f.edu.length>1?'<button class="aicv-del" onclick="aicvDel(\'edu\','+i+')">'+t.del+'</button>':'')+'<div class="aicv-g">'+inp("edu."+i+".title",t.etitle,e.title,"text","",true,120)+inp("edu."+i+".org",t.eorg,e.org,"text",t.eorgPh,true,120)+inp("edu."+i+".from",t.from,e.from,"month")+inp("edu."+i+".to",t.to,e.to,"month")+'</div></div>';});
   if(f.edu.length<3)h+='<button class="aicv-add" onclick="aicvAdd(\'edu\')">'+t.adde+'</button>';
   var lo=LANG_CODES.map(function(c){return [c,uiLangName(c)];}),lv=["A1","A2","B1","B2","C1","C2"].map(function(x){return [x,x];});
   h+='</div><div class="aicv-sec"><h4>&#127760; '+t.langs+'</h4><div class="aicv-g">'+sel("mother",t.mother,f.mother,lo,true)+'</div>';
   f.langs.forEach(function(x,i){h+='<div class="aicv-item"><button class="aicv-del" onclick="aicvDel(\'langs\','+i+')">'+t.del+'</button><div class="aicv-g">'+sel("langs."+i+".c",t.lname,x.c,lo)+sel("langs."+i+".l",t.llvl,x.l,lv)+'</div></div>';});
   if(f.langs.length<5)h+='<button class="aicv-add" onclick="aicvAdd(\'langs\')">'+t.addl+'</button>';
-  h+='</div><div class="aicv-sec"><h4>&#128736; '+t.skills+'</h4><div class="aicv-g">'+ta("skills",t.skills,f.skills,t.skillsPh)+inp("drive",t.drive,f.drive,"text",t.drivePh,true)+'</div></div>';
+  h+='</div><div class="aicv-sec"><h4>&#128736; '+t.skills+'</h4><div class="aicv-g">'+ta("skills",t.skills,f.skills,t.skillsPh,400)+inp("drive",t.drive,f.drive,"text",t.drivePh,true,40)+'</div></div>';
   h+='<button class="aicv-btn" id="aicvGo" onclick="aicvGenerate()"'+(left>0?'':' disabled')+'>'+t.gen+'</button><div class="aicv-err" id="aicvErr"></div><p class="aicv-note">&#128274; '+t.privacy+'</p>';
   if(typeof isAdmin!=="undefined"&&isAdmin)h+='<button class="aicv-btn2" onclick="aicvReset()">'+t.resetT+'</button>';
   var box=document.getElementById("aicvForm");box.innerHTML=h;
   box.querySelectorAll("[data-p]").forEach(function(el){el.addEventListener(el.type==="checkbox"||el.tagName==="SELECT"?"change":"input",function(){setP(el.getAttribute("data-p"),el.type==="checkbox"?el.checked:el.value);if(el.type==="checkbox"||el.getAttribute("data-p")==="country")renderForm();});});
-  var ph=document.getElementById("aicvPhoto");if(ph)ph.addEventListener("change",function(){var file=ph.files&&ph.files[0];if(!file)return;var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){var c=document.createElement("canvas"),w=300,hh=Math.round(img.height*300/img.width);c.width=w;c.height=hh;c.getContext("2d").drawImage(img,0,0,w,hh);F.photo=c.toDataURL("image/jpeg",.85);saveF(F);};img.src=r.result;};r.readAsDataURL(file);});
+  var ph=document.getElementById("aicvPhoto");if(ph)ph.addEventListener("change",function(){var file=ph.files&&ph.files[0];if(!file)return;var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){var c=document.createElement("canvas"),w=300,hh=Math.round(img.height*300/img.width);c.width=w;c.height=hh;c.getContext("2d").drawImage(img,0,0,w,hh);F.photo=c.toDataURL("image/jpeg",.85);saveF(F);renderForm();};img.onerror=function(){var er=document.getElementById("aicvErr");if(er)er.textContent=t.photoErr;};img.src=r.result;};r.onerror=img_err;r.readAsDataURL(file);function img_err(){var er=document.getElementById("aicvErr");if(er)er.textContent=t.photoErr;}});
   document.getElementById("aicvTitle").innerHTML=t.title;
 }
 function setP(path,val){var p=path.split("."),o=F;for(var i=0;i<p.length-1;i++)o=o[isNaN(p[i])?p[i]:+p[i]];o[p[p.length-1]]=val;saveF(F);}
 window.aicvAdd=function(k){F[k].push(k==="jobs"?blankJob():k==="edu"?blankEdu():{c:"en",l:"A1"});saveF(F);renderForm();};
 window.aicvDel=function(k,i){F[k].splice(i,1);if(!F[k].length&&k!=="langs")F[k].push(k==="jobs"?blankJob():blankEdu());saveF(F);renderForm();};
 window.aicvSvc=function(){ev('aicv_service_click');};
+window.aicvPhotoDel=function(){F.photo="";saveF(F);renderForm();};
 window.aicvReset=function(){if(typeof isAdmin==='undefined'||!isAdmin)return;setN(0);renderForm();};
 
 window.aiCvOpen=function(flt){
   if(typeof hasAccess!=="undefined"&&!hasAccess){goScreen("sc-pay");return;}
+  if(BUSY&&F){openModal("aicvOvl");return;}
   FLT=flt&&flt!=="all"?flt:((typeof selC!=="undefined"&&selC)||"de");
   F=loadF()||defaults(); if(flt&&flt!=="all")F.country=FLT;
   document.getElementById("aicvForm").style.display="block";document.getElementById("aicvRes").style.display="none";document.getElementById("aicvProg").style.display="none";
@@ -7436,14 +7449,15 @@ function askT(task,payload){
       return d&&d.ok&&d.data?d.data:null;})
     .catch(function(){clearTimeout(tm);return null;});
 }
+function cap(x){x=String(x||"");return x?x.charAt(0).toUpperCase()+x.slice(1):x;}
 function arr(x,max){return (Array.isArray(x)?x:[]).map(function(s){return String(s||"").trim();}).filter(Boolean).slice(0,max);}
 function period(a,b,now,H){function fm(v){if(!v)return "";var p=v.split("-");return p.length>1?p[1]+"/"+p[0]:v;}var s=fm(a),e=now?H[13]:fm(b);return s&&e?s+" – "+e:(s||e);}
 
 window.aicvGenerate=function(){
-  var t=UI[L()];if(getN()>=MAXN){renderForm();return;}
+  var t=UI[L()];if(BUSY)return;if(getN()>=MAXN){renderForm();return;}
   var jobs=F.jobs.filter(function(j){return (j.title||j.co||j.desc).trim();}),edu=F.edu.filter(function(e){return (e.title||e.org).trim();});
   if(!F.name.trim()||(!jobs.length&&!edu.length)){document.getElementById("aicvErr").textContent=t.need;return;}
-  var H=HD[F.cvl]||HD.en;LIMIT_HIT=false;
+  var H=HD[F.cvl]||HD.en;LIMIT_HIT=false;BUSY=true;document.getElementById("aicvRes").style.display="none";
   var total=2+jobs.length,done=-1,okAny=false;
   var prog=document.getElementById("aicvProg");document.getElementById("aicvForm").style.display="none";prog.style.display="block";
   function tick(){done++;prog.innerHTML='<b>'+t.prog+'</b><div class="aicv-bar"><i style="width:'+Math.round(Math.max(0,done)/total*100)+'%"></i></div><small>'+t.step.replace("{a}",Math.max(0,done)).replace("{b}",total)+'</small>';}
@@ -7451,38 +7465,42 @@ window.aicvGenerate=function(){
   var res={about:"",skills:[],jobs:[],edu:[]};
   var langsTxt=[(LNAME_EN[F.mother]||F.mother)+" (native)"].concat(F.langs.map(function(x){return (LNAME_EN[x.c]||x.c)+" "+x.l;})).join(", ");
   var ctryEn=(cc().filter(function(c){return c.id===F.country;})[0]||{}).en||F.country;
-  var chain=askT("profile",{job:F.job,country:ctryEn,jobs:jobs.map(function(j){return {title:j.title,co:j.co,period:period(j.from,j.to,j.now,HD.en)};}),edu:edu.map(function(e){return {title:e.title,org:e.org};}),skills:F.skills,langs:langsTxt,drive:F.drive,addr:F.addr})
+  var chain=askT("profile",{job:cut(F.job,80),country:ctryEn,jobs:jobs.map(function(j){return {title:cut(j.title,80),co:cut(j.co,80),period:period(j.from,j.to,j.now,HD.en)};}),edu:edu.map(function(e){return {title:cut(e.title,120),org:cut(e.org,120)};}),skills:cut(F.skills,400),langs:langsTxt,drive:cut(F.drive,40),addr:cut(F.addr,120)})
     .then(function(r){tick();if(r){okAny=true;res.about=String(r.about||"").trim();res.skills=arr(r.skills,8);res.address=String(r.address||"").trim();}});
   jobs.forEach(function(j,i){chain=chain.then(function(){ if(LIMIT_HIT||!okAny&&i>0&&!res.jobs.length){tick();return;}
-    return askT("job",{title:j.title,co:j.co,city:j.city,desc:j.desc}).then(function(r){tick();if(r){okAny=true;res.jobs[i]={title:String(r.title||"").trim(),employer:String(r.employer||"").trim(),city:String(r.city||"").trim(),bullets:arr(r.bullets,4)};}});});});
+    return askT("job",{title:cut(j.title,80),co:cut(j.co,80),city:cut(j.city,80),desc:cut(j.desc,700)}).then(function(r){tick();if(r){okAny=true;res.jobs[i]={title:String(r.title||"").trim(),employer:String(r.employer||"").trim(),city:String(r.city||"").trim(),bullets:arr(r.bullets,4)};}});});});
   chain=chain.then(function(){ if(LIMIT_HIT||!edu.length){tick();return;}
-    return askT("edu",{items:edu.map(function(e){return {title:e.title,org:e.org};})}).then(function(r){tick();if(r&&Array.isArray(r.edu)){okAny=true;res.edu=r.edu;}});});
+    return askT("edu",{items:edu.map(function(e){return {title:cut(e.title,120),org:cut(e.org,120)};})}).then(function(r){tick();if(r&&Array.isArray(r.edu)){okAny=true;res.edu=r.edu;}});});
   chain.then(function(){
-    prog.style.display="none";
+    BUSY=false;prog.style.display="none";
     if(LIMIT_HIT){document.getElementById("aicvForm").style.display="block";renderForm();return;}
     if(okAny)setN(getN()+1);
-    renderCV(jobs,edu,res,H);
-    showRes(okAny);
-  });
+    document.getElementById("aicvForm").style.display="none";
+    LAST_OK=okAny;renderCV(jobs,edu,res,H);
+    showRes(okAny);saveLast();
+  }).catch(function(){BUSY=false;prog.style.display="none";document.getElementById("aicvForm").style.display="block";renderForm();var er=document.getElementById("aicvErr");if(er)er.textContent=t.aiFail;});
 };
 
 function renderCV(jobs,edu,res,H){
-  var f=F,cvl=F.cvl,h='<div class="cv-top">'+(f.photo?'<img class="cv-ph" src="'+f.photo+'" alt="">':'')+'<div><p class="cv-name" contenteditable="true">'+esc(f.name)+'</p>';
+  var f=F,cvl=F.cvl,h='<div class="cv-top">'+(okPhoto(f.photo)?'<img class="cv-ph" src="'+f.photo+'" alt="">':'')+'<div><p class="cv-name" contenteditable="true">'+esc(f.name)+'</p>';
   function ci(k,v){return v?'<p class="cv-ci"><b>'+esc(H[k])+':</b> <span contenteditable="true">'+esc(v)+'</span></p>':'';}
   var dob=f.dob?f.dob.split("-").reverse().join(".") : "";
   h+=ci(8,dob)+ci(9,dn(ORIG2REG[f.nat]||"UZ",cvl,"region"))+ci(10,f.phone)+ci(11,f.email)+ci(12,res.address||f.addr)+'</div></div>';
   if(res.about)h+='<h5>'+esc(H[0])+'</h5><p contenteditable="true" style="margin:0;">'+esc(res.about)+'</p>';
   if(jobs.length){h+='<h5>'+esc(H[1])+'</h5>';jobs.forEach(function(j,i){var a=res.jobs[i]||{},b=a.bullets&&a.bullets.length?a.bullets:(j.desc?[j.desc]:[]);
-    h+='<div class="cv-it" contenteditable="true"><div class="cv-d">'+esc(period(j.from,j.to,j.now,H))+((a.city||j.city)?' · '+esc(a.city||j.city):'')+'</div><div class="cv-t">'+esc(a.title||j.title)+'</div>'+((a.employer||j.co)?'<div class="cv-o">'+esc(a.employer||j.co)+'</div>':'')+(b.length?'<ul>'+b.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>':'')+'</div>';});}
-  if(edu.length){h+='<h5>'+esc(H[2])+'</h5>';edu.forEach(function(e,i){var a=res.edu[i]||{};h+='<div class="cv-it" contenteditable="true"><div class="cv-d">'+esc(period(e.from,e.to,false,H))+'</div><div class="cv-t">'+esc(a.title||e.title)+'</div><div class="cv-o">'+esc(a.org||e.org)+'</div></div>';});}
+    h+='<div class="cv-it" contenteditable="true"><div class="cv-d">'+esc([period(j.from,j.to,j.now,H),(a.city||j.city)].filter(Boolean).join(' · '))+'</div><div class="cv-t">'+esc(cap(a.title||j.title))+'</div>'+((res.jobs[i]?a.employer:j.co)?'<div class="cv-o">'+esc(cap(res.jobs[i]?a.employer:j.co))+'</div>':'')+(b.length?'<ul>'+b.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>':'')+'</div>';});}
+  if(edu.length){h+='<h5>'+esc(H[2])+'</h5>';edu.forEach(function(e,i){var a=res.edu[i]||{},pd=period(e.from,e.to,false,H),et=cap(a.title||e.title),eo=cap(a.org||e.org);h+='<div class="cv-it" contenteditable="true">'+(pd?'<div class="cv-d">'+esc(pd)+'</div>':'')+(et?'<div class="cv-t">'+esc(et)+'</div>':'')+(eo?'<div class="cv-o">'+esc(eo)+'</div>':'')+'</div>';});}
   h+='<h5>'+esc(H[3])+'</h5><p style="margin:0 0 4px;"><b>'+esc(H[4])+':</b> '+esc(dn(f.mother,cvl,"language"))+'</p>';
   if(f.langs.length){h+='<p style="margin:0;"><b>'+esc(H[5])+':</b></p><table><tr><th></th><th>'+esc(H[14])+' (CEFR)</th></tr>'+f.langs.map(function(x){return '<tr><td>'+esc(dn(x.c,cvl,"language"))+'</td><td>'+esc(x.l)+'</td></tr>';}).join("")+'</table>';}
   var sk=res.skills&&res.skills.length?res.skills:(f.skills?f.skills.split(/[,;\n]+/).map(function(s){return s.trim();}).filter(Boolean):[]);
   if(sk.length)h+='<h5>'+esc(H[6])+'</h5><p contenteditable="true" style="margin:0;">'+esc(sk.join(" · "))+'</p>';
   if(f.drive)h+='<h5>'+esc(H[7])+'</h5><p contenteditable="true" style="margin:0;">'+esc(f.drive)+'</p>';
   document.getElementById("aicvRes").innerHTML='<div id="aicvResTop"></div><div id="aicvSheet">'+h+'</div><div id="aicvResBot"></div>';
+  bindSheet();
 }
-function showRes(okAny){
+window.aicvShowLast=function(){var o=getLast();if(!o||BUSY)return;LAST_OK=o.ok!==false;document.getElementById("aicvForm").style.display="none";document.getElementById("aicvProg").style.display="none";
+  document.getElementById("aicvRes").innerHTML='<div id="aicvResTop"></div><div id="aicvSheet">'+clean(o.h)+'</div><div id="aicvResBot"></div>';bindSheet();showRes(LAST_OK,true);};
+function showRes(okAny,quiet){
   var t=UI[L()],left=Math.max(0,MAXN-getN()),inApp=/Instagram|FBAN|FBAV|Telegram/i.test(navigator.userAgent||"");
   var top='<p class="aicv-lead" style="margin-bottom:6px;"><b style="color:var(--eg-gold-l,#E8CE96);font-size:15px;">&#9989; '+t.resTitle+'</b><br>'+t.resHint+'</p>'+(okAny?'':'<div class="aicv-limit">'+t.aiFail+'</div>');
   var bot='<div class="aicv-row" style="margin-top:12px;"><button class="aicv-btn" style="margin:0;" onclick="aicvPdf()">'+t.pdf+'</button><button class="aicv-btn2" style="margin:0;" id="aicvCopyB" onclick="aicvCopy()">'+t.copy+'</button></div>'+(inApp?'<p class="aicv-note">&#8505;&#65039; '+t.inapp+'</p>':'')
@@ -7491,10 +7509,11 @@ function showRes(okAny){
     +'<p class="aicv-note">&#128274; '+t.privacy+'</p>';
   document.getElementById("aicvResTop").innerHTML=top;document.getElementById("aicvResBot").innerHTML=bot;
   document.getElementById("aicvRes").style.display="block";
-  if(left<=0)ev('aicv_limit');
-  try{document.querySelector("#aicvOvl .mbd").scrollTop=0;}catch(e){}
+  document.getElementById("aicvTitle").innerHTML=t.title;
+  if(left<=0&&!quiet)ev('aicv_limit');
+  if(!quiet){try{document.querySelector("#aicvOvl .mbd").scrollTop=0;}catch(e){}}
 }
-window.aicvEdit=function(){document.getElementById("aicvRes").style.display="none";document.getElementById("aicvForm").style.display="block";renderForm();};
+window.aicvEdit=function(){if(BUSY)return;document.getElementById("aicvRes").style.display="none";document.getElementById("aicvForm").style.display="block";renderForm();};
 window.aicvPdf=function(){
   ev('aicv_pdf');
   var sh=document.getElementById("aicvSheet");if(!sh)return;
@@ -7502,6 +7521,9 @@ window.aicvPdf=function(){
   var nm=(F&&F.name?F.name:"CV").replace(/[<>&"]/g,"");
   var html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CV - '+nm+'</title><style>'+css
     +'@page{size:A4;margin:12mm;}html,body{margin:0;padding:0;background:#fff;}*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}#aicvSheet{box-shadow:none!important;border-radius:0!important;padding:0!important;margin:0!important;}#aicvSheet [contenteditable]{outline:none!important;}#aicvSheet .cv-it,#aicvSheet table{break-inside:avoid;}</style></head><body><div id="aicvSheet">'+sh.innerHTML.replace(/ contenteditable="true"/g,"")+'</div></body></html>';
+  var ua=navigator.userAgent||"",ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(ios&&!/Instagram|FBAN|FBAV|Telegram/i.test(ua)){var w=null;try{w=window.open("","_blank");}catch(e){}
+    if(w){var bt=UI[L()].pdf;w.document.open();w.document.write(html.replace('<body>','<body><style>@media print{.np{display:none!important;}.pd{padding:0!important;}}</style><div class="np" style="position:sticky;top:0;background:#1f3c88;padding:10px;text-align:center;font-family:Arial,sans-serif;"><button onclick="window.print()" style="font-size:16px;font-weight:700;padding:10px 18px;border:0;border-radius:10px;background:#fff;color:#1f3c88;">'+bt+'</button></div><div class="pd" style="padding:12mm;">').replace('</body>','</div><script>window.onload=function(){setTimeout(function(){try{window.print();}catch(e){}},400);};<\/script></body>'));w.document.close();return;}}
   var old=document.getElementById("aicvPrintFrame");if(old)old.parentNode.removeChild(old);
   var fr=document.createElement("iframe");fr.id="aicvPrintFrame";fr.setAttribute("aria-hidden","true");
   fr.style.cssText="position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none;";
@@ -7515,7 +7537,7 @@ var PMAI={uz:"AI yordamida Europass CV — bir necha daqiqada",ru:"Europass CV �
 function pmAi(){try{var e=document.getElementById("pmAiTxt");if(e)e.textContent=PMAI[L()];}catch(x){}}
 pmAi();
 // til almashtirilganda forma yangilansin
-try{if(typeof applyLang==="function"){var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);pmAi();try{var o=document.getElementById("aicvOvl");if(o&&o.classList.contains("on")&&F&&document.getElementById("aicvForm").style.display!=="none")renderForm();}catch(e){}return r;};}}catch(e){}
+try{if(typeof applyLang==="function"){var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);pmAi();try{var o=document.getElementById("aicvOvl");if(o&&o.classList.contains("on")&&F){if(document.getElementById("aicvForm").style.display!=="none")renderForm();else if(document.getElementById("aicvRes").style.display!=="none"&&document.getElementById("aicvResTop"))showRes(LAST_OK,true);}}catch(e){}return r;};}}catch(e){}
 })();
 </script>
 
