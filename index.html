@@ -1634,6 +1634,7 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
             <div class="pmrow"><span class="pmck">&#10003;</span> 70 ta tekshirilgan ish sayti va firma (40 tasi rasmiy davlat portali)</div>
             <div class="pmrow"><span class="pmck">&#10003;</span> Har davlat bo'yicha yana 6 bosqich — 400+ hujjat tavsifi</div>
             <div class="pmrow"><span class="pmck">&#10003;</span> 10 ta saytda ro'yxatdan o'tish bo'yicha qadam-baqadam qo'llanma</div>
+            <div class="pmrow" id="pmAiRow"><span class="pmck">&#10003;</span> <span id="pmAiTxt">AI yordamida Europass CV — bir necha daqiqada</span></div>
             <div class="pmrow"><span class="pmck">&#10003;</span> Bir marta to'lang — umrbod foydalaning</div>
           </div>
           <div class="eg-pv" id="payPreview">
@@ -2499,7 +2500,7 @@ function applyLang(){
   setEl("jobTitle",t.jobTitle);setEl("jobSub",t.jobSub);setEl("jobNext",t.jobNext);
   setEl("payOnce",t.payOnce);
   setEl("pmTitle",t.pmTitle);
-  (function(){var L=document.getElementById("pmList");if(L&&t.pmR1){L.children[0].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR1;L.children[1].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR2;L.children[2].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR3;if(L.children[3])L.children[3].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR4;}})();
+  (function(){var L0=document.getElementById("pmList");var L=L0?{children:L0.querySelectorAll(".pmrow:not(#pmAiRow)")}:null;if(L&&t.pmR1){L.children[0].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR1;L.children[1].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR2;L.children[2].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR3;if(L.children[3])L.children[3].innerHTML="<span class='pmck'>&#10003;</span> "+t.pmR4;}})();
   setEl("navFirmsLbl",t.navFirms);setEl("navGuideLbl",t.navGuide);
   setEl("rankBtnLbl",lang==="ru"?"С какой страны получить визу быстрее?":lang==="en"?"Which country is fastest for a visa?":"Qaysi davlatdan viza olish tezroq?");
   setEl("fraudBtnLbl",lang==="ru"?"Осторожно, мошенники":lang==="en"?"Beware of scammers":"Firibgarlardan ehtiyot bo'ling");
@@ -2580,6 +2581,7 @@ uz:'<p style="color:var(--mt);font-size:12px;">Kuchga kirgan sana: 2026-yil</p>'
 +'<p><b>4. Ma\u2018lumotlarni saqlash va xavfsizlik</b><br>Kirish huquqi (token) qurilmaga bog\u2018lab (device-lock) himoyalangan holda saqlanadi. Ma\u2018lumotlarni himoya qilish uchun zamonaviy shifrlash va xavfsizlik choralari qo\u2018llaniladi.</p>'
 +'<p><b>5. Cookie va texnik ma\u2018lumotlar</b><br>Sayt ishlashini yaxshilash va statistika (Google Analytics) uchun anonim texnik ma\u2018lumotlar (qurilma turi, brauzer, taxminiy joylashuv) yig\u2018ilishi mumkin. Bu ma\u2018lumotlar shaxsni aniqlash uchun ishlatilmaydi.</p>'
 +'<p><b>6. Foydalanuvchi huquqlari</b><br>Foydalanuvchi o\u2018z ma\u2018lumotlarini o\u2018chirishni yoki ular haqida ma\u2018lumot olishni Telegram orqali (<b>@Evropagoo</b>) so\u2018rashga haqli.</p>'
++'<p><b>AI bilan CV yozish</b><br>To\u2018lovdan keyingi \u201cAI bilan Europass CV\u201d bo\u2018limida siz kiritgan ma\u2018lumotlar (ism, aloqa, ish tajribasi, ta\u2018lim) faqat CV matnini tayyorlash uchun sun\u2019iy intellekt xizmatiga yuboriladi. Ular serverimizda saqlanmaydi; forma qayta to\u2018ldirilmasligi uchun faqat sizning qurilmangizda (brauzerda) saqlanadi.</p>'
 +'<p><b>7. Bog\u2018lanish</b><br>Maxfiylik siyosati bo\u2018yicha savollar uchun: Telegram \u2014 <b>@Evropagoo</b>.</p>',
 ru:'<p style="color:var(--mt);font-size:12px;">Дата вступления в силу: 2026 г.</p>'
 +'<p><b>1. Сбор данных</b><br>Сайт evropago.uz (&laquo;Сайт&raquo;) самостоятельно не запрашивает и не собирает имя, номер телефона или иные персональные данные. В процессе оплаты пользователь перенаправляется в платёжную систему Click (где данные обрабатываются самим Click согласно его политике конфиденциальности) либо обращается через Telegram/WhatsApp к @Evropagoo — в этом случае добровольно предоставленные пользователем имя, номер телефона и скриншот чека обрабатываются исключительно для подтверждения оплаты и отправки ссылки доступа. Сайт не хранит реквизиты банковских карт.</p>'
@@ -2588,6 +2590,7 @@ ru:'<p style="color:var(--mt);font-size:12px;">Дата вступления в 
 +'<p><b>4. Хранение данных и безопасность</b><br>Право доступа (токен) хранится в защищённом виде с привязкой к устройству (device-lock). Для защиты данных применяются современные меры шифрования и безопасности.</p>'
 +'<p><b>5. Cookie и технические данные</b><br>Для улучшения работы сайта и статистики (Google Analytics) могут собираться анонимные технические данные (тип устройства, браузер, примерное местоположение). Эти данные не используются для идентификации личности.</p>'
 +'<p><b>6. Права пользователя</b><br>Пользователь вправе запросить удаление своих данных или получить информацию о них через Telegram (<b>@Evropagoo</b>).</p>'
++'<p><b>Составление CV с помощью ИИ</b><br>В разделе \u00abEuropass CV с помощью ИИ\u00bb (после оплаты) введённые вами данные (имя, контакты, опыт работы, образование) отправляются сервису искусственного интеллекта только для составления текста CV. Они не хранятся на нашем сервере; чтобы не заполнять форму заново, они сохраняются только на вашем устройстве (в браузере).</p>'
 +'<p><b>7. Контакты</b><br>По вопросам политики конфиденциальности: Telegram — <b>@Evropagoo</b>.</p>',
 en:'<p style="color:var(--mt);font-size:12px;">Effective date: 2026</p>'
 +'<p><b>1. Data collection</b><br>The evropago.uz website (the &ldquo;Site&rdquo;) does not itself request or collect names, phone numbers, or other personal data. During payment, the user is redirected to the Click payment system (where data is processed by Click under its own privacy policy) or contacts @Evropagoo via Telegram/WhatsApp — in which case any name, phone number, or receipt screenshot voluntarily provided by the user is processed solely to confirm payment and send the access link. The Site does not store bank card details.</p>'
@@ -2596,6 +2599,7 @@ en:'<p style="color:var(--mt);font-size:12px;">Effective date: 2026</p>'
 +'<p><b>4. Data storage and security</b><br>Access rights (tokens) are stored securely with device-lock binding. Modern encryption and security measures are applied to protect data.</p>'
 +'<p><b>5. Cookies and technical data</b><br>Anonymous technical data (device type, browser, approximate location) may be collected to improve site performance and for analytics (Google Analytics). This data is not used to identify individuals.</p>'
 +'<p><b>6. User rights</b><br>Users may request deletion of their data or information about it via Telegram (<b>@Evropagoo</b>).</p>'
++'<p><b>AI CV writing</b><br>In the \u201cEuropass CV with AI\u201d section (after payment), the details you enter (name, contacts, work experience, education) are sent to an AI service only to write the CV text. They are not stored on our server; so you don\u2019t have to retype them, they are kept only on your own device (in the browser).</p>'
 +'<p><b>7. Contact</b><br>For privacy policy questions: Telegram — <b>@Evropagoo</b>.</p>'
 };
 var TERMS_TXT={
@@ -3333,7 +3337,7 @@ s5h:"5-qadam: Taklifnoma kelgach",
 s5:"Ish beruvchi hujjatni rasmiylashtirib sizga yuboradi — shu hujjat bilan elchixonaga viza topshirasiz. Hujjatlar cheklistiga qaytib, qolganini tayyorlang.",
 allHint:"👇 Quyidagi davlat tugmalaridan birini tanlasangiz, aynan o'sha davlat uchun tayyor xat shabloni va ruxsatnoma nomi chiqadi.",
 allPermits:"Ruxsatnoma nomi har davlatda boshqacha (Polsha — zezwolenie, Germaniya — Arbeitserlaubnis, Niderlandiya — TWV, Shvetsiya — arbetstillstånd), lekin qoida bir xil: uni har doim ish beruvchi rasmiylashtiradi.",
-cvBtn:"📄 Tayyor CV shabloni — ochish",
+cvBtn:"🤖 AI bilan Europass CV yozish",
 cvHint:"Qavs [ ] ichidagi joylarni bosib, o'z ma'lumotingizni yozing — shu yerning o'zida tahrirlanadi. Tayyor bo'lgach «PDF saqlash»ni bosing: ochilgan oynada «PDF sifatida saqlash»ni tanlang. Yoki «Nusxalash» bilan matnni oling.",
 cvPdf:"📄 PDF saqlash",cvCopy:"📋 Nusxalash",cvCopied:"Nusxalandi ✓",
 lockD:"Ariza berish bosqichlari: CV shabloni (PDF), har davlat tilida tayyor ariza xati, ruxsatnoma yo'riqnomasi va firibgarlikdan himoya — 24 davlat uchun.",lockB:"Ochish",
@@ -3354,7 +3358,7 @@ s5h:"Шаг 5: Когда пришёл оффер",
 s5:"Работодатель оформляет документ и отправляет вам — с ним подаёте на визу в посольстве. Вернитесь к чек-листу документов и подготовьте остальное.",
 allHint:"👇 Выберите страну ниже — появится готовый шаблон письма и название разрешения именно для неё.",
 allPermits:"Название разрешения в каждой стране своё (Польша — zezwolenie, Германия — Arbeitserlaubnis, Нидерланды — TWV, Швеция — arbetstillstånd), но правило одно: его всегда оформляет работодатель.",
-cvBtn:"📄 Готовый шаблон CV — открыть",
+cvBtn:"🤖 Europass CV с помощью ИИ",
 cvHint:"Нажмите на места в скобках [ ] и впишите свои данные — редактируется прямо здесь. Затем нажмите «Сохранить PDF»: в открывшемся окне выберите «Сохранить как PDF». Или заберите текст кнопкой «Копировать».",
 cvPdf:"📄 Сохранить PDF",cvCopy:"📋 Копировать",cvCopied:"Скопировано ✓",
 lockD:"Этапы подачи заявки: шаблон CV (PDF), готовое письмо на языке каждой страны, инструкция по разрешению и защита от мошенников — для 24 стран.",lockB:"Открыть",
@@ -3375,7 +3379,7 @@ s5h:"Step 5: When the offer arrives",
 s5:"The employer issues the document and sends it to you — with it you apply for the visa at the embassy. Go back to the document checklist and prepare the rest.",
 allHint:"👇 Select a country below to see a ready letter template and the permit name for that country.",
 allPermits:"The permit name differs by country (Poland — zezwolenie, Germany — Arbeitserlaubnis, Netherlands — TWV, Sweden — arbetstillstånd), but the rule is the same: the employer always arranges it.",
-cvBtn:"📄 Ready CV template — open",
+cvBtn:"🤖 Write a Europass CV with AI",
 cvHint:"Tap the parts in brackets [ ] and type your own details — editable right here. Then tap \"Save PDF\" and choose \"Save as PDF\" in the dialog. Or grab the text with \"Copy\".",
 cvPdf:"📄 Save PDF",cvCopy:"📋 Copy",cvCopied:"Copied ✓",
 lockD:"Application steps: CV template (PDF), a ready application letter in each country's language, permit guidance and scam protection — for 24 countries.",lockB:"Unlock",
@@ -3659,7 +3663,7 @@ function renderJobSteps(flt){
   }
   var c=JOBSTEPS[flt];
   var H="<b style='color:var(--tx)'>",HE="</b><br>",BR="<br><br>";
-  var cvBtn="<button onclick=\"openCv('"+flt+"')\" style='display:block;width:100%;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;margin:6px 0 2px;'>"+T.cvBtn+"</button>";
+  var cvBtn="<button onclick=\"aiCvOpen('"+flt+"')\" style='display:block;width:100%;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;margin:6px 0 2px;'>"+T.cvBtn+"</button>";
   if(!c){
     hEl.innerHTML="📌 "+T.title;
     bEl.innerHTML="<div style='background:rgba(99,102,241,.08);border-radius:8px;padding:10px 12px;margin-bottom:12px;'>"+T.allHint+"</div>"
@@ -7212,6 +7216,307 @@ function addGuideButtons(){
   },true);
 }catch(e){}})();
 </script>
+<!-- ===== AI CV (Europass formatida) — to'lovdan keyin, bir qurilmada 2 marta AI bilan yozish ===== -->
+<style id="eg-aicv-css">
+#aicvOvl .mdl{max-width:620px;}
+#aicvOvl .mbd{max-height:78vh;overflow-y:auto;font-size:14px;line-height:1.5;}
+.aicv-lead{font-size:13px;color:var(--eg-muted,#A8B5AC);margin:0 0 12px;}
+.aicv-left{display:flex;align-items:center;gap:8px;background:rgba(212,175,106,.10);border:1px solid rgba(212,175,106,.32);border-radius:12px;padding:9px 12px;font-size:12.5px;font-weight:700;color:var(--eg-gold-l,#E8CE96);margin-bottom:12px;}
+.aicv-sec{border:1px solid var(--bd,rgba(212,175,106,.24));border-radius:14px;padding:12px;margin:0 0 12px;background:rgba(0,0,0,.12);}
+.aicv-sec h4{margin:0 0 10px;font-size:14px;color:var(--eg-gold-l,#E8CE96);}
+.aicv-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.aicv-g .full{grid-column:1/-1;}
+.aicv-f label{display:block;font-size:11.5px;font-weight:700;color:var(--eg-muted,#A8B5AC);margin:0 0 3px;}
+.aicv-f input,.aicv-f select,.aicv-f textarea{width:100%;box-sizing:border-box;background:var(--eg-deep,#072019);color:var(--eg-cream,#F5EFE3);border:1px solid rgba(212,175,106,.30);border-radius:10px;padding:9px 10px;font-size:14px;font-family:inherit;min-height:40px;}
+.aicv-f textarea{min-height:70px;resize:vertical;}
+.aicv-f input:focus,.aicv-f select:focus,.aicv-f textarea:focus{outline:2px solid rgba(212,175,106,.6);outline-offset:1px;}
+.aicv-item{position:relative;border-top:1px dashed rgba(212,175,106,.25);padding-top:10px;margin-top:10px;}
+.aicv-item:first-of-type{border-top:0;padding-top:0;margin-top:0;}
+.aicv-del{position:absolute;right:0;top:6px;background:none;border:0;color:#F08A7E;font-size:12px;font-weight:700;cursor:pointer;padding:4px;}
+.aicv-item:first-of-type .aicv-del{top:-4px;}
+.aicv-add{background:none;border:1px dashed rgba(212,175,106,.5);color:var(--eg-gold-l,#E8CE96);border-radius:10px;padding:8px 12px;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px;width:100%;}
+.aicv-chk{display:flex;align-items:center;gap:6px;font-size:12.5px;margin-top:6px;color:var(--eg-cream,#F5EFE3);}
+.aicv-chk input{width:auto;min-height:0;}
+.aicv-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:14px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#B8905A 0%,#E2C08A 36%,#F3E0B5 52%,#D6B074 74%,#B8905A 100%);color:#0B2E25;margin-top:6px;}
+.aicv-btn[disabled]{opacity:.55;cursor:default;}
+.aicv-btn2{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:1px solid rgba(212,175,106,.45);border-radius:14px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;background:transparent;color:var(--eg-cream,#F5EFE3);margin-top:8px;text-decoration:none;box-sizing:border-box;}
+.aicv-err{color:#F5A397;font-size:12.5px;margin:8px 0 0;min-height:1em;}
+.aicv-note{font-size:12px;color:var(--eg-muted,#A8B5AC);margin:10px 0 0;line-height:1.45;}
+.aicv-prog{margin:16px 0;text-align:center;}
+.aicv-bar{height:8px;border-radius:6px;background:rgba(212,175,106,.18);overflow:hidden;margin:10px 0 6px;}
+.aicv-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#B8905A,#F3E0B5);transition:width .4s;}
+.aicv-limit{background:rgba(240,138,126,.10);border:1px solid rgba(240,138,126,.45);border-radius:12px;padding:12px;margin:10px 0;font-size:13px;line-height:1.5;}
+.aicv-row{display:flex;gap:8px;flex-wrap:wrap;}
+.aicv-row>*{flex:1 1 140px;}
+/* CV varag'i — oq qog'oz (Europass uslubi) */
+#aicvSheet{background:#fff!important;color:#1d1d1f!important;border-radius:10px;padding:26px 24px;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.35);margin-top:4px;}
+#aicvSheet *{color:inherit;}
+#aicvSheet .cv-top{display:flex;gap:16px;align-items:flex-start;border-bottom:2px solid #1f3c88;padding-bottom:12px;margin-bottom:10px;}
+#aicvSheet .cv-ph{width:92px;height:112px;object-fit:cover;border-radius:4px;flex:none;}
+#aicvSheet .cv-name{font-size:23px;font-weight:700;color:#1f3c88!important;margin:0 0 6px;line-height:1.15;}
+#aicvSheet .cv-ci{margin:0;font-size:12px;}
+#aicvSheet .cv-ci b{color:#555!important;font-weight:600;}
+#aicvSheet h5{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#1f3c88!important;margin:14px 0 6px;padding-bottom:3px;border-bottom:1px solid #c9d3ea;}
+#aicvSheet .cv-it{margin:0 0 9px;}
+#aicvSheet .cv-d{font-size:11.5px;color:#555!important;}
+#aicvSheet .cv-t{font-weight:700;margin:1px 0;}
+#aicvSheet .cv-o{font-style:italic;color:#333!important;}
+#aicvSheet ul{margin:4px 0 0 18px;padding:0;}
+#aicvSheet li{margin:1px 0;}
+#aicvSheet table{border-collapse:collapse;width:100%;font-size:12px;margin-top:4px;}
+#aicvSheet td,#aicvSheet th{border:1px solid #d5dbe9;padding:4px 6px;text-align:left;}
+#aicvSheet th{background:#eef2fb!important;color:#1f3c88!important;font-weight:600;}
+#aicvSheet [contenteditable]:focus{outline:1px dashed #1f3c88;}
+</style>
+<div class="ovl" id="aicvOvl">
+  <div class="mdl">
+    <div class="mhd"><h3 id="aicvTitle">&#129302; AI bilan Europass CV</h3><button class="mcl" onclick="closeModal('aicvOvl')">&#10005;</button></div>
+    <div class="mbd" id="aicvBody">
+      <div id="aicvForm"></div>
+      <div id="aicvProg" class="aicv-prog" style="display:none;"></div>
+      <div id="aicvRes" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+var MAXN=2, KEY_N="eg_aicv_n", KEY_F="eg_aicv_form";
+var TG="https://t.me/Evropagoo?text="+encodeURIComponent("Assalomu alaykum! Tayyor resume uchun to'lov 49.000 so'm. CV buyurtma bermoqchiman.");
+function ev(n,p){try{gtag('event',n,p||{});}catch(e){}}
+function L(){return (typeof lang!=="undefined"&&(lang==="ru"||lang==="en"))?lang:"uz";}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function getN(){var v=0;try{v=parseInt((typeof psGet==="function"?psGet(KEY_N):localStorage.getItem(KEY_N))||"0",10)||0;}catch(e){}return v;}
+function setN(v){try{if(typeof psSet==="function")psSet(KEY_N,String(v));else localStorage.setItem(KEY_N,String(v));}catch(e){}}
+function loadF(){try{return JSON.parse(localStorage.getItem(KEY_F)||"null");}catch(e){return null;}}
+function saveF(f){try{localStorage.setItem(KEY_F,JSON.stringify(f));}catch(e){}}
+
+var UI={
+uz:{title:"&#129302; AI bilan Europass CV",lead:"Ma'lumotlaringizni o'zbek yoki rus tilida yozing — AI ularni bir necha daqiqada Europass formatidagi professional CV qilib beradi. AI faqat siz yozgan ma'lumotdan foydalanadi.",
+ left:"AI bilan yozish: {n} ta urinish qoldi (jami 2 ta)",target:"Qayerga va qanday ishga",country:"Davlat",job:"Ish / lavozim",cvlang:"CV tili",
+ pers:"Shaxsiy ma'lumotlar",name:"Ism familiya (pasportdagidek, lotin harflarida)",dob:"Tug'ilgan sana",nat:"Fuqarolik",phone:"Telefon",email:"Email",addr:"Shahar, davlat",photo:"Rasm (ixtiyoriy)",
+ work:"Ish tajribasi",wtitle:"Lavozim",wco:"Ish joyi (kompaniya)",wcity:"Shahar, davlat",from:"Boshlangan (oy/yil)",to:"Tugagan (oy/yil)",now:"Hozir ham shu yerda ishlayman",wdesc:"Nima ish qilgansiz? (oddiy so'zlar bilan)",addw:"+ Yana ish joyi qo'shish",
+ edu:"Ta'lim",etitle:"Mutaxassislik / ma'lumot (masalan: o'rta maxsus, elektrik)",eorg:"O'quv yurti",adde:"+ Yana o'quv yurti",
+ langs:"Tillar",mother:"Ona tili",lname:"Til",llvl:"Daraja",addl:"+ Yana til qo'shish",
+ skills:"Ko'nikmalar",skillsPh:"Masalan: payvandlash, forklift, Excel, jamoada ishlash",drive:"Haydovchilik toifasi",drivePh:"Masalan: B, C",
+ del:"O'chirish",gen:"&#129302; AI bilan CV yozish",need:"Ism familiyani va kamida bitta ish joyi yoki o'quv yurtini yozing.",
+ prog:"AI CV yozmoqda...",step:"{a} / {b} qism tayyor",aiFail:"AI hozir javob bermadi — CV siz yozgan ma'lumotdan tuzildi. Keyinroq qayta urinib ko'ring.",
+ resTitle:"CV tayyor! Tekshirib chiqing",resHint:"Matnni to'g'ridan-to'g'ri CV ustida bosib tuzatishingiz mumkin.",pdf:"&#128196; PDF saqlash",copy:"&#128203; Nusxalash",copied:"Nusxalandi",edit:"&#9998; Ma'lumotlarni o'zgartirish",
+ again:"&#129302; AI bilan qayta yozish ({n} ta qoldi)",inapp:"Instagram yoki Telegram ichida PDF saqlanmasa: yuqoridagi ⋮ ni bosib «Открыть в Chrome» (brauzerda ochish) ni tanlang.",
+ limit:"Siz AI bilan 2 marta CV yozdingiz — limit tugadi. CV'ni o'zingiz tahrirlashingiz mumkin. Yana o'zgartirish kerakmi? Mutaxassislarimiz siz uchun yozib beradi.",svc:"&#128221; CV yozib berish xizmati — 49 000 so'm",
+ privacy:"Ma'lumotlaringiz faqat CV yozish uchun AI xizmatiga yuboriladi va serverda saqlanmaydi. Tekshirib chiqing: AI ham xato qilishi mumkin.",
+ en:"Ingliz tili",none:"—"},
+ru:{title:"&#129302; Europass CV с помощью ИИ",lead:"Напишите данные на русском или узбекском — ИИ за несколько минут сделает профессиональное CV в формате Europass. ИИ использует только то, что вы написали.",
+ left:"Генерация ИИ: осталось {n} (всего 2)",target:"Куда и на какую работу",country:"Страна",job:"Работа / должность",cvlang:"Язык CV",
+ pers:"Личные данные",name:"Имя и фамилия (как в паспорте, латиницей)",dob:"Дата рождения",nat:"Гражданство",phone:"Телефон",email:"Email",addr:"Город, страна",photo:"Фото (необязательно)",
+ work:"Опыт работы",wtitle:"Должность",wco:"Место работы (компания)",wcity:"Город, страна",from:"Начало (месяц/год)",to:"Окончание (месяц/год)",now:"Работаю здесь сейчас",wdesc:"Чем занимались? (простыми словами)",addw:"+ Добавить место работы",
+ edu:"Образование",etitle:"Специальность / образование (например: среднее специальное, электрик)",eorg:"Учебное заведение",adde:"+ Добавить учебное заведение",
+ langs:"Языки",mother:"Родной язык",lname:"Язык",llvl:"Уровень",addl:"+ Добавить язык",
+ skills:"Навыки",skillsPh:"Например: сварка, погрузчик, Excel, работа в команде",drive:"Категория прав",drivePh:"Например: B, C",
+ del:"Удалить",gen:"&#129302; Написать CV с ИИ",need:"Укажите имя и фамилию и хотя бы одно место работы или учёбы.",
+ prog:"ИИ пишет CV...",step:"Готово частей: {a} / {b}",aiFail:"ИИ сейчас не ответил — CV собрано из ваших данных. Попробуйте позже ещё раз.",
+ resTitle:"CV готово! Проверьте",resHint:"Текст можно исправить, нажав прямо на CV.",pdf:"&#128196; Сохранить PDF",copy:"&#128203; Копировать",copied:"Скопировано",edit:"&#9998; Изменить данные",
+ again:"&#129302; Переписать с ИИ (осталось {n})",inapp:"Если внутри Instagram или Telegram PDF не сохраняется: нажмите ⋮ вверху и выберите «Открыть в Chrome».",
+ limit:"Вы уже 2 раза создали CV с ИИ — лимит исчерпан. CV можно редактировать вручную. Нужны ещё изменения? Наши специалисты напишут CV за вас.",svc:"&#128221; Услуга составления CV — 49 000 сум",
+ privacy:"Данные отправляются ИИ-сервису только для составления CV и не хранятся на сервере. Проверьте текст: ИИ тоже может ошибаться.",
+ en:"Английский",none:"—"},
+en:{title:"&#129302; Europass CV with AI",lead:"Type your details in any language — AI turns them into a professional Europass-format CV in a few minutes. AI uses only what you write.",
+ left:"AI generations left: {n} (of 2)",target:"Target country and job",country:"Country",job:"Job / position",cvlang:"CV language",
+ pers:"Personal details",name:"Full name (as in passport, Latin letters)",dob:"Date of birth",nat:"Nationality",phone:"Phone",email:"Email",addr:"City, country",photo:"Photo (optional)",
+ work:"Work experience",wtitle:"Position",wco:"Employer (company)",wcity:"City, country",from:"From (month/year)",to:"To (month/year)",now:"I still work here",wdesc:"What did you do? (simple words)",addw:"+ Add another job",
+ edu:"Education",etitle:"Qualification / field (e.g. vocational, electrician)",eorg:"School / college",adde:"+ Add another school",
+ langs:"Languages",mother:"Mother tongue",lname:"Language",llvl:"Level",addl:"+ Add another language",
+ skills:"Skills",skillsPh:"E.g. welding, forklift, Excel, teamwork",drive:"Driving licence",drivePh:"E.g. B, C",
+ del:"Remove",gen:"&#129302; Write my CV with AI",need:"Enter your full name and at least one job or school.",
+ prog:"AI is writing your CV...",step:"{a} / {b} parts done",aiFail:"AI did not respond — the CV was built from your own details. Please try again later.",
+ resTitle:"Your CV is ready — please check it",resHint:"You can fix any text by tapping directly on the CV.",pdf:"&#128196; Save PDF",copy:"&#128203; Copy",copied:"Copied",edit:"&#9998; Change my details",
+ again:"&#129302; Rewrite with AI ({n} left)",inapp:"If the PDF doesn't save inside Instagram or Telegram: tap ⋮ at the top and choose «Open in Chrome».",
+ limit:"You have used AI to write your CV 2 times — the limit is reached. You can still edit the CV by hand. Need more changes? Our specialists will write it for you.",svc:"&#128221; CV writing service — 49 000 UZS",
+ privacy:"Your details are sent to an AI service only to write the CV and are not stored on our server. Please check the text: AI can make mistakes.",
+ en:"English",none:"—"}};
+
+// CV sarlavhalari (Europass bo'limlari) — CV tiliga qarab
+var HD={en:["About me","Work experience","Education and training","Language skills","Mother tongue(s)","Other language(s)","Skills","Driving licence","Date of birth","Nationality","Phone","Email","Address","Present","Level"],
+de:["Über mich","Berufserfahrung","Schul- und Berufsbildung","Sprachkenntnisse","Muttersprache(n)","Weitere Sprache(n)","Fähigkeiten","Führerschein","Geburtsdatum","Staatsangehörigkeit","Telefon","E-Mail","Adresse","heute","Niveau"],
+pl:["O mnie","Doświadczenie zawodowe","Wykształcenie i szkolenia","Umiejętności językowe","Język(i) ojczysty(e)","Inne języki","Umiejętności","Prawo jazdy","Data urodzenia","Obywatelstwo","Telefon","E-mail","Adres","obecnie","Poziom"],
+cs:["O mně","Pracovní zkušenosti","Vzdělání a odborná příprava","Jazykové dovednosti","Mateřský jazyk","Další jazyky","Dovednosti","Řidičský průkaz","Datum narození","Státní příslušnost","Telefon","E-mail","Adresa","dosud","Úroveň"],
+sk:["O mne","Pracovné skúsenosti","Vzdelávanie a odborná príprava","Jazykové zručnosti","Materinský jazyk","Ďalšie jazyky","Zručnosti","Vodičský preukaz","Dátum narodenia","Štátna príslušnosť","Telefón","E-mail","Adresa","doteraz","Úroveň"],
+hr:["O meni","Radno iskustvo","Obrazovanje i osposobljavanje","Jezične vještine","Materinski jezik","Drugi jezici","Vještine","Vozačka dozvola","Datum rođenja","Državljanstvo","Telefon","E-pošta","Adresa","danas","Razina"],
+sl:["O meni","Delovne izkušnje","Izobraževanje in usposabljanje","Jezikovne spretnosti","Materni jezik","Drugi jeziki","Spretnosti","Vozniško dovoljenje","Datum rojstva","Državljanstvo","Telefon","E-pošta","Naslov","danes","Raven"],
+lt:["Apie mane","Darbo patirtis","Išsilavinimas ir mokymas","Kalbų mokėjimas","Gimtoji kalba","Kitos kalbos","Įgūdžiai","Vairuotojo pažymėjimas","Gimimo data","Pilietybė","Telefonas","El. paštas","Adresas","dabar","Lygis"],
+lv:["Par mani","Darba pieredze","Izglītība un mācības","Valodu prasmes","Dzimtā valoda","Citas valodas","Prasmes","Autovadītāja apliecība","Dzimšanas datums","Pilsonība","Tālrunis","E-pasts","Adrese","pašlaik","Līmenis"],
+et:["Minust","Töökogemus","Haridus ja koolitus","Keeleoskus","Emakeel","Muud keeled","Oskused","Juhiluba","Sünniaeg","Kodakondsus","Telefon","E-post","Aadress","praegu","Tase"],
+ro:["Despre mine","Experiența profesională","Educație și formare","Competențe lingvistice","Limba maternă","Alte limbi","Competențe","Permis de conducere","Data nașterii","Cetățenie","Telefon","E-mail","Adresă","prezent","Nivel"],
+bg:["За мен","Трудов стаж","Образование и обучение","Езикови умения","Майчин език","Други езици","Умения","Шофьорска книжка","Дата на раждане","Гражданство","Телефон","Имейл","Адрес","досега","Ниво"],
+hu:["Rólam","Szakmai tapasztalat","Tanulmányok és képzések","Nyelvtudás","Anyanyelv","Egyéb nyelvek","Készségek","Vezetői engedély","Születési dátum","Állampolgárság","Telefon","E-mail","Cím","jelenleg","Szint"],
+it:["Chi sono","Esperienza lavorativa","Istruzione e formazione","Competenze linguistiche","Lingua madre","Altre lingue","Competenze","Patente di guida","Data di nascita","Nazionalità","Telefono","E-mail","Indirizzo","attuale","Livello"],
+es:["Sobre mí","Experiencia laboral","Educación y formación","Competencias lingüísticas","Lengua materna","Otros idiomas","Competencias","Permiso de conducir","Fecha de nacimiento","Nacionalidad","Teléfono","Correo electrónico","Dirección","actualidad","Nivel"],
+fr:["À propos de moi","Expérience professionnelle","Éducation et formation","Compétences linguistiques","Langue maternelle","Autres langues","Compétences","Permis de conduire","Date de naissance","Nationalité","Téléphone","E-mail","Adresse","aujourd'hui","Niveau"],
+pt:["Sobre mim","Experiência profissional","Educação e formação","Competências linguísticas","Língua materna","Outras línguas","Competências","Carta de condução","Data de nascimento","Nacionalidade","Telefone","E-mail","Morada","atual","Nível"],
+nl:["Over mij","Werkervaring","Opleiding en training","Taalvaardigheden","Moedertaal","Andere talen","Vaardigheden","Rijbewijs","Geboortedatum","Nationaliteit","Telefoon","E-mail","Adres","heden","Niveau"],
+sv:["Om mig","Arbetslivserfarenhet","Utbildning","Språkkunskaper","Modersmål","Andra språk","Färdigheter","Körkort","Födelsedatum","Medborgarskap","Telefon","E-post","Adress","nu","Nivå"],
+da:["Om mig","Erhvervserfaring","Uddannelse","Sprogfærdigheder","Modersmål","Andre sprog","Færdigheder","Kørekort","Fødselsdato","Statsborgerskab","Telefon","E-mail","Adresse","nu","Niveau"],
+no:["Om meg","Arbeidserfaring","Utdanning og opplæring","Språkferdigheter","Morsmål","Andre språk","Ferdigheter","Førerkort","Fødselsdato","Statsborgerskap","Telefon","E-post","Adresse","nå","Nivå"],
+fi:["Tietoa minusta","Työkokemus","Koulutus","Kielitaito","Äidinkieli","Muut kielet","Taidot","Ajokortti","Syntymäaika","Kansalaisuus","Puhelin","Sähköposti","Osoite","nykyään","Taso"],
+el:["Σχετικά με εμένα","Επαγγελματική εμπειρία","Εκπαίδευση και κατάρτιση","Γλωσσικές δεξιότητες","Μητρική γλώσσα","Άλλες γλώσσες","Δεξιότητες","Άδεια οδήγησης","Ημερομηνία γέννησης","Υπηκοότητα","Τηλέφωνο","Email","Διεύθυνση","σήμερα","Επίπεδο"]};
+var C2L={de:"de",at:"de",pl:"pl",cz:"cs",sk:"sk",hr:"hr",si:"sl",lt:"lt",lv:"lv",ee:"et",ro:"ro",bg:"bg",hu:"hu",it:"it",es:"es",fr:"fr",be:"fr",pt:"pt",nl:"nl",se:"sv",dk:"da",no:"no",fi:"fi",gr:"el"};
+var LNAME_EN={en:"English",de:"German",pl:"Polish",cs:"Czech",sk:"Slovak",hr:"Croatian",sl:"Slovenian",lt:"Lithuanian",lv:"Latvian",et:"Estonian",ro:"Romanian",bg:"Bulgarian",hu:"Hungarian",it:"Italian",es:"Spanish",fr:"French",pt:"Portuguese",nl:"Dutch",sv:"Swedish",da:"Danish",no:"Norwegian",fi:"Finnish",el:"Greek",uz:"Uzbek",ru:"Russian",tr:"Turkish",kk:"Kazakh",ky:"Kyrgyz",tg:"Tajik",tk:"Turkmen",az:"Azerbaijani",ko:"Korean",ar:"Arabic"};
+var LANG_CODES=["uz","ru","en","de","pl","cs","sk","hr","lt","lv","ro","bg","hu","it","es","fr","tr","kk","ky","tg","tk","az","ko","ar"];
+var ORIG2REG={uz:"UZ",kg:"KG",tj:"TJ",kz:"KZ",tm:"TM",az:"AZ"};
+var MOTHER_BY_ORIG={uz:"uz",kg:"ky",tj:"tg",kz:"kk",tm:"tk",az:"az"};
+function dn(code,inLang,type){try{var x=new Intl.DisplayNames([inLang==="no"?"nb":inLang],{type:type});var r=x.of(code);if(r&&r!==code)return r.charAt(0).toUpperCase()+r.slice(1);}catch(e){}return type==="language"?(LNAME_EN[code]||code):code;}
+function uiLangName(code){return dn(code,L(),"language");}
+
+var F=null, FLT="de";
+function blankJob(){return {title:"",co:"",city:"",from:"",to:"",now:false,desc:""};}
+function blankEdu(){return {title:"",org:"",from:"",to:""};}
+function defaults(){
+  var o=(typeof userOrigin!=="undefined"&&userOrigin)||"uz";
+  var jn="";try{var j=(JJ||[]).filter(function(x){return x.id===selJ;})[0];if(j)jn=j[L()]||j.uz;}catch(e){}
+  return {country:FLT,job:jn,cvl:"en",name:"",dob:"",nat:o,phone:"",email:"",addr:"",photo:"",jobs:[blankJob()],edu:[blankEdu()],mother:MOTHER_BY_ORIG[o]||"uz",langs:[{c:"ru",l:"B1"}],skills:"",drive:""};
+}
+function cc(){try{return CC;}catch(e){return [];}}
+function countryName(id){var c=cc().filter(function(x){return x.id===id;})[0];return c?(c[L()]||c.uz):id;}
+
+function inp(path,label,val,type,ph,full){return '<div class="aicv-f'+(full?' full':'')+'"><label>'+label+'</label><input data-p="'+path+'" type="'+(type||"text")+'" value="'+esc(val)+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+'></div>';}
+function ta(path,label,val,ph){return '<div class="aicv-f full"><label>'+label+'</label><textarea data-p="'+path+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+'>'+esc(val)+'</textarea></div>';}
+function sel(path,label,val,opts,full){return '<div class="aicv-f'+(full?' full':'')+'"><label>'+label+'</label><select data-p="'+path+'">'+opts.map(function(o){return '<option value="'+esc(o[0])+'"'+(o[0]===val?' selected':'')+'>'+esc(o[1])+'</option>';}).join("")+'</select></div>';}
+
+function renderForm(){
+  var t=UI[L()],f=F,left=Math.max(0,MAXN-getN());
+  var cl=[["en",t.en]];var dl=C2L[f.country];if(dl&&dl!=="en")cl.push([dl,uiLangName(dl)]);
+  if(cl.map(function(x){return x[0];}).indexOf(f.cvl)<0)f.cvl="en";
+  var h='<p class="aicv-lead">'+t.lead+'</p>';
+  h+=left>0?'<div class="aicv-left">&#9889; '+t.left.replace("{n}",left)+'</div>':'<div class="aicv-limit">'+t.limit+'<a class="aicv-btn2" href="'+TG+'" target="_blank" rel="noopener" onclick="aicvSvc()">'+t.svc+'</a></div>';
+  h+='<div class="aicv-sec"><h4>&#127919; '+t.target+'</h4><div class="aicv-g">'+sel("country",t.country,f.country,cc().map(function(c){return [c.id,c[L()]||c.uz];}))+inp("job",t.job,f.job)+sel("cvl",t.cvlang,f.cvl,cl,true)+'</div></div>';
+  var nat=Object.keys(ORIG2REG).map(function(k){return [k,dn(ORIG2REG[k],L(),"region")];});
+  h+='<div class="aicv-sec"><h4>&#128100; '+t.pers+'</h4><div class="aicv-g">'+inp("name",t.name,f.name,"text","",true)+inp("dob",t.dob,f.dob,"date")+sel("nat",t.nat,f.nat,nat)+inp("phone",t.phone,f.phone,"tel","+998")+inp("email",t.email,f.email,"email")+inp("addr",t.addr,f.addr,"text","",true)
+    +'<div class="aicv-f full"><label>'+t.photo+'</label><input id="aicvPhoto" type="file" accept="image/*"></div></div></div>';
+  h+='<div class="aicv-sec"><h4>&#128188; '+t.work+'</h4>';
+  f.jobs.forEach(function(j,i){h+='<div class="aicv-item">'+(f.jobs.length>1?'<button class="aicv-del" onclick="aicvDel(\'jobs\','+i+')">'+t.del+'</button>':'')+'<div class="aicv-g">'+inp("jobs."+i+".title",t.wtitle,j.title)+inp("jobs."+i+".co",t.wco,j.co)+inp("jobs."+i+".city",t.wcity,j.city,"text","",true)+inp("jobs."+i+".from",t.from,j.from,"month")+(j.now?'':inp("jobs."+i+".to",t.to,j.to,"month"))+'<label class="aicv-chk full"><input type="checkbox" data-p="jobs.'+i+'.now"'+(j.now?' checked':'')+'> '+t.now+'</label>'+ta("jobs."+i+".desc",t.wdesc,j.desc)+'</div></div>';});
+  if(f.jobs.length<5)h+='<button class="aicv-add" onclick="aicvAdd(\'jobs\')">'+t.addw+'</button>';
+  h+='</div><div class="aicv-sec"><h4>&#127891; '+t.edu+'</h4>';
+  f.edu.forEach(function(e,i){h+='<div class="aicv-item">'+(f.edu.length>1?'<button class="aicv-del" onclick="aicvDel(\'edu\','+i+')">'+t.del+'</button>':'')+'<div class="aicv-g">'+inp("edu."+i+".title",t.etitle,e.title,"text","",true)+inp("edu."+i+".org",t.eorg,e.org,"text","",true)+inp("edu."+i+".from",t.from,e.from,"month")+inp("edu."+i+".to",t.to,e.to,"month")+'</div></div>';});
+  if(f.edu.length<3)h+='<button class="aicv-add" onclick="aicvAdd(\'edu\')">'+t.adde+'</button>';
+  var lo=LANG_CODES.map(function(c){return [c,uiLangName(c)];}),lv=["A1","A2","B1","B2","C1","C2"].map(function(x){return [x,x];});
+  h+='</div><div class="aicv-sec"><h4>&#127760; '+t.langs+'</h4><div class="aicv-g">'+sel("mother",t.mother,f.mother,lo,true)+'</div>';
+  f.langs.forEach(function(x,i){h+='<div class="aicv-item"><button class="aicv-del" onclick="aicvDel(\'langs\','+i+')">'+t.del+'</button><div class="aicv-g">'+sel("langs."+i+".c",t.lname,x.c,lo)+sel("langs."+i+".l",t.llvl,x.l,lv)+'</div></div>';});
+  if(f.langs.length<5)h+='<button class="aicv-add" onclick="aicvAdd(\'langs\')">'+t.addl+'</button>';
+  h+='</div><div class="aicv-sec"><h4>&#128736; '+t.skills+'</h4><div class="aicv-g">'+ta("skills",t.skills,f.skills,t.skillsPh)+inp("drive",t.drive,f.drive,"text",t.drivePh,true)+'</div></div>';
+  h+='<button class="aicv-btn" id="aicvGo" onclick="aicvGenerate()"'+(left>0?'':' disabled')+'>'+t.gen+'</button><div class="aicv-err" id="aicvErr"></div><p class="aicv-note">&#128274; '+t.privacy+'</p>';
+  var box=document.getElementById("aicvForm");box.innerHTML=h;
+  box.querySelectorAll("[data-p]").forEach(function(el){el.addEventListener(el.type==="checkbox"||el.tagName==="SELECT"?"change":"input",function(){setP(el.getAttribute("data-p"),el.type==="checkbox"?el.checked:el.value);if(el.type==="checkbox"||el.getAttribute("data-p")==="country")renderForm();});});
+  var ph=document.getElementById("aicvPhoto");if(ph)ph.addEventListener("change",function(){var file=ph.files&&ph.files[0];if(!file)return;var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){var c=document.createElement("canvas"),w=300,hh=Math.round(img.height*300/img.width);c.width=w;c.height=hh;c.getContext("2d").drawImage(img,0,0,w,hh);F.photo=c.toDataURL("image/jpeg",.85);saveF(F);};img.src=r.result;};r.readAsDataURL(file);});
+  document.getElementById("aicvTitle").innerHTML=t.title;
+}
+function setP(path,val){var p=path.split("."),o=F;for(var i=0;i<p.length-1;i++)o=o[isNaN(p[i])?p[i]:+p[i]];o[p[p.length-1]]=val;saveF(F);}
+window.aicvAdd=function(k){F[k].push(k==="jobs"?blankJob():k==="edu"?blankEdu():{c:"en",l:"A1"});saveF(F);renderForm();};
+window.aicvDel=function(k,i){F[k].splice(i,1);if(!F[k].length&&k!=="langs")F[k].push(k==="jobs"?blankJob():blankEdu());saveF(F);renderForm();};
+window.aicvSvc=function(){ev('aicv_service_click');};
+
+window.aiCvOpen=function(flt){
+  if(typeof hasAccess!=="undefined"&&!hasAccess){goScreen("sc-pay");return;}
+  FLT=flt&&flt!=="all"?flt:((typeof selC!=="undefined"&&selC)||"de");
+  F=loadF()||defaults(); if(flt&&flt!=="all")F.country=FLT;
+  document.getElementById("aicvForm").style.display="block";document.getElementById("aicvRes").style.display="none";document.getElementById("aicvProg").style.display="none";
+  renderForm();openModal("aicvOvl");ev('aicv_open',{country:F.country});
+};
+
+// ---------- AI
+var LIMIT_HIT=false;
+function dev(){try{return typeof getDeviceId==="function"?getDeviceId():"nodev";}catch(e){return "nodev";}}
+function askT(task,payload){
+  var ctrl=window.AbortController?new AbortController():null;var tm=setTimeout(function(){try{ctrl&&ctrl.abort();}catch(e){}},35000);
+  return fetch("/api/cv",{method:"POST",headers:{"Content-Type":"application/json"},signal:ctrl?ctrl.signal:undefined,body:JSON.stringify({task:task,lang:F.cvl,device:dev(),payload:payload})})
+    .then(function(r){return r.json();})
+    .then(function(d){clearTimeout(tm);
+      if(d&&d.reason==="limit"){LIMIT_HIT=true;setN(Math.max(getN(),MAXN));return null;}
+      if(d&&d.ok&&typeof d.used==="number"&&d.used>getN())setN(d.used-1);
+      return d&&d.ok&&d.data?d.data:null;})
+    .catch(function(){clearTimeout(tm);return null;});
+}
+function arr(x,max){return (Array.isArray(x)?x:[]).map(function(s){return String(s||"").trim();}).filter(Boolean).slice(0,max);}
+function period(a,b,now,H){function fm(v){if(!v)return "";var p=v.split("-");return p.length>1?p[1]+"/"+p[0]:v;}var s=fm(a),e=now?H[13]:fm(b);return s&&e?s+" – "+e:(s||e);}
+
+window.aicvGenerate=function(){
+  var t=UI[L()];if(getN()>=MAXN){renderForm();return;}
+  var jobs=F.jobs.filter(function(j){return (j.title||j.co||j.desc).trim();}),edu=F.edu.filter(function(e){return (e.title||e.org).trim();});
+  if(!F.name.trim()||(!jobs.length&&!edu.length)){document.getElementById("aicvErr").textContent=t.need;return;}
+  var H=HD[F.cvl]||HD.en;LIMIT_HIT=false;
+  var total=2+jobs.length,done=-1,okAny=false;
+  var prog=document.getElementById("aicvProg");document.getElementById("aicvForm").style.display="none";prog.style.display="block";
+  function tick(){done++;prog.innerHTML='<b>'+t.prog+'</b><div class="aicv-bar"><i style="width:'+Math.round(Math.max(0,done)/total*100)+'%"></i></div><small>'+t.step.replace("{a}",Math.max(0,done)).replace("{b}",total)+'</small>';}
+  tick();ev('aicv_generate',{n:getN()+1,cvlang:F.cvl,country:F.country});
+  var res={about:"",skills:[],jobs:[],edu:[]};
+  var langsTxt=[(LNAME_EN[F.mother]||F.mother)+" (native)"].concat(F.langs.map(function(x){return (LNAME_EN[x.c]||x.c)+" "+x.l;})).join(", ");
+  var ctryEn=(cc().filter(function(c){return c.id===F.country;})[0]||{}).en||F.country;
+  var chain=askT("profile",{job:F.job,country:ctryEn,jobs:jobs.map(function(j){return {title:j.title,co:j.co,period:period(j.from,j.to,j.now,HD.en)};}),edu:edu.map(function(e){return {title:e.title,org:e.org};}),skills:F.skills,langs:langsTxt,drive:F.drive})
+    .then(function(r){tick();if(r){okAny=true;res.about=String(r.about||"").trim();res.skills=arr(r.skills,8);}});
+  jobs.forEach(function(j,i){chain=chain.then(function(){ if(LIMIT_HIT||!okAny&&i>0&&!res.jobs.length){tick();return;}
+    return askT("job",{title:j.title,co:j.co,city:j.city,desc:j.desc}).then(function(r){tick();if(r){okAny=true;res.jobs[i]={title:String(r.title||"").trim(),bullets:arr(r.bullets,4)};}});});});
+  chain=chain.then(function(){ if(LIMIT_HIT||!edu.length){tick();return;}
+    return askT("edu",{items:edu.map(function(e){return {title:e.title,org:e.org};})}).then(function(r){tick();if(r&&Array.isArray(r.edu)){okAny=true;res.edu=r.edu;}});});
+  chain.then(function(){
+    prog.style.display="none";
+    if(LIMIT_HIT){document.getElementById("aicvForm").style.display="block";renderForm();return;}
+    if(okAny)setN(getN()+1);
+    renderCV(jobs,edu,res,H);
+    showRes(okAny);
+  });
+};
+
+function renderCV(jobs,edu,res,H){
+  var f=F,cvl=F.cvl,h='<div class="cv-top">'+(f.photo?'<img class="cv-ph" src="'+f.photo+'" alt="">':'')+'<div><p class="cv-name" contenteditable="true">'+esc(f.name)+'</p>';
+  function ci(k,v){return v?'<p class="cv-ci"><b>'+esc(H[k])+':</b> <span contenteditable="true">'+esc(v)+'</span></p>':'';}
+  var dob=f.dob?f.dob.split("-").reverse().join(".") : "";
+  h+=ci(8,dob)+ci(9,dn(ORIG2REG[f.nat]||"UZ",cvl,"region"))+ci(10,f.phone)+ci(11,f.email)+ci(12,f.addr)+'</div></div>';
+  if(res.about)h+='<h5>'+esc(H[0])+'</h5><p contenteditable="true" style="margin:0;">'+esc(res.about)+'</p>';
+  if(jobs.length){h+='<h5>'+esc(H[1])+'</h5>';jobs.forEach(function(j,i){var a=res.jobs[i]||{},b=a.bullets&&a.bullets.length?a.bullets:(j.desc?[j.desc]:[]);
+    h+='<div class="cv-it" contenteditable="true"><div class="cv-d">'+esc(period(j.from,j.to,j.now,H))+(j.city?' · '+esc(j.city):'')+'</div><div class="cv-t">'+esc(a.title||j.title)+'</div>'+(j.co?'<div class="cv-o">'+esc(j.co)+'</div>':'')+(b.length?'<ul>'+b.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>':'')+'</div>';});}
+  if(edu.length){h+='<h5>'+esc(H[2])+'</h5>';edu.forEach(function(e,i){var a=res.edu[i]||{};h+='<div class="cv-it" contenteditable="true"><div class="cv-d">'+esc(period(e.from,e.to,false,H))+'</div><div class="cv-t">'+esc(a.title||e.title)+'</div><div class="cv-o">'+esc(a.org||e.org)+'</div></div>';});}
+  h+='<h5>'+esc(H[3])+'</h5><p style="margin:0 0 4px;"><b>'+esc(H[4])+':</b> '+esc(dn(f.mother,cvl,"language"))+'</p>';
+  if(f.langs.length){h+='<p style="margin:0;"><b>'+esc(H[5])+':</b></p><table><tr><th></th><th>'+esc(H[14])+' (CEFR)</th></tr>'+f.langs.map(function(x){return '<tr><td>'+esc(dn(x.c,cvl,"language"))+'</td><td>'+esc(x.l)+'</td></tr>';}).join("")+'</table>';}
+  var sk=res.skills&&res.skills.length?res.skills:(f.skills?f.skills.split(/[,;\n]+/).map(function(s){return s.trim();}).filter(Boolean):[]);
+  if(sk.length)h+='<h5>'+esc(H[6])+'</h5><p contenteditable="true" style="margin:0;">'+esc(sk.join(" · "))+'</p>';
+  if(f.drive)h+='<h5>'+esc(H[7])+'</h5><p contenteditable="true" style="margin:0;">'+esc(f.drive)+'</p>';
+  document.getElementById("aicvRes").innerHTML='<div id="aicvResTop"></div><div id="aicvSheet">'+h+'</div><div id="aicvResBot"></div>';
+}
+function showRes(okAny){
+  var t=UI[L()],left=Math.max(0,MAXN-getN()),inApp=/Instagram|FBAN|FBAV|Telegram/i.test(navigator.userAgent||"");
+  var top='<p class="aicv-lead" style="margin-bottom:6px;"><b style="color:var(--eg-gold-l,#E8CE96);font-size:15px;">&#9989; '+t.resTitle+'</b><br>'+t.resHint+'</p>'+(okAny?'':'<div class="aicv-limit">'+t.aiFail+'</div>');
+  var bot='<div class="aicv-row" style="margin-top:12px;"><button class="aicv-btn" style="margin:0;" onclick="aicvPdf()">'+t.pdf+'</button><button class="aicv-btn2" style="margin:0;" id="aicvCopyB" onclick="aicvCopy()">'+t.copy+'</button></div>'+(inApp?'<p class="aicv-note">&#8505;&#65039; '+t.inapp+'</p>':'')
+    +'<button class="aicv-btn2" onclick="aicvEdit()">'+t.edit+'</button>'
+    +(left>0?'<button class="aicv-btn2" onclick="aicvGenerate()">'+t.again.replace("{n}",left)+'</button>':'<div class="aicv-limit">'+t.limit+'<a class="aicv-btn2" href="'+TG+'" target="_blank" rel="noopener" onclick="aicvSvc()">'+t.svc+'</a></div>')
+    +'<p class="aicv-note">&#128274; '+t.privacy+'</p>';
+  document.getElementById("aicvResTop").innerHTML=top;document.getElementById("aicvResBot").innerHTML=bot;
+  document.getElementById("aicvRes").style.display="block";
+  if(left<=0)ev('aicv_limit');
+  try{document.querySelector("#aicvOvl .mbd").scrollTop=0;}catch(e){}
+}
+window.aicvEdit=function(){document.getElementById("aicvRes").style.display="none";document.getElementById("aicvForm").style.display="block";renderForm();};
+window.aicvPdf=function(){
+  ev('aicv_pdf');
+  var sh=document.getElementById("aicvSheet");if(!sh)return;
+  var css=(document.getElementById("eg-aicv-css")||{}).textContent||"";
+  var nm=(F&&F.name?F.name:"CV").replace(/[<>&"]/g,"");
+  var html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CV - '+nm+'</title><style>'+css
+    +'@page{size:A4;margin:12mm;}html,body{margin:0;padding:0;background:#fff;}*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}#aicvSheet{box-shadow:none!important;border-radius:0!important;padding:0!important;margin:0!important;}#aicvSheet [contenteditable]{outline:none!important;}#aicvSheet .cv-it,#aicvSheet table{break-inside:avoid;}</style></head><body><div id="aicvSheet">'+sh.innerHTML.replace(/ contenteditable="true"/g,"")+'</div></body></html>';
+  var old=document.getElementById("aicvPrintFrame");if(old)old.parentNode.removeChild(old);
+  var fr=document.createElement("iframe");fr.id="aicvPrintFrame";fr.setAttribute("aria-hidden","true");
+  fr.style.cssText="position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none;";
+  document.body.appendChild(fr);
+  var d=fr.contentWindow.document;d.open();d.write(html);d.close();
+  var go=function(){try{fr.contentWindow.focus();fr.contentWindow.print();}catch(e){try{window.print();}catch(e2){}}};
+  var imgs=d.images,left=imgs.length;if(!left){setTimeout(go,250);}else{for(var i=0;i<imgs.length;i++){if(imgs[i].complete){if(--left===0)setTimeout(go,250);}else{imgs[i].onload=imgs[i].onerror=function(){if(--left===0)setTimeout(go,250);};}}}
+};
+window.aicvCopy=function(){var s=document.getElementById("aicvSheet");if(!s)return;var txt=s.innerText||"";var b=document.getElementById("aicvCopyB"),t=UI[L()];var ok=function(){if(b){b.innerHTML=t.copied;setTimeout(function(){b.innerHTML=t.copy;},1500);}};try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){if(typeof cvCopyFallback==="function")cvCopyFallback(txt);ok();});}else{if(typeof cvCopyFallback==="function")cvCopyFallback(txt);ok();}}catch(e){}};
+var PMAI={uz:"AI yordamida Europass CV — bir necha daqiqada",ru:"Europass CV с помощью ИИ — за несколько минут",en:"Europass CV with AI — in a few minutes"};
+function pmAi(){try{var e=document.getElementById("pmAiTxt");if(e)e.textContent=PMAI[L()];}catch(x){}}
+pmAi();
+// til almashtirilganda forma yangilansin
+try{if(typeof applyLang==="function"){var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);pmAi();try{var o=document.getElementById("aicvOvl");if(o&&o.classList.contains("on")&&F&&document.getElementById("aicvForm").style.display!=="none")renderForm();}catch(e){}return r;};}}catch(e){}
+})();
+</script>
+
 <style id="eg-paypreview-css">
 .eg-pv{margin-top:14px;padding-top:12px;border-top:1px solid rgba(212,175,106,.18);}
 .eg-pv-t{font-size:12.5px;font-weight:700;color:var(--eg-gold-l,#E8CE96);text-align:center;margin-bottom:10px;line-height:1.4;}
