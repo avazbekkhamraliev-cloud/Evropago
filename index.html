@@ -966,6 +966,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--eg-gold-l);outline-
         <span class="pb-sub" id="pbLifeS">📋 Ichida: soliq qaytarish · ish topish · uy ijarasi · bank · yashash ruxsati · tibbiy sug'urta · haydovchilik guvohnomasi va boshqalar</span>
       </button>
     </div>
+    <button type="button" class="eg-vlink" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daqiqalik&nbsp;video</span></button>
     <div class="eg-more-lbl" id="egMoreLbl">Boshqa foydali bo'limlar</div>
     <div class="eg-tools">
       <button onclick="openModal('rankOvl')" id="rankBtn" class="eg-tile">
@@ -1275,6 +1276,7 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
           </div>
         </div>
         <button class="oother" onclick="pickOrigin('other')" id="otherBtn">&#127760; Boshqa / &#1044;&#1088;&#1091;&#1075;&#1072;&#1103;</button>
+        <button type="button" class="eg-vlink eg-vlink-sm" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daqiqalik&nbsp;video</span></button>
       </div>
       <div class="step-footer">
         <button class="btn-back" onclick="goScreen('sc-welcome')" id="origBack">&#8592;</button>
@@ -1404,6 +1406,7 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
         <button class="aicv-btn" style="flex:1;margin:0;font-size:13.5px;padding:12px 8px;line-height:1.25;" onclick="egQcCv()">&#129302; <span id="qcCvL">AI bilan CV yozish</span></button>
         <button class="aicv-btn2" style="flex:1;margin:0;font-size:13.5px;padding:12px 8px;line-height:1.25;" onclick="egQcLetter()">&#9993;&#65039; <span id="qcLtL">Ariza xati namunasi</span></button>
       </div>
+      <button type="button" class="eg-vlink" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daqiqalik&nbsp;video</span></button>
       <div style="background:var(--c);border:1px solid var(--bd);border-left:4px solid #C9A227;border-radius:12px;margin-bottom:16px;overflow:hidden;">
         <div onclick="toggleJobSteps()" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:rgba(201,162,39,0.08);">
           <div id="jobStepsH" style="font-size:14px;font-weight:700;">📌 Saytdan natija chiqishi uchun 5 qadam</div>
@@ -6140,6 +6143,10 @@ try{ elApplyChrome(); elRenderHome(); }catch(e){}
 </style>
 <script>
 var MAIN_FAQ=[
+ {q:{uz:"Saytdan qanday foydalaniladi?",ru:"Как пользоваться сайтом?",en:"How do I use the site?"},
+ a:{uz:"1) Fuqaroligingizni tanlaysiz &rarr; 2) Ishlamoqchi bo\u2018lgan davlatni tanlaysiz &rarr; 3) To\u2018lov qilasiz (Telegram yoki Click) &rarr; 4) Havola orqali kirasiz: ish saytlari, hujjatlar ro\u2018yxati va AI CV ochiladi.<button type='button' class='eg-vlink' onclick=\"closeModal('faqOvl');egVid('demo')\">&#9654;&#65039; 1 daqiqalik videoni ko\u2018rish</button>",
+ ru:"1) Выберите гражданство &rarr; 2) Выберите страну для работы &rarr; 3) Оплатите (Telegram или Click) &rarr; 4) Откройте ссылку: сайты вакансий, список документов и CV с ИИ станут доступны.<button type='button' class='eg-vlink' onclick=\"closeModal('faqOvl');egVid('demo')\">&#9654;&#65039; Смотреть видео (1 мин)</button>",
+ en:"1) Choose your citizenship &rarr; 2) Choose the country to work in &rarr; 3) Pay (Telegram or Click) &rarr; 4) Open your link: job sites, the document checklist and the AI CV unlock.<button type='button' class='eg-vlink' onclick=\"closeModal('faqOvl');egVid('demo')\">&#9654;&#65039; Watch the 1-minute video</button>"}},
   {q:{uz:"Viza olib berasizmi?",ru:"Оформляете визу?",en:"Do you issue visas?"},
    a:{uz:"<b>Yo\u2018q.</b> Biz viza olib bermaymiz, ish topib bermaymiz, hujjat topshirmaymiz. Kim \u2018viza qilib beraman\u2019 desa \u2014 ehtiyot bo\u2018ling, ko\u2018pi firibgar. Biz yo\u2018lini o\u2018rgatamiz: qanday hujjat kerak, qayerga topshiriladi, ishni qayerdan topasiz \u2014 hammasini <b>o\u2018zingiz</b> qilasiz, vositachisiz.",
       ru:"<b>Нет.</b> Мы не оформляем визы, не трудоустраиваем, не подаём документы. Если кто-то говорит «сделаю визу» \u2014 будьте осторожны, чаще всего это мошенники. Мы обучаем процессу: какие документы нужны, куда подавать, где искать работу \u2014 всё вы делаете <b>сами</b>, без посредников.",
@@ -7717,6 +7724,9 @@ try{if(typeof applyLang==="function"){var _al=applyLang;applyLang=function(){var
 .eg-tgsteps i{font-style:normal;flex:none;width:20px;height:20px;border-radius:50%;background:#D4AF6A;color:#0B2E25;font-weight:800;font-size:12px;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
 .eg-clicknote{margin:6px 0 2px;font-size:12.5px;line-height:1.45;opacity:.9;text-align:center}
 .eg-vbtns{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.eg-vlink{display:none;width:100%;margin:12px 0 0;border:1.5px dashed rgba(212,175,106,.75);background:rgba(212,175,106,.08);color:inherit;border-radius:12px;padding:11px 12px;font-weight:800;font-size:14px;line-height:1.3;cursor:pointer;font-family:inherit;align-items:center;justify-content:center;gap:6px;text-align:center}
+html.eg-has-vid .eg-vlink{display:flex}
+.eg-vlink-sm{font-size:12.5px;font-weight:700;padding:7px 10px;margin-top:6px;border-width:1px;background:transparent;opacity:.9}
 .eg-vbtn{width:100%;border:1.5px solid #D4AF6A;background:rgba(212,175,106,.10);color:inherit;border-radius:12px;padding:11px 12px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
 #egVidOvl video{width:100%;max-height:72vh;border-radius:12px;background:#000;display:block}
 .eg-more-lbl{display:flex;align-items:center;gap:10px;margin:22px 2px 10px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
@@ -7730,29 +7740,35 @@ try{if(typeof applyLang==="function"){var _al=applyLang;applyLang=function(){var
   var C={uz:{what:"&#8505;&#65039; <b>EvropaGo agentlik emas.</b> Siz o'zingiz ariza berasiz &mdash; biz qaysi saytga, qanday hujjat bilan va qaysi tartibda topshirishni o'zbek tilida ko'rsatamiz.",
              tgT:"Telegram orqali qanday to'lanadi:",tg:["Tugmani bosing &mdash; Telegram ochiladi","Admin karta raqamini yuboradi","To'laysiz va chek rasmini yuborasiz","Odatda 5 daqiqa ichida kirish havolasi keladi"],
              click:"&#9889; Click orqali to'lasangiz &mdash; to'lov tasdiqlangach sahifa o'zi ochiladi (odatda 1&ndash;2 daqiqa)",
-             demo:"&#9654;&#65039; Ichini ko'ring &mdash; 20 soniyalik video",auth:"&#128100; Muallifdan qisqa video",demoT:"Ichidan qanday ko'rinadi",authT:"Muallifdan",more:"Boshqa foydali bo'limlar"},
+             vl:"Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daqiqalik&nbsp;video",demo:"&#9654;&#65039; Qanday foydalaniladi &mdash; 1 daqiqalik video",auth:"&#128100; Muallifdan qisqa video",demoT:"Qanday foydalaniladi",authT:"Muallifdan",more:"Boshqa foydali bo'limlar"},
           ru:{what:"&#8505;&#65039; <b>EvropaGo &mdash; не агентство.</b> Вы подаёте документы сами &mdash; а мы показываем, на какой сайт, с какими документами и в каком порядке.",
              tgT:"Как оплатить через Telegram:",tg:["Нажмите кнопку &mdash; откроется Telegram","Админ пришлёт номер карты","Оплатите и отправьте фото чека","Обычно в течение 5 минут придёт ссылка доступа"],
              click:"&#9889; При оплате через Click доступ откроется сам после подтверждения (обычно 1&ndash;2 минуты)",
-             demo:"&#9654;&#65039; Посмотрите, что внутри &mdash; видео 20 сек",auth:"&#128100; Короткое видео от автора",demoT:"Что внутри",authT:"От автора",more:"Другие полезные разделы"},
+             vl:"Как пользоваться сайтом&nbsp;&mdash; видео&nbsp;1&nbsp;мин",demo:"&#9654;&#65039; Как пользоваться &mdash; видео 1 мин",auth:"&#128100; Короткое видео от автора",demoT:"Как пользоваться",authT:"От автора",more:"Другие полезные разделы"},
           en:{what:"&#8505;&#65039; <b>EvropaGo is not an agency.</b> You apply yourself &mdash; we show which site, which documents and in what order.",
              tgT:"How to pay via Telegram:",tg:["Tap the button &mdash; Telegram opens","The admin sends the card number","Pay and send a photo of the receipt","Usually within 5 minutes you get your access link"],
              click:"&#9889; Pay with Click and access opens by itself once confirmed (usually 1&ndash;2 minutes)",
-             demo:"&#9654;&#65039; See what's inside &mdash; 20-second video",auth:"&#128100; A short video from the founder",demoT:"What's inside",authT:"From the founder",more:"Other useful sections"}};
+             vl:"How to use the site&nbsp;&mdash; 1&#8209;minute&nbsp;video",demo:"&#9654;&#65039; How it works &mdash; 1-minute video",auth:"&#128100; A short video from the founder",demoT:"How it works",authT:"From the founder",more:"Other useful sections"}};
   function fill(){var t=C[L()];function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
     set("egWhat",t.what);set("egTgSteps","<b>"+t.tgT+"</b>"+t.tg.map(function(x,i){return "<div><i>"+(i+1)+"</i><span>"+x+"</span></div>";}).join(""));
-    set("egClickNote",t.click);set("egDemoBtn",t.demo);set("egAuthBtn",t.auth);set("egMoreLbl",t.more);}
+    set("egClickNote",t.click);set("egDemoBtn",t.demo);set("egAuthBtn",t.auth);set("egMoreLbl",t.more);
+    document.querySelectorAll(".egvl-t").forEach(function(x){x.innerHTML=t.vl;});}
+  window.egVidLabel=function(){return C[L()].vl;};
   var checked=false;
+  // video fayl bor-yo'qligini tekshiramiz; telefon nomni "evropago_demo (1).mp4" qilib qo'ygan bo'lsa ham topiladi
+  function head(urls,i,cb){if(i>=urls.length)return;try{fetch(urls[i],{method:"HEAD",cache:"no-store"}).then(function(r){var ct=(r.headers.get("content-type")||"");if(r.ok&&/video/.test(ct))cb(urls[i]);else head(urls,i+1,cb);}).catch(function(){head(urls,i+1,cb);});}catch(e){}}
   function probe(){if(checked)return;checked=true;
-    [["evropago_demo.mp4","egDemoBtn"],["muallif.mp4","egAuthBtn"]].forEach(function(p){
-      try{fetch("/"+p[0],{method:"HEAD",cache:"no-store"}).then(function(r){var ct=(r.headers.get("content-type")||"");if(r.ok&&/video/.test(ct)){var b=document.getElementById(p[1]);if(b)b.style.display="";}}).catch(function(){});}catch(e){}});}
-  window.egVid=function(file,kind){var t=C[L()];var v=document.getElementById("egVidEl");document.getElementById("egVidT").innerHTML=kind==="auth"?t.authT:t.demoT;
-    if(v.getAttribute("src")!=="/"+file)v.setAttribute("src","/"+file);openModal("egVidOvl");ev(kind==="auth"?"video_author":"video_demo");try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}};
+    head(["/evropago_demo.mp4","/evropago_demo%20(1).mp4","/evropago_demo%20(2).mp4"],0,function(u){window._egVidUrl=u;document.documentElement.classList.add("eg-has-vid");var b=document.getElementById("egDemoBtn");if(b)b.style.display="";});
+    head(["/muallif.mp4","/muallif%20(1).mp4"],0,function(u){window._egAuthUrl=u;var b=document.getElementById("egAuthBtn");if(b)b.style.display="";});}
+  window.egVid=function(a,b){var kind=b||(a==="auth"?"auth":"demo");var url=kind==="auth"?(window._egAuthUrl||"/muallif.mp4"):(window._egVidUrl||"/evropago_demo.mp4");
+    var t=C[L()];var v=document.getElementById("egVidEl");document.getElementById("egVidT").innerHTML=kind==="auth"?t.authT:t.demoT;
+    if(v.getAttribute("src")!==url)v.setAttribute("src",url);openModal("egVidOvl");
+    try{var sc=document.querySelector(".screen.active");gtag("event",kind==="auth"?"video_author":"video_demo",{from:sc?sc.id:""});}catch(e){}try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}};
   window.egVidClose=function(){var v=document.getElementById("egVidEl");try{v.pause();}catch(e){}closeModal("egVidOvl");};
   try{var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);try{fill();}catch(e){}return r;};}catch(e){}
-  try{var _g=goScreen;goScreen=function(id){var r=_g.apply(this,arguments);try{if(id==="sc-pay")probe();if(id!=="sc-pay"){var o=document.getElementById("egVidOvl");if(o&&o.classList.contains("on"))egVidClose();}}catch(e){}return r;};}catch(e){}
+  try{var _g=goScreen;goScreen=function(id){var r=_g.apply(this,arguments);try{if(id==="sc-pay")probe();fill();if(id!=="sc-pay"){var o=document.getElementById("egVidOvl");if(o&&o.classList.contains("on"))egVidClose();}}catch(e){}return r;};}catch(e){}
   fill();
-  try{var a=document.querySelector(".screen.active");if(a&&a.id==="sc-pay")probe();}catch(e){}
+  if(document.readyState==="complete")setTimeout(probe,1200);else window.addEventListener("load",function(){setTimeout(probe,1200);});
 })();
 </script>
 <style id="eg-paypreview-css">
