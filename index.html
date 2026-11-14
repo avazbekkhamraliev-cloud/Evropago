@@ -7758,12 +7758,15 @@ html.eg-has-vid .eg-vlink{display:flex}
   // video fayl bor-yo'qligini tekshiramiz; telefon nomni "evropago_demo (1).mp4" qilib qo'ygan bo'lsa ham topiladi
   function head(urls,i,cb){if(i>=urls.length)return;try{fetch(urls[i],{method:"HEAD",cache:"no-store"}).then(function(r){var ct=(r.headers.get("content-type")||"");if(r.ok&&/video/.test(ct))cb(urls[i]);else head(urls,i+1,cb);}).catch(function(){head(urls,i+1,cb);});}catch(e){}}
   function probe(){if(checked)return;checked=true;
-    head(["/evropago_demo.mp4","/evropago_demo%20(1).mp4","/evropago_demo%20(2).mp4"],0,function(u){window._egVidUrl=u;document.documentElement.classList.add("eg-has-vid");var b=document.getElementById("egDemoBtn");if(b)b.style.display="";});
+    // har til uchun alohida video: evropago_demo.mp4 (o'zbekcha), evropago_demo_ru.mp4, evropago_demo_en.mp4
+    window._egVids=window._egVids||{};
+    var V={uz:["/evropago_demo.mp4","/evropago_demo%20(1).mp4","/evropago_demo%20(2).mp4"],ru:["/evropago_demo_ru.mp4","/evropago_demo_ru%20(1).mp4"],en:["/evropago_demo_en.mp4","/evropago_demo_en%20(1).mp4"]};
+    Object.keys(V).forEach(function(k){head(V[k],0,function(u){window._egVids[k]=u;if(k==="uz")window._egVidUrl=u;document.documentElement.classList.add("eg-has-vid");var b=document.getElementById("egDemoBtn");if(b)b.style.display="";});});
     head(["/muallif.mp4","/muallif%20(1).mp4"],0,function(u){window._egAuthUrl=u;var b=document.getElementById("egAuthBtn");if(b)b.style.display="";});}
-  window.egVid=function(a,b){var kind=b||(a==="auth"?"auth":"demo");var url=kind==="auth"?(window._egAuthUrl||"/muallif.mp4"):(window._egVidUrl||"/evropago_demo.mp4");
+  window.egVid=function(a,b){var kind=b||(a==="auth"?"auth":"demo");var vs=window._egVids||{};var url=kind==="auth"?(window._egAuthUrl||"/muallif.mp4"):(vs[L()]||vs.uz||vs.ru||vs.en||"/evropago_demo.mp4");
     var t=C[L()];var v=document.getElementById("egVidEl");document.getElementById("egVidT").innerHTML=kind==="auth"?t.authT:t.demoT;
     if(v.getAttribute("src")!==url)v.setAttribute("src",url);openModal("egVidOvl");
-    try{var sc=document.querySelector(".screen.active");gtag("event",kind==="auth"?"video_author":"video_demo",{from:sc?sc.id:""});}catch(e){}try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}};
+    try{var sc=document.querySelector(".screen.active");gtag("event",kind==="auth"?"video_author":"video_demo",{from:sc?sc.id:"",lang:L()});}catch(e){}try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}};
   window.egVidClose=function(){var v=document.getElementById("egVidEl");try{v.pause();}catch(e){}closeModal("egVidOvl");};
   try{var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);try{fill();}catch(e){}return r;};}catch(e){}
   try{var _g=goScreen;goScreen=function(id){var r=_g.apply(this,arguments);try{if(id==="sc-pay")probe();fill();if(id!=="sc-pay"){var o=document.getElementById("egVidOvl");if(o&&o.classList.contains("on"))egVidClose();}}catch(e){}return r;};}catch(e){}
