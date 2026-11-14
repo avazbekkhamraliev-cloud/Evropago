@@ -966,6 +966,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--eg-gold-l);outline-
         <span class="pb-sub" id="pbLifeS">📋 Ichida: soliq qaytarish · ish topish · uy ijarasi · bank · yashash ruxsati · tibbiy sug'urta · haydovchilik guvohnomasi va boshqalar</span>
       </button>
     </div>
+    <div class="eg-more-lbl" id="egMoreLbl">Boshqa foydali bo'limlar</div>
     <div class="eg-tools">
       <button onclick="openModal('rankOvl')" id="rankBtn" class="eg-tile">
         <span class="eg-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 16.5V21M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5.5h3V7a3 3 0 0 1-3 3M7 5.5H4V7a3 3 0 0 0 3 3"/></svg></span> <span id="rankBtnLbl">Qaysi davlatdan viza olish tezroq?</span>
@@ -1398,6 +1399,18 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
   <div class="page" id="tab-firms">
     <div class="fw">
       <div class="sech"><h2 id="firmH">Ishonchli saytlar</h2><p id="firmP">To'g'ridan-to'g'ri</p></div>
+      <div id="egLockTop" style="display:none;"></div>
+      <div id="egQuick" style="display:flex;gap:8px;margin:0 0 10px;">
+        <button class="aicv-btn" style="flex:1;margin:0;font-size:13.5px;padding:12px 8px;line-height:1.25;" onclick="egQcCv()">&#129302; <span id="qcCvL">AI bilan CV yozish</span></button>
+        <button class="aicv-btn2" style="flex:1;margin:0;font-size:13.5px;padding:12px 8px;line-height:1.25;" onclick="egQcLetter()">&#9993;&#65039; <span id="qcLtL">Ariza xati namunasi</span></button>
+      </div>
+      <div style="background:var(--c);border:1px solid var(--bd);border-left:4px solid #C9A227;border-radius:12px;margin-bottom:16px;overflow:hidden;">
+        <div onclick="toggleJobSteps()" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:rgba(201,162,39,0.08);">
+          <div id="jobStepsH" style="font-size:14px;font-weight:700;">📌 Saytdan natija chiqishi uchun 5 qadam</div>
+          <div id="jobStepsArr" style="font-size:12px;color:var(--mt);transition:transform .2s;">▼</div>
+        </div>
+        <div id="jobStepsB" style="display:none;padding:0 16px 16px;font-size:13px;line-height:1.65;color:var(--mt);"></div>
+      </div>
       <div id="ctryStatus"></div>
       <div id="firmNote" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-left:4px solid #f59e0b;border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:var(--mt);"></div>
 
@@ -1584,13 +1597,6 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
         </div>
       </div>
 
-      <div style="background:var(--c);border:1px solid var(--bd);border-left:4px solid #C9A227;border-radius:12px;margin-bottom:16px;overflow:hidden;">
-        <div onclick="toggleJobSteps()" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:rgba(201,162,39,0.08);">
-          <div id="jobStepsH" style="font-size:14px;font-weight:700;">📌 Saytdan natija chiqishi uchun 5 qadam</div>
-          <div id="jobStepsArr" style="font-size:12px;color:var(--mt);transition:transform .2s;">▼</div>
-        </div>
-        <div id="jobStepsB" style="display:none;padding:0 16px 16px;font-size:13px;line-height:1.65;color:var(--mt);"></div>
-      </div>
       <div id="cvModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;overflow:auto;padding:14px;">
         <div style="max-width:660px;margin:0 auto;">
           <div id="cvHint" style="background:#fff;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5;color:#333;margin-bottom:8px;"></div>
@@ -1628,19 +1634,21 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
           <span id="payRouteDest"></span>
         </div>
         <div class="pay-cn" id="payCN"></div>
+        <div class="eg-what" id="egWhat"></div>
         <div class="pay-motiv" id="payMotiv">
           <div class="pay-motiv-title" id="pmTitle">&#128274; To'lasangiz, shular ochiladi:</div>
           <div class="pay-motiv-list" id="pmList">
-            <div class="pmrow"><span class="pmck">&#10003;</span> 70 ta tekshirilgan ish sayti va firma (40 tasi rasmiy davlat portali)</div>
-            <div class="pmrow"><span class="pmck">&#10003;</span> Har davlat bo'yicha yana 6 bosqich — 400+ hujjat tavsifi</div>
+            <div class="pmrow"><span class="pmck">&#10003;</span> 70 ta tekshirilgan ish sayti va firma (40 tasi rasmiy davlat sayti)</div>
+            <div class="pmrow"><span class="pmck">&#10003;</span> Har davlat uchun hujjatlar ro'yxati: 6 qadam, 400+ hujjat izohi</div>
             <div class="pmrow"><span class="pmck">&#10003;</span> 10 ta saytda ro'yxatdan o'tish bo'yicha qadam-baqadam qo'llanma</div>
-            <div class="pmrow" id="pmAiRow"><span class="pmck">&#10003;</span> <span id="pmAiTxt">AI yordamida Europass CV — bir necha daqiqada</span></div>
+            <div class="pmrow" id="pmAiRow"><span class="pmck">&#10003;</span> <span id="pmAiTxt">AI yozib beradigan CV (rezyume) — Yevropa standartida, bir necha daqiqada</span></div>
             <div class="pmrow"><span class="pmck">&#10003;</span> Bir marta to'lang — umrbod foydalaning</div>
           </div>
           <div class="eg-pv" id="payPreview">
             <div class="eg-pv-t" id="pvTitle">&#128274; Ichidan ko'rinish — to'lovdan keyin ochiladi</div>
             <div class="eg-pv-g"><div class="eg-pv-i" onclick="pvTap(0)"><img src="data:image/jpeg;base64,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" alt="" loading="lazy"><span class="eg-pv-l" aria-hidden="true">&#128274;</span><b id="pvL0">6 bosqich hujjat</b></div><div class="eg-pv-i" onclick="pvTap(1)"><img src="data:image/jpeg;base64,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" alt="" loading="lazy"><span class="eg-pv-l" aria-hidden="true">&#128274;</span><b id="pvL1">70 ta ish sayti</b></div><div class="eg-pv-i" onclick="pvTap(2)"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHCAkIBgoJCAkMCwoMDxoRDw4ODx8WGBMaJSEnJiQhJCMpLjsyKSw4LCMkM0Y0OD0/QkNCKDFITUhATTtBQj//2wBDAQsMDA8NDx4RER4/KiQqPz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz//wgARCAGQASwDASIAAhEBAxEB/8QAGgABAAMBAQEAAAAAAAAAAAAAAAEDBAIFBv/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/9oADAMBAAIQAxAAAAH5LXk1ud/vfO3s+tZ40y+5x5VZ6GjxOz0fEvouYCAAAAAAAAO+OjVFI55nkopuodeteTYhJiEiEiEiEiEiEiEiEiEiEiEiEiEiEgEhJc9F9DpOzHsSyydOJlamblahkr3Y954S1mEiEiEiEiEiEiEiEiEiEiEiAZ6L6HWdmPYkwr3mxW3bFZLFYsVixwO3A7cDtwO3A7cjpyOnI6cjqeJOnI6RPOUUX0Z6Tsya0jjvnvF+vR283nVer1c+Gvp5eoFAAEkJAAAkhIAAAdRPOUUX0ct9a8mtI656749Wqyvv5OuuejP5+/Bj0Cc9YSIkABJCQAAAFCSJBMTylFF9HLfWvJrSInnvn0dXi39/P6M4KWZqOfqCUAkRKSEiEiBQkhIABAEnKUUX0cuk7MexIjrnvkNUASRIAN2HvN9F57nr0a8UGjrK3Oq5jeQsAJESAAcpRRdTy6Tsx7Ec9R3zCWqAAFd7snv5vhR9BEeLz7UnhPR2V4nfrdR43Hu9Hz1XueHqBYAAATHKUUX0cuk7MexETHfIao6rl1JxPQ57iDuylEoWJCYgdWVC7PZBw6k4dwcyACJjlKKL6OXSdmPYiJd8wmd2N2LqNveEb4wwbOMvRpjPBotxDbOGTbxng215oTf153S7Jwk3RiVZn7g5SITHKZ6L6OXSdmPYkxMd8t2Hrd9PjFxHo9eZ2bowD0M9MG+fPk9DjLwba8yzfzjg9BgiPRrxq03+bJvjDB6DBJ1VMCJjlM9F9HLpOzHsSR3yGwAAE7McnoRhHoPPk28ZBvnANzD2VwAAmoSQBz1zxZ6L6OXSdmPYkjrgN0TUSAAACYJKBIAAJQJQJQJQJ5RxUUX0Y6Tsx7EkOYAAAACevYxvxY93zzE32dM+Y9HiMLdhAQAAAAFoovodJ2Y9iSHMFAAAAnXkuzbae0vHUrOY7HFOkZmkZmkZmkZmkZmkZltepnovodJ2Y9idRMMCwrWWGdeKF1ZyDZ9P8/8AT+H18LXm71LRUtz12xd7zqY5Namc21ZObUtFS0ed8x9j8j7PLgpup9fOdmPYnUTDDrkdd1C+c40U8gD0/p/kPpPD69rO83fQzjRVwqrjQ3mqnXBHcM2+c7N0M40M4n5H6H5v2+XJRfR6uc7MexJmLmKmkZl4ojSM7RyUxf0Z7LYOHfMsOuitEHTqTh1BDuSt1Jw75IdwVcdc2UUX0Ok7MexJ65MWKx24FisdxyOu6hY40lUX8lU99FC8Uo4O45HbgduB24Hc1iYCii6l0ac3RsUdMWqhaqFqoWqhaqFs0i5SLlIuUi1ULVQtVC1ULVQtVC2K6ljgaTEgEOi8pEJEJEAAAAAAAAAAASJAJBIJmAQJQESOUwsglAmATAlAlARMCRIkAAAAJRIAAABCRCRCRCRCRCRCRCRCRCREgiYABIJISEzJw7HDocuhy6HLocuoITJy6HLocJgAAAAgH//EACUQAAIBAwQCAgMBAAAAAAAAAAABAhESEwMQITEiMCBABDJQgP/aAAgBAQABBQJC60/2aThhiQikY1WWlFkYJSxRNeCtf1dM1N57IXSdDKzNIjrNN67M8jKzNIeo39qeyF1/Cnshdfwp7IXSTZjZjZjZjZjZY/uT2QuoTtMxmMxmMw9Ybq/tT2QutqlSpUqV+3PZC6f8KeyF09khabMQ4NfdnshdPbSgPZxTWpGj+3PZC6ZDtLjmrqRrTVX3J7IXTIdrrmrqRrTVf3J7IXT20pj2cklOVX9ueyF091qMyjk392eyF0/bpxTVkS2JZEmoooiKRPv2z2QuvapNFzLmXMqypX3z2QuvVFVb/H8cTMbMEqYpDhzjkLSY9FoeizFIlBr2T2QuvVp/spxsUoUdtq1I0vgOUcl0C6Jkiy+BFxZ+VS31z2QuvXcy5j1HS5lzKlzLmVZcyOo4k9Ry9k9kLr40KFpaUKbUKFChaUKbUKFrLWUKFCnznshdfGNKeJweJ4joJIlSkaHFfEqjxJJUikeJKgnGnDHQ8TxPE1KfKeyF18KHJycnJyciqcnJycnJyVZyclGciqirZycnJyU+M9kLrfTpSkR2lYlEx2niUR1LxPEohWjtFSvieJ4niUiTSI0PE8TxPEpEn3vPZC63qXsqVFJlSopHJyclXTk5OTk5OTkuY5VKlSpUqV+M9kLr1xpSkTxPEpE8TivieJ4jiqP2T2QuvZUqVKlSpUqVLn7Z7IXX8KeyF1/Cnshdfwp7IXXsjy4fjpqX46Sjp1nqaSi3oqzT0lJLT89bTt909kLr2rWkh68mKbq5tmR0jqNF7rKbl7p7IXXtWnJmGRhkYZGGRhkYZGGRhkYZGGRhkYZGGRhkYZGGRhkYZDg1tPZC69n48bpR00lYixFiLEWIsRYixFiLEWIsRYixFiLEWIsRr6StmqSnshdbpCRaWFhYNU3/ABP3XXx1JWpaxmMxnIalTJ5fLV/TV/eeyF1vUqXCmXjmN13/ABP3XXxlG4wowmFEtEhp0VnPy1f01f3nshdezQnbKGtFrLEyxMsTLEyxMsTLEyxMsTLEyxMsTLEyxMsTLEyxMsTX1lbJ1c9kLr23MvkZJGSRfIySMkjJIySMkjJIySMki+RfIvkZJF8i+Q5N7T2QuiKLC0cRRLS0tKFC0sLUWlpaWjRQtLC0tLS0tLS0tLS0e09kLoqXFxUqXFxUqVLi45OTkqyrOdri4qVKlxUqVKlS7eeyF17VSlUNoqjgqiqH7p7xf8OXwUi4uLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy4vG/8Z//EACQRAAMAAAUEAwEBAAAAAAAAAAABEQIDECEwEiAxQBMiQTJg/9oACAEDAQE/AWJlKUfM/TxCSJhJhHPznZCEIQhCEIQhCEJq9MWdvEfM15E6uZGIfgw+R/yZXjmRi0xZW9R8LfkSnMh96OpHUXhffOycD9N+m/Tfpv0334cLxDwPDxvvV/D7MjIyM6WdLOlnSzper78lbEIbFRUbEIQz1o+/JahUVFR9T6mxUVFRnO6Pg3Nys3Kzc3KzfV+pCEIQhCEIQhCEIT/Hf//EACURAAICAQMEAgMBAAAAAAAAAAABAhIREDAxAwQgQEFREyJQYP/aAAgBAgEBPwH+O3IzIzIi38+go5KFChQoUKFChQoUKIoig1jWPAoFN6esBnyS3Z6x4FItjenrHjyksn45fYoP7KsXlPWPHizJkyZMi8eprHj0OprHj0OprHj0OprHj0OprGRlFkWRZFkWRZFkWRZFkWRZFkWRN52ZTUeSM1Lj0nj5FVFkWRZFkWRZFkWW13DeTLMsWWUkUkYkZZlmWdu9nuIvJVlWYZaZaZ+xVlWVZ28WtrCMIwjCMIwjCMIwv9r/AP/EABoQAQACAwEAAAAAAAAAAAAAABEQUAAwkID/2gAIAQEABj8C0GPGRqGmPUhDBRMEPOP/xAAhEAADAAICAgMBAQAAAAAAAAAAARExYRAhIDBAQVFQcP/aAAgBAQABPyHLgxiB2UVo2iZWmfcjhQkPsdkjL4iIvZF6H4cuKym86MlJR99M2HbadWRN2/ipiY2N+DL+AUviy/jXLiwhpNJpNJpGv6Gmvm8uJQn8J/Cfwn8J/BDWDuClKUpSlKUpSlKUpSlKUpS+HLmvmBSlKUpSlKUpSlKUpSlKUvjy4m/gLw5eEY8DQ3PqPn8uQlWLlZOEY/gTLlyFpcug0KwIHV87lyGhdvoM+rgdU+dy5C6YmRnbtD/gTrl4BNoWG3pyEZGRkZCfB5e+dl5JVMYPgKJdfgcuJ+3AG43G4bslljd+By4n6umGINIr4H2IK3aHqB/kPvA+wfRR2YMqvdy4n6mijCJsR+oy4B7sJ35wDmsDW6ofeg1L6H/0KnT3cuJ+vcJf2N9xsNhVybDYbjYOMmd93LifjRRRRZZCiiiiiyiMsviaCiyyhqejlxPwWT7Q4F14ZDzOLHoNPKQ0YUh7EGvrjO4VWWOEHZ16OXE+YyuEfx5GGjEJyEOuFEfkMTY5my0xXny4nymbigIEKBQmoTQJsuzudYnIyQyOghQUQk9mAkMicCcPLl4yZHQUUJDdlDUh13wT8GJ4LQkDBRZZRY3G75cvZIfMdAkEuAwhgS4MSJH7uXtqy/0ossoosso6oP3cv41y+TUpSlKUpS+HL+NcvdJ0Cu6XtFAUUhQnhsSyTj8Dl7pOMWSiCUQJ7WN/cI+mJRZz4HL3SVMIjQaDQaDQaDQaDQaDQaDQaDQaDQaDNrw5e6Smi70aTSaTSaTSaTSaTSaTSaTSaTSaTSMu4UFzy8aqOwfhFnqDuD9iTMacH6BdryyGTnl4yZIXbmZcFHqBSRjB9uDt64qe4vLIZOeXuobEns2Gw2Gw2Gw2Gw2Gw2Gw2Gw2Gw2G4rJMsvnl75LwzcbDYbjYbDYbDYbDYbDcbjcbDcbjIPw5cymQSIQpokkgakiVkLgaQSMkkRRJSWQNYJCSRohIyBohI0NRI/DlzKCihuxOiiiyihOhsxMUVOQgjEyG7LLLKG7LLG4nRQ3fDl7pZH5IIKETDP3Z89XuvxG4hq+U5wySQQQQQQQQQQQQQQQQQQQQQQQQQQQQSMV/nQn+fwhCE5hCE8YQnxp87//aAAwDAQACAAMAAAAQA8un+R//AP8A/wD/AP8A/wD/AELxAPvvvvvvvvvvvvvvv/PKKQw4Qwwwwwwwwwwwy1KMgATTQQVffccffaQNEIAJ6+wTX+8xz+sggjtBABzw3+84z2sgghjOIHFALTc4B3tqggjOMBDfd1IIRzuoglLXgADXcYTXyKEcggjFPOCMhjBTff8AcCisZjyzjKXl03Xne458CjvCqaarqapqcLMXrKMCgbz44p7p5lWcGGUnasCgoU338GmmmFG57jEUICj/AO4gAQ8tNBxxBP8A/wA4Cj//AP8A/wD+JXnvb/8A/wD/AP4Cj/77776e2+9/77777gABL7LL7aVHGQ00PHGHOigZ64755YIJCHaKIIIACioA5oZIUwwQwgAgQzQCC6455677esvb744674ij3z3333000333333zSmkXDwwAAEEEEkEEAzyH0VWG01HTABCAEDQGU30lQgAAEDEEEEEEFHHCBQLhzyDDzzzyBDyiwAAADz//xAAgEQADAQACAgMBAQAAAAAAAAAAARExEGEgMCFAUUFQ/9oACAEDAQE/EMkCCBINfUy/EELDP0JwsMDK+Wdh2Cpr3LDIqIIIIII4R6ADUFhkXwhxU0v4F2XtZgwVcKrCvwVv2swYFg8qYX8CEi9rMGRZ5Ok/k6BpMIG/nyYsMizxSvCIhEQNTxYsMiz6DFhkWc0vheKUpeWLDIuKUvFKUpSlKXhiwyLypSlL5rDImUpSlKXwvksM+eIbBGQanmsM+boGtDrOs6joOg6DoOgaa0WGeYTlfyIIGkVFwtEEECE00LDPheVoZ3HcN39IGmEz3HcdwtkkLDPEIQhBVF/Rf0dhf0dhf0X9HYX9FosM+qehYNVDcsssssssssssssssX7+5eKUpf83/xAAgEQADAQACAwEAAwAAAAAAAAAAARFhMDEQIUAgQVBg/9oACAECAQE/EBohCC/olH6RmZjPT4O4yCCCCCCCCCCCPIQXfi9FZD6Go5z/AOToiIhQdvhyZGT0G6782esT8BN1huUokU5szXRZZSLLGq5lF+IheuNQhCEIQhCE4FCEIQhCEIQhOJQhCEJwlJR/qANDQ0NDTwaGhoaCW9fZLSuG6zc3Nzc3Nzc1E0+uH0poaDMiY0+FqcNDQ0HtNPhYtIwMBLdSEgSHRt3TEwMBA2+FpPsyMjIwMjIyMjISS6+alKUpSlKUpSlKX/H/AP/EACQQAAMAAgICAwEAAwEAAAAAAAABESExEGEwQSBRkUBQcaGB/9oACAEBAAE/ENJqHn+4TcVozpKQ+HZUVMMEoIJEB9mKoSOv5NRlFuuans240mgZNsS0lUHiUWJjPA7QkZlHjUPSYN13+WYtMY9stxvxoNX96Ybc78aRMCIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI240mg1qnaO0do7R2hNWw0jIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjI+NuNJoNwqdI6R0jpHSHdQJZ/WAAAAbcaTRw1RBBBBBBJJJJJJJJPGSSSSSCCCCCCOS8bcaTQQQ22+b/YwjbjSaObGIKa1BFYNyw1H/AFLYjbjSauMhEZIiNRGqTbNCVKs1/UtiNuNJq4xUIHQf2JsZuGb72Pf9K2I240mrhLYldCWmB5Q95G+3/UhG3Gk1cGgxZHjqIjNtU3pWFn6/qQjbjSauT2piGNjaNq/AmekdR1HUS9FfQnfoam/KjbjSaPKWzQFIrapaVog5RMxG41BptODAtPKjbjSaPNQRjvHeO0b0xI9iS8MY1fm240mjx3JX2Iv2Q87TwbRWIJQ3jBeRZEks8ism2RMyggshoWI65eTbjSaPHW4/sXi0MCyZiWjIywVEw6rxKIUCCyCiBhAw5UYYVHvx7caTR4ybTqElSx4sjOiCRphfaN6qN/sN6lHcK+xaphPGx5NuNJo+RM0hPejDoafTOtjWq0J/owWCdpDQ5DrOkafTGhaE7SE/0yD0Jno3CZ1if6Z1mbQzZfLbjSaPi1UWeFG+gvTgm+4PqH4QY3BNAIS5RX6QaRYhpuDY5gyUGRgdNwUqCRZT1oIywRSQeHok64L8jtxpNHwJ2kdbEl1RfcG0Uyf+ibZHf2Oomy6Oj9Zi2Rn/ALJvko/Y2bjDMi+wNv2RcZMpktMiTL2J37GPsyjTOgaaeeGezbjSaOSWRvXRKVch6UJPQ6qhbMGD0N7UHteiwikR6Mt4GG7BkTSg9LIZ7cI04HLEG6F2JTB4MpgJL6mW3D0YGzCgkbgiv68MezbjSaB869jZFY37Z3iGJjutnYQyYjNiqvZT7HhZE79jXcVMUbTGRO/Y32I/Y8tZu2JGmdrO1mfYkvbG/Yxs8MZtxpNA/FshxVA/piT9DG4NOoQxgZfSDZnBF6GqmB1nBZS8THs240mgfjStM7Ql+ztO1naZLTtO1me0e6Gbdfieh7NuNJo/wL0PZtxpNHipSlKUpSlKUpfmBHI+G3Gk0eaP6I/r+TbjSaPKlLex5EyNiJgbWalGALIpK1YMIWB1tSitUn5tuNJo8r1NC2jQfWbJFHkXWVouDQakzJCHk2e+bbjSaPKxokLK07Z2ztnbO2ds7Z2ztnbO2ds7Z2ztnbO2ds3kuNuNJo4viQlkxRUTo651zrnXOudc6Z1zrnXOudc651zrnXOudcShE4dEM240mg9c5US5YhrBTLGxgOEav9mj/Xya1BsbCgYBBErYrF4P5f8AKf8AabcaTQeuYhDVRUGJZEWDBmOEPh/s1f6+aSLCFxNCllF/qFSYl4ciRT5f8p/0m3Gk0cQhCEJzCcIYPFLEth1/06/6df8ATr/p1/06/wCnX/Tr/p1/06/6df8ATr/p1/06/wCnX/Tr/p1/06f6LKTbR24zbjSaOM8Z4zzkzym06hbGHd/Ts/p2f07v6dn9Oz+nZ/Ts/p2f07P6dn9Oz+nd/Tu/p3f07P6d39O7+mwHxtxpNHCHI2ZotNFlpSMoxq9insWeCU4R7THDZl0xAKmya2YVGME5gaFkyFHPZ2ib7PfCof38RtxA4zAcbcaTRw7UX3mXYmyxJhnaN62d43ezuFGxtsZWKOMyL7B7cl8ZGx3JHIy2e6McokPY/vEn2bZiUsM7xjbE2GL7SivjbjQNU8sxRPKDrpDSwKLKFvwfRRPgh4eZuC2LcPzVNlZWVlZX9lfmUxsr8Ie1RFZ/wFAAAAAAAAAEj0P8XJkyZM/x58UITkhCE4fEIQhCEIQhCE8qEJC+LGMYvjOZzgwMYvLSlKUvxnN4vNKX4QnjX+DfhhCEJ8IQhOYQn8kEvkCE+IQhCfAQa8yEiEEicIQhCEIQg0MQiEINDH4//9k=" alt="" loading="lazy"><span class="eg-pv-l" aria-hidden="true">&#128274;</span><b id="pvL2">Qo'llanmalar</b></div></div>
           </div>
+          <div class="eg-vbtns"><button type="button" class="eg-vbtn" id="egDemoBtn" style="display:none;" onclick="egVid('evropago_demo.mp4','demo')"></button><button type="button" class="eg-vbtn" id="egAuthBtn" style="display:none;" onclick="egVid('muallif.mp4','auth')"></button></div>
         </div>
       </div>
       <div class="pay-body">
@@ -1653,6 +1661,7 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
         <div id="recBadgeTg" class="eg-recwrap"><span>&#9989; Tavsiya etiladi</span></div>
         <button class="act-btn eg-paybtn" onclick="payTelegram()" id="tgBtn">&#9993; Telegram orqali to'lash</button>
         <button class="act-btn eg-paybtn" onclick="payWhatsapp()" id="waBtn">&#128241; WhatsApp orqali to'lash</button>
+        <div class="eg-tgsteps" id="egTgSteps"></div>
         </div>
         <div id="orDivider"><div></div><span id="orLbl">yoki karta orqali (Click/UzCard/Humo)</span><div></div></div>
         <div id="clickBlock">
@@ -1669,6 +1678,7 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
           <div class="eg-status-s" id="checkingSub">Bu bir necha soniyadan 2 daqiqagacha davom etishi mumkin. Sahifani yopmang.</div>
         </div>
         <button class="act-btn eg-paybtn" onclick="payClick()" id="payBtn">&#128179; Click orqali to'lash</button>
+        <div class="eg-clicknote" id="egClickNote"></div>
         <div id="recheckBox" class="eg-status eg-status-warn" style="display:none;">
           <div class="eg-status-ico">&#9203;</div>
           <div class="eg-status-s" id="recheckHint">To'lov qildingizmi? Tasdiqlash avtomatik tekshirilmoqda — bir necha daqiqa vaqt olishi mumkin, sahifani ochiq qoldiring. Qayta to'lamang.</div>
@@ -2337,8 +2347,8 @@ function T(){
     jobNext:"Ko\u2019rish &#8594;",
     payOnce:"&#10003; Bir martalik — umrbod kirish",
     pmTitle:"&#128274; To'lasangiz, shular ochiladi:",
-    pmR1:"70 ta tekshirilgan ish sayti va firma (40 tasi rasmiy davlat portali)",
-    pmR2:"Har davlat bo'yicha yana 6 bosqich — 400+ hujjat tavsifi",
+    pmR1:"70 ta tekshirilgan ish sayti va firma (40 tasi rasmiy davlat sayti)",
+    pmR2:"Har davlat uchun hujjatlar ro'yxati: 6 qadam, 400+ hujjat izohi",
     pmR3:"10 ta saytda ro'yxatdan o'tish bo'yicha qadam-baqadam qo'llanma",
     pmR4:"Bir marta to'lang — umrbod foydalaning",
     navFirms:"Ish beruvchilar ro'yxati",navGuide:"Hujjatlar to'plami",
@@ -2363,7 +2373,7 @@ function T(){
     payOnce:"&#10003; One-time payment — lifetime access",
     pmTitle:"&#128274; After payment you unlock:",
     pmR1:"70 verified job sites and employers (40 official government portals)",
-    pmR2:"6 more document stages per country — 400+ documents explained",
+    pmR2:"Document checklist for each country: 6 steps, 400+ documents explained",
     pmR3:"Step-by-step registration guides for 10 job sites",
     pmR4:"Pay once — use forever",
     navFirms:"Employer list",navGuide:"Document collection",
@@ -2390,8 +2400,8 @@ function T(){
     jobNext:"\u0421\u041c\u041e\u0422\u0420\u0415\u0422\u042c &#8594;",
     payOnce:"&#10003; \u0420\u0430\u0437\u043e\u0432\u0430\u044f \u043e\u043f\u043b\u0430\u0442\u0430 \u2014 \u043f\u043e\u0436\u0438\u0437\u043d\u0435\u043d\u043d\u044b\u0439 \u0434\u043e\u0441\u0442\u0443\u043f",
     pmTitle:"&#128274; \u041f\u043e\u0441\u043b\u0435 \u043e\u043f\u043b\u0430\u0442\u044b \u043e\u0442\u043a\u0440\u043e\u0435\u0442\u0441\u044f:",
-    pmR1:"70 проверенных сайтов вакансий и фирм (40 — официальные госпорталы)",
-    pmR2:"Ещё 6 этапов документов по каждой стране — 400+ описаний",
+    pmR1:"70 проверенных сайтов вакансий и фирм (40 — официальные государственные сайты)",
+    pmR2:"Список документов по каждой стране: 6 шагов, 400+ пояснений",
     pmR3:"Пошаговые инструкции по регистрации на 10 сайтах",
     pmR4:"\u041e\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043e\u0434\u0438\u043d \u0440\u0430\u0437 \u2014 \u043f\u043e\u043b\u044c\u0437\u0443\u0439\u0442\u0435\u0441\u044c \u0432\u0441\u0435\u0433\u0434\u0430",
     navFirms:"\u0421\u043f\u0438\u0441\u043e\u043a \u0440\u0430\u0431\u043e\u0442\u043e\u0434\u0430\u0442\u0435\u043b\u0435\u0439",navGuide:"\u041f\u0430\u043a\u0435\u0442 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u043e\u0432",
@@ -3337,7 +3347,7 @@ s5h:"5-qadam: Taklifnoma kelgach",
 s5:"Ish beruvchi hujjatni rasmiylashtirib sizga yuboradi — shu hujjat bilan elchixonaga viza topshirasiz. Hujjatlar cheklistiga qaytib, qolganini tayyorlang.",
 allHint:"👇 Quyidagi davlat tugmalaridan birini tanlasangiz, aynan o'sha davlat uchun tayyor xat shabloni va ruxsatnoma nomi chiqadi.",
 allPermits:"Ruxsatnoma nomi har davlatda boshqacha (Polsha — zezwolenie, Germaniya — Arbeitserlaubnis, Niderlandiya — TWV, Shvetsiya — arbetstillstånd), lekin qoida bir xil: uni har doim ish beruvchi rasmiylashtiradi.",
-cvBtn:"🤖 AI bilan Europass CV yozish",
+cvBtn:"🤖 AI bilan CV (rezyume) yozish",
 cvHint:"Qavs [ ] ichidagi joylarni bosib, o'z ma'lumotingizni yozing — shu yerning o'zida tahrirlanadi. Tayyor bo'lgach «PDF saqlash»ni bosing: ochilgan oynada «PDF sifatida saqlash»ni tanlang. Yoki «Nusxalash» bilan matnni oling.",
 cvPdf:"📄 PDF saqlash",cvCopy:"📋 Nusxalash",cvCopied:"Nusxalandi ✓",
 lockD:"Ariza berish bosqichlari: CV shabloni (PDF), har davlat tilida tayyor ariza xati, ruxsatnoma yo'riqnomasi va firibgarlikdan himoya — 24 davlat uchun.",lockB:"Ochish",
@@ -3358,7 +3368,7 @@ s5h:"Шаг 5: Когда пришёл оффер",
 s5:"Работодатель оформляет документ и отправляет вам — с ним подаёте на визу в посольстве. Вернитесь к чек-листу документов и подготовьте остальное.",
 allHint:"👇 Выберите страну ниже — появится готовый шаблон письма и название разрешения именно для неё.",
 allPermits:"Название разрешения в каждой стране своё (Польша — zezwolenie, Германия — Arbeitserlaubnis, Нидерланды — TWV, Швеция — arbetstillstånd), но правило одно: его всегда оформляет работодатель.",
-cvBtn:"🤖 Europass CV с помощью ИИ",
+cvBtn:"🤖 CV (резюме) с помощью ИИ",
 cvHint:"Нажмите на места в скобках [ ] и впишите свои данные — редактируется прямо здесь. Затем нажмите «Сохранить PDF»: в открывшемся окне выберите «Сохранить как PDF». Или заберите текст кнопкой «Копировать».",
 cvPdf:"📄 Сохранить PDF",cvCopy:"📋 Копировать",cvCopied:"Скопировано ✓",
 lockD:"Этапы подачи заявки: шаблон CV (PDF), готовое письмо на языке каждой страны, инструкция по разрешению и защита от мошенников — для 24 стран.",lockB:"Открыть",
@@ -3379,7 +3389,7 @@ s5h:"Step 5: When the offer arrives",
 s5:"The employer issues the document and sends it to you — with it you apply for the visa at the embassy. Go back to the document checklist and prepare the rest.",
 allHint:"👇 Select a country below to see a ready letter template and the permit name for that country.",
 allPermits:"The permit name differs by country (Poland — zezwolenie, Germany — Arbeitserlaubnis, Netherlands — TWV, Sweden — arbetstillstånd), but the rule is the same: the employer always arranges it.",
-cvBtn:"🤖 Write a Europass CV with AI",
+cvBtn:"🤖 Write a CV (résumé) with AI",
 cvHint:"Tap the parts in brackets [ ] and type your own details — editable right here. Then tap \"Save PDF\" and choose \"Save as PDF\" in the dialog. Or grab the text with \"Copy\".",
 cvPdf:"📄 Save PDF",cvCopy:"📋 Copy",cvCopied:"Copied ✓",
 lockD:"Application steps: CV template (PDF), a ready application letter in each country's language, permit guidance and scam protection — for 24 countries.",lockB:"Unlock",
@@ -4037,8 +4047,14 @@ if(tokenInUrl && !hasAccess){
   // Bosh sahifada qoldirib, mijozni qayta tanlov qilishga majburlamaymiz.
   goScreen("sc-app"); enterGuide();
 } else {
-  // Yangi va qaytgan mijozlar — bosh sahifa (davlat tanlash EvropaGo tugmasidan keyin)
-  goScreen("sc-welcome");
+  // 04.11.2026: YANGI mijoz (reklamadan) — to'g'ridan-to'g'ri 1-qadam "Qaysi davlatdansiz?" (28.10 gacha shunday edi,
+  // o'shanda Telegram murojaatlari ko'p edi). Qaytgan mijoz va qidiruv robotlari — bosh sahifa.
+  var _newBot=/bot|crawl|spider|slurp|google|yandex|bing|baidu|duckduck|lighthouse|headless|preview/i.test(navigator.userAgent||"")||navigator.webdriver===true;
+  // 14.11.2026: YANGI mijoz chalg'imasin: to'g'ridan-to'g'ri 1-qadam -> 2-qadam -> to'lov (Telegram) sahifasi.
+  // Har qadamda qisqa ko'rsatma chiqadi, "Davom" tugmasi yonib turadi. Qaytgan mijoz va qidiruv robotlari — bosh sahifa.
+  var _isNew = (!savedOrig && !_newBot && !location.hash);
+  if(_isNew){ try{ sessionStorage.setItem("eg_onb_flow","1"); }catch(e){} }
+  goScreen(_isNew ? "sc-origin" : "sc-welcome");
 }
 
 var _egBot=/bot|crawl|spider|slurp|google|yandex|bing|baidu|duckduck|lighthouse|headless|preview/i.test(navigator.userAgent||"")||navigator.webdriver===true;
@@ -6152,6 +6168,19 @@ var MAIN_FAQ=[
    a:{uz:"Chek skrinshotini Telegram\u2018ga (<b>@Evropagoo</b>) yuborasiz \u2014 5 daqiqada shaxsiy kirish havolangizni olasiz. Bir marta to\u2018laysiz, barcha 24 davlat umrbod ochiq qoladi.",
       ru:"Вы отправляете скриншот чека в Telegram (<b>@Evropagoo</b>) \u2014 через 5 минут получаете персональную ссылку доступа. Платите один раз \u2014 все 24 страны остаются открытыми навсегда.",
       en:"You send a screenshot of the receipt to Telegram (<b>@Evropagoo</b>) \u2014 within 5 minutes you receive your personal access link. Pay once, and all 24 countries stay unlocked for life."}}
+,
+ {q:{uz:"Ish topilishiga kafolat bormi?",ru:"Есть ли гарантия трудоустройства?",en:"Is a job guaranteed?"},
+ a:{uz:"<b>Yo\u2018q, buni hech kim kafolatlay olmaydi</b> \u2014 ishga olish faqat ish beruvchining qarori. Kim \u2018kafolat\u2019 bersa, ehtiyot bo\u2018ling. Biz to\u2018g\u2018ri saytlar, kerakli hujjatlar va to\u2018g\u2018ri tartibni ko\u2018rsatamiz \u2014 shunda imkoniyatingiz oshadi va vositachiga ortiqcha pul bermaysiz.",
+ ru:"<b>Нет, этого не может гарантировать никто</b> \u2014 решение о найме принимает только работодатель. Если кто-то даёт \u00abгарантию\u00bb \u2014 будьте осторожны. Мы показываем правильные сайты, нужные документы и порядок действий \u2014 так ваши шансы выше, а посредникам платить не нужно.",
+ en:"<b>No \u2014 nobody can guarantee that</b>; hiring is the employer\u2019s decision. Be careful with anyone who promises a \u2018guarantee\u2019. We show the right sites, the documents you need and the right order \u2014 so your chances go up and you don\u2019t overpay intermediaries."}},
+ {q:{uz:"Til bilmasam ham bo\u2018ladimi?",ru:"А если я не знаю языка?",en:"What if I don\u2019t speak the language?"},
+ a:{uz:"Qo\u2018llanmaning o\u2018zi o\u2018zbek va rus tilida. Yevropada ish uchun til talabi davlat va ishga bog\u2018liq: ba\u2019zi oddiy ishlarda boshlang\u2018ich daraja yetarli bo\u2018lishi mumkin, lekin til bilish imkoniyatni ancha oshiradi. CV\u2019ni esa AI o\u2018sha davlat tilida yozib beradi.",
+ ru:"Само руководство \u2014 на узбекском и русском. Требования к языку зависят от страны и работы: для части простых вакансий может хватить начального уровня, но знание языка заметно повышает шансы. А CV ИИ напишет на языке нужной страны.",
+ en:"The guide itself is in Uzbek and Russian. Language requirements depend on the country and the job: for some simple jobs a basic level may be enough, but knowing the language raises your chances a lot. The AI writes your CV in that country\u2019s language."}},
+ {q:{uz:"Telefonimni almashtirsam-chi?",ru:"А если я сменю телефон?",en:"What if I change my phone?"},
+ a:{uz:"Kirish xavfsizlik uchun bitta qurilmaga bog\u2018lanadi. Telefon almashsa yoki brauzer tozalansa, Telegram\u2018da <b>@Evropagoo</b> ga yozing \u2014 kirishni yangi telefonga o\u2018tkazib beramiz. Qayta to\u2018lash shart emas.",
+ ru:"Доступ в целях безопасности привязан к одному устройству. Если вы сменили телефон или очистили браузер \u2014 напишите в Telegram <b>@Evropagoo</b>, и мы перенесём доступ на новое устройство. Платить заново не нужно.",
+ en:"For security, access is tied to one device. If you change your phone or clear the browser, message <b>@Evropagoo</b> on Telegram and we\u2019ll move your access to the new device. No need to pay again."}}
 ];
 function renderMainFaq(){
   var t=lang==="ru"?"&#10067; Часто задаваемые вопросы":lang==="en"?"&#10067; Frequently Asked Questions":"&#10067; Ko\u2018p so\u2018raladigan savollar";
@@ -7155,6 +7184,7 @@ function addGuideButtons(){
   function hide(){var h=document.getElementById("egLangHint");if(h)h.remove();var g=document.querySelector(".eg-langring");if(g)g.classList.remove("eg-langring");
     try{localStorage.setItem("eg_langhint_v1","1");}catch(e){}}
   function show(){
+    if(document.getElementById("egOnb")) return;
     var sc=document.getElementById("sc-welcome"); if(!sc||!sc.classList.contains("active")) return;
     var b=document.getElementById("langBtnUz"); if(!b) return; var g=b.parentNode; var r=g.getBoundingClientRect(); if(!r.width) return;
     g.classList.add("eg-langring");
@@ -7224,7 +7254,10 @@ function addGuideButtons(){
 .aicv-left{display:flex;align-items:center;gap:8px;background:rgba(212,175,106,.10);border:1px solid rgba(212,175,106,.32);border-radius:12px;padding:9px 12px;font-size:12.5px;font-weight:700;color:var(--eg-gold-l,#E8CE96);margin-bottom:12px;}
 .aicv-sec{border:1px solid var(--bd,rgba(212,175,106,.24));border-radius:14px;padding:12px;margin:0 0 12px;background:rgba(0,0,0,.12);}
 .aicv-sec h4{margin:0 0 10px;font-size:14px;color:var(--eg-gold-l,#E8CE96);}
-.aicv-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.aicv-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;}
+.aicv-g>*{min-width:0;}
+.aicv-f input,.aicv-f select{min-width:0;max-width:100%;}
+.aicv-item>.aicv-del{position:static;display:block;margin:0 0 4px auto;}
 .aicv-g .full{grid-column:1/-1;}
 .aicv-f label{display:block;font-size:11.5px;font-weight:700;color:var(--eg-muted,#A8B5AC);margin:0 0 3px;}
 .aicv-f input,.aicv-f select,.aicv-f textarea{width:100%;box-sizing:border-box;background:var(--eg-deep,#072019);color:var(--eg-cream,#F5EFE3);border:1px solid rgba(212,175,106,.30);border-radius:10px;padding:9px 10px;font-size:14px;font-family:inherit;min-height:40px;}
@@ -7533,14 +7566,195 @@ window.aicvPdf=function(){
   var imgs=d.images,left=imgs.length;if(!left){setTimeout(go,250);}else{for(var i=0;i<imgs.length;i++){if(imgs[i].complete){if(--left===0)setTimeout(go,250);}else{imgs[i].onload=imgs[i].onerror=function(){if(--left===0)setTimeout(go,250);};}}}
 };
 window.aicvCopy=function(){var s=document.getElementById("aicvSheet");if(!s)return;var txt=s.innerText||"";var b=document.getElementById("aicvCopyB"),t=UI[L()];var ok=function(){if(b){b.innerHTML=t.copied;setTimeout(function(){b.innerHTML=t.copy;},1500);}};try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){if(typeof cvCopyFallback==="function")cvCopyFallback(txt);ok();});}else{if(typeof cvCopyFallback==="function")cvCopyFallback(txt);ok();}}catch(e){}};
-var PMAI={uz:"AI yordamida Europass CV — bir necha daqiqada",ru:"Europass CV с помощью ИИ — за несколько минут",en:"Europass CV with AI — in a few minutes"};
-function pmAi(){try{var e=document.getElementById("pmAiTxt");if(e)e.textContent=PMAI[L()];}catch(x){}}
+var PMAI={uz:"AI yozib beradigan CV (rezyume) — Yevropa standartida, bir necha daqiqada",ru:"CV (резюме) с помощью ИИ — по европейскому стандарту, за несколько минут",en:"An AI-written CV (résumé) to the European standard — in minutes"};
+var QCL={uz:["AI bilan CV yozish","Ariza xati namunasi"],ru:["CV с помощью ИИ","Образец письма"],en:["Write CV with AI","Letter template"]};
+function pmAi(){try{var e=document.getElementById("pmAiTxt");if(e)e.textContent=PMAI[L()];var q=QCL[L()],a=document.getElementById("qcCvL"),b=document.getElementById("qcLtL");if(a)a.textContent=q[0];if(b)b.textContent=q[1];}catch(x){}}
+function curFlt(){try{if(typeof ff2!=="undefined"&&ff2&&ff2!=="all")return ff2;}catch(e){}return (typeof selC!=="undefined"&&selC)||"de";}
+window.egQcCv=function(){ev("quick_cv_click");aiCvOpen(curFlt());};
+window.egQcLetter=function(){ev("quick_letter_click");var b=document.getElementById("jobStepsB");if(!b)return;if(b.style.display==="none"&&typeof toggleJobSteps==="function")toggleJobSteps();
+  setTimeout(function(){var tgt=b.parentNode;try{var T=(typeof JOBSTEPS_TXT!=="undefined"&&(JOBSTEPS_TXT[lang]||JOBSTEPS_TXT.uz))||null;if(T){var bs=b.querySelectorAll("b");for(var i=0;i<bs.length;i++){if(bs[i].textContent.trim()===T.s3h){tgt=bs[i];break;}}}}catch(e){}try{tgt.scrollIntoView({behavior:"smooth",block:"start"});}catch(e){tgt.scrollIntoView();}},60);};
 pmAi();
 // til almashtirilganda forma yangilansin
 try{if(typeof applyLang==="function"){var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);pmAi();try{var o=document.getElementById("aicvOvl");if(o&&o.classList.contains("on")&&F){if(document.getElementById("aicvForm").style.display!=="none")renderForm();else if(document.getElementById("aicvRes").style.display!=="none"&&document.getElementById("aicvResTop"))showRes(LAST_OK,true);}}catch(e){}return r;};}}catch(e){}
 })();
 </script>
 
+<style id="eg-funnel-css">
+#egLockTop{margin:0 0 10px;padding:12px 14px;border-radius:14px;border:1px solid rgba(212,175,106,.55);background:linear-gradient(135deg,rgba(212,175,106,.16),rgba(11,46,37,.35));}
+#egLockTop .lt-t{font-weight:800;font-size:15px;color:var(--tx,#F3EBD8);margin-bottom:3px;}
+#egLockTop .lt-s{font-size:12.5px;line-height:1.45;color:var(--mt,#C5D0C8);margin-bottom:10px;}
+#egLockTop button{width:100%;border:0;border-radius:12px;padding:12px;font-weight:800;font-size:15px;cursor:pointer;color:#0B2E25;background:linear-gradient(135deg,#F1D58A,#C9A227);}
+#egPaySticky{position:fixed;left:0;right:0;bottom:0;z-index:80;padding:14px 14px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(6,30,23,0),rgba(6,30,23,.94) 38%);display:none;}
+#egPaySticky.on{display:block;}
+#egPaySticky button{display:block;width:100%;max-width:520px;margin:0 auto;border:0;border-radius:14px;padding:15px 12px;font-weight:800;font-size:16px;cursor:pointer;color:#0B2E25;background:linear-gradient(135deg,#F1D58A,#C9A227);box-shadow:0 8px 24px rgba(0,0,0,.35);}
+</style>
+<script>
+(function(){
+  function ev(n){try{gtag("event",n);}catch(e){}}
+  function L(){return (typeof lang!=="undefined"&&(lang==="ru"||lang==="en"))?lang:"uz";}
+  function paid(){try{return !!(typeof hasAccess!=="undefined"&&hasAccess);}catch(e){return false;}}
+  var LT={uz:{t:"&#128274; Asosiy qism yopiq",s:"70 ta tekshirilgan ish sayti va firma, har davlat uchun 6 bosqichli hujjatlar, AI bilan Europass CV",b:"Ochish — 99 000 so'm"},
+          ru:{t:"&#128274; Основная часть закрыта",s:"70 проверенных сайтов работы и компаний, документы по 6 этапам для каждой страны, Europass CV с ИИ",b:"Открыть — 99 000 сум"},
+          en:{t:"&#128274; The main part is locked",s:"70 verified job sites and companies, 6-stage document guides for each country, Europass CV with AI",b:"Unlock — 99,000 UZS"}};
+  function lockTop(){var el=document.getElementById("egLockTop");if(!el)return;if(paid()){el.style.display="none";return;}
+    var T=LT[L()];el.innerHTML='<div class="lt-t">'+T.t+'</div><div class="lt-s">'+T.s+'</div><button type="button" onclick="egLockTopGo()">'+T.b+'</button>';el.style.display="block";}
+  window.egLockTopGo=function(){ev("lock_top_click");goScreen("sc-pay");};
+  // Pastki doimiy tugma: to'lov sahifasida Telegram tugmasi ekrandan pastda qolsa ko'rinadi
+  var bar=document.createElement("div");bar.id="egPaySticky";bar.innerHTML='<button type="button" onclick="egStickyTg()"></button>';document.body.appendChild(bar);
+  window.egStickyTg=function(){ev("pay_sticky_tg");payTelegram();};
+  var raf=0;
+  function upd(){raf=0;try{var sc=document.getElementById("sc-pay"),tg=document.getElementById("tgBtn");
+    var show=!!(sc&&sc.classList.contains("active")&&tg&&tg.offsetParent!==null&&!paid());
+    if(show){var r=tg.getBoundingClientRect();show=r.top>window.innerHeight-30;}
+    if(show){bar.firstChild.textContent=(tg.textContent||"").replace(/\s+/g," ").trim();}
+    bar.classList.toggle("on",show);}catch(e){}}
+  function q(){if(!raf)raf=(window.requestAnimationFrame||setTimeout)(upd);}
+  window.addEventListener("scroll",q,{passive:true});window.addEventListener("resize",q);
+  try{var _g=goScreen;goScreen=function(){var r=_g.apply(this,arguments);try{setTimeout(upd,60);lockTop();}catch(e){}return r;};}catch(e){}
+  try{if(typeof renderFirms==="function"){var _rf=renderFirms;renderFirms=function(){var r=_rf.apply(this,arguments);try{lockTop();}catch(e){}return r;};}}catch(e){}
+  try{if(typeof applyLang==="function"){var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);try{lockTop();upd();}catch(e){}return r;};}}catch(e){}
+  lockTop();setTimeout(upd,300);
+})();
+</script>
+<style id="eg-onb-css">
+#egOnb{position:fixed;inset:0;z-index:99990;}
+#egOnb .hole{position:fixed;border-radius:22px;box-shadow:0 0 0 9999px rgba(3,18,13,.80);cursor:pointer;animation:egOnbRing 1.4s ease-in-out infinite;}
+@keyframes egOnbRing{0%,100%{outline:3px solid rgba(242,193,78,.95);outline-offset:2px}50%{outline:3px solid rgba(242,193,78,.2);outline-offset:11px}}
+#egOnb .tip{position:fixed;left:14px;right:14px;max-width:460px;margin:0 auto;background:linear-gradient(160deg,#0F3B2F,#0B2E25);border:1.5px solid #D4AF6A;border-radius:18px;padding:14px 16px 12px;color:#F3EBD8;box-shadow:0 18px 40px rgba(0,0,0,.45);font-family:inherit;}
+#egOnb .tip h4{margin:0 0 4px;font-size:18px;font-weight:800;color:#F2C14E}
+#egOnb .tip p{margin:0 0 10px;font-size:14px;line-height:1.45}
+#egOnb .steps{display:flex;flex-direction:column;gap:6px;margin:0 0 10px;}
+#egOnb .steps div{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:700;background:rgba(255,255,255,.06);border-radius:10px;padding:7px 10px}
+#egOnb .steps b{display:inline-flex;width:24px;height:24px;border-radius:50%;background:#D4AF6A;color:#0B2E25;align-items:center;justify-content:center;font-size:13px;flex:none}
+#egOnb .hint{font-size:13px;color:#F2C14E;font-weight:700;margin:0 0 10px}
+#egOnb .tip.compact p,#egOnb .tip.compact .steps{display:none}
+#egOnb .row{display:flex;gap:8px;align-items:center}
+#egOnb .go{flex:1;border:0;border-radius:12px;padding:13px;font-weight:800;font-size:16px;color:#0B2E25;background:linear-gradient(135deg,#F1D58A,#C9A227);cursor:pointer}
+#egOnb .skip{border:0;background:none;color:#C5D0C8;font-size:13px;text-decoration:underline;padding:10px;cursor:pointer}
+#egOnb .lg{display:flex;gap:6px;justify-content:flex-end;margin:0 0 4px}
+#egOnb .lg button{border:1px solid rgba(212,175,106,.6);background:none;color:#F3EBD8;border-radius:8px;padding:3px 9px;font-size:12px;font-weight:700;cursor:pointer}
+#egOnb .lg button.on{background:#D4AF6A;color:#0B2E25}
+#egOnb .hand{position:fixed;font-size:42px;line-height:1;pointer-events:none;animation:egOnbHand 1s ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+@keyframes egOnbHand{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.eg-glow{animation:egGlow 1.5s ease-in-out infinite !important}
+@keyframes egGlow{0%,100%{box-shadow:0 0 0 0 rgba(242,193,78,0),0 4px 14px rgba(0,0,0,.13)}50%{box-shadow:0 0 0 5px rgba(242,193,78,.6),0 0 26px 6px rgba(242,193,78,.45)}}
+#egStepTip{position:fixed;left:50%;transform:translateX(-50%);top:100px;z-index:9999;background:#0B2E25;color:#F3EBD8;border:1px solid #D4AF6A;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:700;box-shadow:0 10px 24px rgba(0,0,0,.35);width:max-content;max-width:92vw;text-align:center;transition:opacity .4s;cursor:pointer}
+</style>
+<script>
+(function(){
+  function ev(n){try{gtag("event",n);}catch(e){}}
+  function L(){return (typeof lang!=="undefined"&&(lang==="ru"||lang==="en"))?lang:"uz";}
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+  function ss(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v);}catch(e){return null;}}
+  var T={uz:{h:"&#128075; Xush kelibsiz!",p:"Yevropada qonuniy ishlash yo'lini 3 oddiy qadamda ko'rsatamiz:",s:["Qaysi davlat fuqarosisiz","Qaysi davlatda ishlamoqchisiz","Ish saytlari, hujjatlar va CV"],hint:"&#128070; Boshlash uchun yonib turgan tugmani bosing",go:"Boshlash &#8594;",skip:"Keyinroq",
+            s1:"1-qadam: fuqaroligingizni tanlang, so'ng &#10140;",s2:"2-qadam: ishlamoqchi bo'lgan davlatni tanlang, so'ng &#10140;",s3:"Tayyor! Ish saytlari, hujjatlar va AI CV shu yerda &#128071;",s4:"Oxirgi qadam: Telegram tugmasini bosing — to'lov va savollaringiz bo'yicha yordam beramiz"},
+          ru:{h:"&#128075; Добро пожаловать!",p:"Покажем легальный путь к работе в Европе за 3 простых шага:",s:["Гражданин какой страны вы","В какой стране хотите работать","Сайты вакансий, документы и CV"],hint:"&#128070; Чтобы начать, нажмите на светящуюся кнопку",go:"Начать &#8594;",skip:"Позже",
+            s1:"Шаг 1: выберите гражданство, затем &#10140;",s2:"Шаг 2: выберите страну работы, затем &#10140;",s3:"Готово! Сайты вакансий, документы и CV — здесь &#128071;",s4:"Последний шаг: нажмите кнопку Telegram — поможем с оплатой и ответим на вопросы"},
+          en:{h:"&#128075; Welcome!",p:"We'll show you the legal way to work in Europe in 3 simple steps:",s:["Your citizenship","The country where you want to work","Job sites, documents and CV"],hint:"&#128070; Tap the glowing button to start",go:"Start &#8594;",skip:"Later",
+            s1:"Step 1: choose your citizenship, then &#10140;",s2:"Step 2: choose the country to work in, then &#10140;",s3:"Done! Job sites, documents and CV are here &#128071;",s4:"Last step: tap the Telegram button — we'll help with payment and answer your questions"}};
+  var btn=function(){return document.getElementById("startBtn");};
+  function glowOn(){var b=btn();if(b&&!ls("eg_onb_go"))b.classList.add("eg-glow");}
+  function close(){var o=document.getElementById("egOnb");if(o)o.remove();window.removeEventListener("resize",place);window.removeEventListener("scroll",place,true);}
+  function start(){ls("eg_onb_go","1");ss("eg_onb_flow","1");var b=btn();if(b)b.classList.remove("eg-glow");close();ev("onb_start");goScreen("sc-origin");}
+  function render(){var o=document.getElementById("egOnb");if(!o)return;var t=T[L()],tip=o.querySelector(".tip");
+    tip.innerHTML='<div class="lg"><button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="en">EN</button></div>'+
+      '<h4>'+t.h+'</h4><p>'+t.p+'</p><div class="steps">'+t.s.map(function(x,i){return '<div><b>'+(i+1)+'</b>'+x+'</div>';}).join('')+'</div>'+
+      '<div class="hint">'+t.hint+'</div><div class="row"><button type="button" class="go">'+t.go+'</button><button type="button" class="skip">'+t.skip+'</button></div>';
+    tip.querySelectorAll(".lg button").forEach(function(x){if(x.getAttribute("data-l")===L())x.classList.add("on");x.onclick=function(e){e.stopPropagation();try{setLang(x.getAttribute("data-l"));}catch(_){}render();place();};});
+    tip.querySelector(".go").onclick=function(e){e.stopPropagation();start();};
+    tip.querySelector(".skip").onclick=function(e){e.stopPropagation();ev("onb_skip");close();glowOn();};
+    tip.onclick=function(e){e.stopPropagation();};}
+  function place(){var o=document.getElementById("egOnb"),b=btn();if(!o||!b)return;var r=b.getBoundingClientRect(),p=6;
+    var h=o.querySelector(".hole");h.style.left=(r.left-p)+"px";h.style.top=(r.top-p)+"px";h.style.width=(r.width+2*p)+"px";h.style.height=(r.height+2*p)+"px";
+    var tip=o.querySelector(".tip"),vh=window.innerHeight,hand=o.querySelector(".hand");
+    tip.classList.remove("compact");var th=tip.offsetHeight;
+    if(vh-r.bottom-40<th&&r.top-30<th){tip.classList.add("compact");th=tip.offsetHeight;}
+    if(vh-r.bottom-40>=th){tip.style.top=(r.bottom+36)+"px";tip.style.bottom="auto";}
+    else if(r.top-30>=th){tip.style.top="auto";tip.style.bottom=(vh-r.top+26)+"px";}
+    else{tip.style.top="auto";tip.style.bottom="10px";}
+    hand.style.left=(r.right-74)+"px";hand.style.top=(r.bottom-18)+"px";}
+  function show(){
+    if(!window._egOnbNew||ls("eg_onb_v1"))return;
+    var sc=document.getElementById("sc-welcome"),b=btn();if(!sc||!sc.classList.contains("active")||!b)return;
+    ls("eg_onb_v1","1");ls("eg_langhint_v1","1");
+    var lh=document.getElementById("egLangHint");if(lh)lh.remove();var rg=document.querySelector(".eg-langring");if(rg)rg.classList.remove("eg-langring");
+    var r=b.getBoundingClientRect();if(r.top<70||r.bottom>window.innerHeight*.55){try{window.scrollTo(0,Math.max(0,window.scrollY+r.top-110));}catch(e){}}
+    var o=document.createElement("div");o.id="egOnb";o.innerHTML='<div class="hole"></div><div class="hand">&#128070;</div><div class="tip"></div>';
+    document.body.appendChild(o);render();place();
+    o.querySelector(".hole").onclick=function(e){e.stopPropagation();start();};
+    o.onclick=function(){ev("onb_skip");close();glowOn();};
+    window.addEventListener("resize",place);window.addEventListener("scroll",place,true);
+    ev("onb_show");
+  }
+  // step tips during the first walk-through
+  var tipT=0,nextT=0;
+  function stepTip(id){var t=T[L()],msg=id==="sc-origin"?t.s1:id==="sc-dest"?t.s2:id==="sc-pay"?t.s4:id==="sc-app"?t.s3:null;var old=document.getElementById("egStepTip");if(old)old.remove();clearTimeout(tipT);
+    if(!msg||!ss("eg_onb_flow"))return;var key="eg_onb_tip_"+id;if(ss(key))return;ss(key,"1");
+    var d=document.createElement("div");d.id="egStepTip";d.innerHTML=msg;d.onclick=function(){d.remove();};document.body.appendChild(d);
+    tipT=setTimeout(function(){d.style.opacity="0";setTimeout(function(){d.remove();},450);},id==="sc-pay"?7000:5500);}
+  function payGlow(id){var on=id==="sc-pay"&&!!ss("eg_onb_flow");["tgBtn"].forEach(function(k){var x=document.getElementById(k);if(x)x.classList.toggle("eg-glow",on);});
+    var sb=document.querySelector("#egPaySticky button");if(sb)sb.classList.toggle("eg-glow",on);}
+  // 2-qadamdan keyin to'lov qilmagan mijoz to'g'ridan-to'g'ri to'lov sahifasiga (u yerdan Telegramga) o'tadi
+  try{var _gg=goToGuide;goToGuide=function(){var a=document.querySelector(".screen.active"),from=a?a.id:"";var r=_gg.apply(this,arguments);
+    try{var paid=(typeof hasAccess!=="undefined"&&hasAccess);if(!paid&&(from==="sc-dest"||from==="sc-job")){ev("flow_to_pay");goScreen("sc-pay");}}catch(e){}return r;};}catch(e){}
+  function nextGlow(id){clearInterval(nextT);document.querySelectorAll(".btn-next.eg-glow").forEach(function(x){x.classList.remove("eg-glow");});
+    if(!ss("eg_onb_flow"))return;var nb=id==="sc-origin"?"origNext":id==="sc-dest"?"destNext":null;if(!nb)return;
+    nextT=setInterval(function(){var x=document.getElementById(nb),sc=document.getElementById(id);if(!x||!sc||!sc.classList.contains("active")){clearInterval(nextT);return;}
+      if(!x.disabled)x.classList.add("eg-glow");else x.classList.remove("eg-glow");},300);}
+  try{var _g=goScreen;goScreen=function(id){var r=_g.apply(this,arguments);try{if(id!=="sc-welcome")close();if(id==="sc-origin"&&ss("eg_onb_flow")===null&&window._egOnbNew&&!ls("eg_onb_go")){ls("eg_onb_go","1");ss("eg_onb_flow","1");var b=btn();if(b)b.classList.remove("eg-glow");}stepTip(id);nextGlow(id);payGlow(id);}catch(e){}return r;};}catch(e){}
+  if(window._egOnbNew&&ls("eg_onb_v1"))glowOn();
+  // birinchi ekran skript yuklanishidan oldin ochilgan bo'lsa ham 1-qadam ko'rsatmasi chiqsin
+  function initStep(){try{var a=document.querySelector(".screen.active");if(a&&ss("eg_onb_flow")){stepTip(a.id);nextGlow(a.id);payGlow(a.id);}}catch(e){}}
+  if(document.readyState==="complete")setTimeout(initStep,500);else window.addEventListener("load",function(){setTimeout(initStep,500);});
+  if(document.readyState==="complete")setTimeout(show,600);else window.addEventListener("load",function(){setTimeout(show,600);});
+})();
+</script>
+<style id="eg-clarity-css">
+.eg-what{margin:10px 0 12px;padding:10px 12px;border-radius:12px;background:rgba(212,175,106,.12);border:1px solid rgba(212,175,106,.45);font-size:13.5px;line-height:1.5;text-align:left;color:inherit}
+.eg-tgsteps{margin:8px 0 4px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px dashed rgba(212,175,106,.5);font-size:13px;line-height:1.55;text-align:left}
+.eg-tgsteps b{display:block;margin-bottom:4px;color:#E2C08A}
+.eg-tgsteps div{display:flex;gap:8px;align-items:flex-start;margin:3px 0}
+.eg-tgsteps i{font-style:normal;flex:none;width:20px;height:20px;border-radius:50%;background:#D4AF6A;color:#0B2E25;font-weight:800;font-size:12px;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.eg-clicknote{margin:6px 0 2px;font-size:12.5px;line-height:1.45;opacity:.9;text-align:center}
+.eg-vbtns{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.eg-vbtn{width:100%;border:1.5px solid #D4AF6A;background:rgba(212,175,106,.10);color:inherit;border-radius:12px;padding:11px 12px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
+#egVidOvl video{width:100%;max-height:72vh;border-radius:12px;background:#000;display:block}
+.eg-more-lbl{display:flex;align-items:center;gap:10px;margin:22px 2px 10px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.eg-more-lbl::before,.eg-more-lbl::after{content:"";flex:1;height:1px;background:currentColor;opacity:.35}
+</style>
+<div class="ovl" id="egVidOvl"><div class="mdl"><div class="mhd"><h3 id="egVidT"></h3><button class="mcl" onclick="egVidClose()">&#10005;</button></div><div class="mbd"><video id="egVidEl" playsinline controls preload="none"></video></div></div></div>
+<script>
+(function(){
+  function L(){return (typeof lang!=="undefined"&&(lang==="ru"||lang==="en"))?lang:"uz";}
+  function ev(n){try{gtag("event",n);}catch(e){}}
+  var C={uz:{what:"&#8505;&#65039; <b>EvropaGo agentlik emas.</b> Siz o'zingiz ariza berasiz &mdash; biz qaysi saytga, qanday hujjat bilan va qaysi tartibda topshirishni o'zbek tilida ko'rsatamiz.",
+             tgT:"Telegram orqali qanday to'lanadi:",tg:["Tugmani bosing &mdash; Telegram ochiladi","Admin karta raqamini yuboradi","To'laysiz va chek rasmini yuborasiz","Odatda 5 daqiqa ichida kirish havolasi keladi"],
+             click:"&#9889; Click orqali to'lasangiz &mdash; to'lov tasdiqlangach sahifa o'zi ochiladi (odatda 1&ndash;2 daqiqa)",
+             demo:"&#9654;&#65039; Ichini ko'ring &mdash; 20 soniyalik video",auth:"&#128100; Muallifdan qisqa video",demoT:"Ichidan qanday ko'rinadi",authT:"Muallifdan",more:"Boshqa foydali bo'limlar"},
+          ru:{what:"&#8505;&#65039; <b>EvropaGo &mdash; не агентство.</b> Вы подаёте документы сами &mdash; а мы показываем, на какой сайт, с какими документами и в каком порядке.",
+             tgT:"Как оплатить через Telegram:",tg:["Нажмите кнопку &mdash; откроется Telegram","Админ пришлёт номер карты","Оплатите и отправьте фото чека","Обычно в течение 5 минут придёт ссылка доступа"],
+             click:"&#9889; При оплате через Click доступ откроется сам после подтверждения (обычно 1&ndash;2 минуты)",
+             demo:"&#9654;&#65039; Посмотрите, что внутри &mdash; видео 20 сек",auth:"&#128100; Короткое видео от автора",demoT:"Что внутри",authT:"От автора",more:"Другие полезные разделы"},
+          en:{what:"&#8505;&#65039; <b>EvropaGo is not an agency.</b> You apply yourself &mdash; we show which site, which documents and in what order.",
+             tgT:"How to pay via Telegram:",tg:["Tap the button &mdash; Telegram opens","The admin sends the card number","Pay and send a photo of the receipt","Usually within 5 minutes you get your access link"],
+             click:"&#9889; Pay with Click and access opens by itself once confirmed (usually 1&ndash;2 minutes)",
+             demo:"&#9654;&#65039; See what's inside &mdash; 20-second video",auth:"&#128100; A short video from the founder",demoT:"What's inside",authT:"From the founder",more:"Other useful sections"}};
+  function fill(){var t=C[L()];function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
+    set("egWhat",t.what);set("egTgSteps","<b>"+t.tgT+"</b>"+t.tg.map(function(x,i){return "<div><i>"+(i+1)+"</i><span>"+x+"</span></div>";}).join(""));
+    set("egClickNote",t.click);set("egDemoBtn",t.demo);set("egAuthBtn",t.auth);set("egMoreLbl",t.more);}
+  var checked=false;
+  function probe(){if(checked)return;checked=true;
+    [["evropago_demo.mp4","egDemoBtn"],["muallif.mp4","egAuthBtn"]].forEach(function(p){
+      try{fetch("/"+p[0],{method:"HEAD",cache:"no-store"}).then(function(r){var ct=(r.headers.get("content-type")||"");if(r.ok&&/video/.test(ct)){var b=document.getElementById(p[1]);if(b)b.style.display="";}}).catch(function(){});}catch(e){}});}
+  window.egVid=function(file,kind){var t=C[L()];var v=document.getElementById("egVidEl");document.getElementById("egVidT").innerHTML=kind==="auth"?t.authT:t.demoT;
+    if(v.getAttribute("src")!=="/"+file)v.setAttribute("src","/"+file);openModal("egVidOvl");ev(kind==="auth"?"video_author":"video_demo");try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}};
+  window.egVidClose=function(){var v=document.getElementById("egVidEl");try{v.pause();}catch(e){}closeModal("egVidOvl");};
+  try{var _al=applyLang;applyLang=function(){var r=_al.apply(this,arguments);try{fill();}catch(e){}return r;};}catch(e){}
+  try{var _g=goScreen;goScreen=function(id){var r=_g.apply(this,arguments);try{if(id==="sc-pay")probe();if(id!=="sc-pay"){var o=document.getElementById("egVidOvl");if(o&&o.classList.contains("on"))egVidClose();}}catch(e){}return r;};}catch(e){}
+  fill();
+  try{var a=document.querySelector(".screen.active");if(a&&a.id==="sc-pay")probe();}catch(e){}
+})();
+</script>
 <style id="eg-paypreview-css">
 .eg-pv{margin-top:14px;padding-top:12px;border-top:1px solid rgba(212,175,106,.18);}
 .eg-pv-t{font-size:12.5px;font-weight:700;color:var(--eg-gold-l,#E8CE96);text-align:center;margin-bottom:10px;line-height:1.4;}
