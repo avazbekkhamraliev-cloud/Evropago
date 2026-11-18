@@ -1039,6 +1039,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--eg-gold-l);outline-
         <span class="pb-sub" id="pbGoS">Ish vizasi yo'l xaritasi: davlat, kasb, hujjatlar, elchixona, ish beruvchi firmalar</span>
       </button>
     </div>
+    <button type="button" class="eg-vlink eg-vlink-home" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video</span></button>
     <details class="eg-more-options" id="egMoreOptions">
       <summary id="egMoreSummary"><span id="egMoreSummaryText">Boshqa imkoniyatlar</span><span class="eg-more-icon" aria-hidden="true">+</span></summary>
       <div class="eg-more-body">
@@ -1049,7 +1050,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--eg-gold-l);outline-
         <span class="pb-arr" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         <span class="pb-sub" id="pbLifeS">📋 Ichida: soliq qaytarish · ish topish · uy ijarasi · bank · yashash ruxsati · tibbiy sug'urta · haydovchilik guvohnomasi va boshqalar</span>
       </button>
-        <button type="button" class="eg-vlink" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video</span></button>
+        <button type="button" class="eg-vlink" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video</span></button>
         <div class="eg-more-lbl" id="egMoreLbl">Qo'shimcha vositalar</div>
     <div class="eg-tools">
       <button onclick="openModal('rankOvl')" id="rankBtn" class="eg-tile">
@@ -1361,7 +1362,7 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
           </div>
         </div>
         <button class="oother" onclick="pickOrigin('other')" id="otherBtn">&#127760; Boshqa / &#1044;&#1088;&#1091;&#1075;&#1072;&#1103;</button>
-        <button type="button" class="eg-vlink eg-vlink-sm" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video</span></button>
+        <button type="button" class="eg-vlink eg-vlink-sm" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video</span></button>
       </div>
       <div class="step-footer">
         <button class="btn-back" onclick="goScreen('sc-welcome')" id="origBack">&#8592;</button>
@@ -1488,7 +1489,7 @@ function krTrack(name,btn){try{if(window.gtag)gtag('event',name,btn?{button:btn}
       <div id="egQuick" style="display:flex;gap:8px;margin:0 0 10px;">
         <button class="aicv-btn eg-cvcta" style="flex:1;margin:0;font-size:14px;padding:12px 10px;line-height:1.3;" onclick="egQcCv()"><span class="eg-cvl1">&#129302; <span id="qcCvL">Oldin CV tayyorlab oling</span></span><small id="qcCvS">so'ng ish beruvchiga yuborasiz</small></button>
       </div>
-      <button type="button" class="eg-vlink" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video</span></button>
+      <button type="button" class="eg-vlink" onclick="egVid('demo')">&#9654;&#65039; <span class="egvl-t">Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video</span></button>
       <div id="firmNote" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-left:4px solid #f59e0b;border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:var(--mt);"></div>
 
       <style>
@@ -7555,8 +7556,8 @@ function renderForm(){
   var t=UI[L()],f=F,left=Math.max(0,MAXN-getN());
   var cl=[["en",t.en]];var dl=C2L[f.country];if(dl&&dl!=="en")cl.push([dl,uiLangName(dl)]);
   if(cl.map(function(x){return x[0];}).indexOf(f.cvl)<0)f.cvl="en";
-  var h='<p class="aicv-lead">'+t.lead+'</p>'+(getLast()?'<button class="aicv-btn2" style="margin:0 0 12px;" onclick="aicvShowLast()">'+t.lastCv+'</button>':'');
-  h+=left>0?'<div class="aicv-left">&#9889; '+t.left.replace("{n}",left)+'</div>':'<div class="aicv-limit">'+t.limit+'<a class="aicv-btn2" href="'+TG+'" target="_blank" rel="noopener" onclick="aicvSvc()">'+t.svc+'</a></div>';
+  var h='<p class="aicv-lead">'+t.lead+'</p>';
+  if(left>0)h+='<div class="aicv-left">&#9889; '+t.left.replace("{n}",left)+'</div>';
   h+='<div class="aicv-sec"><h4>&#127919; '+t.target+'</h4><div class="aicv-g">'+sel("country",t.country,f.country,cc().map(function(c){return [c.id,c[L()]||c.uz];}))+inp("job",t.job,f.job)+sel("cvl",t.cvlang,f.cvl,cl,true)+'</div></div>';
   var nat=Object.keys(ORIG2REG).map(function(k){return [k,dn(ORIG2REG[k],L(),"region")];});
   h+='<div class="aicv-sec"><h4>&#128100; '+t.pers+'</h4><div class="aicv-g">'+inp("name",t.name,f.name,"text","",true)+inp("dob",t.dob,f.dob,"date")+sel("nat",t.nat,f.nat,nat)+inp("phone",t.phone,f.phone,"tel","+998",false,30)+inp("email",t.email,f.email,"email")+inp("addr",t.addr,f.addr,"text","",true,120)
@@ -7573,6 +7574,7 @@ function renderForm(){
   if(f.langs.length<5)h+='<button class="aicv-add" onclick="aicvAdd(\'langs\')">'+t.addl+'</button>';
   h+='</div><div class="aicv-sec"><h4>&#128736; '+t.skills+'</h4><div class="aicv-g">'+ta("skills",t.skills,f.skills,t.skillsPh,400)+inp("drive",t.drive,f.drive,"text",t.drivePh,true,40)+'</div></div>';
   h+='<button class="aicv-btn" id="aicvGo" onclick="aicvGenerate()"'+(left>0?'':' disabled')+'>'+t.gen+'</button><div class="aicv-err" id="aicvErr"></div><p class="aicv-note">&#128274; '+t.privacy+'</p>';
+  if(left<=0)h+='<div class="aicv-limit" style="margin-top:14px;">'+t.limit+'<a class="aicv-btn2" href="'+TG+'" target="_blank" rel="noopener" onclick="aicvSvc()">'+t.svc+'</a></div>';
   if(typeof isAdmin!=="undefined"&&isAdmin)h+='<button class="aicv-btn2" onclick="aicvReset()">'+t.resetT+'</button>';
   var box=document.getElementById("aicvForm");box.innerHTML=h;
   box.querySelectorAll("[data-p]").forEach(function(el){el.addEventListener(el.type==="checkbox"||el.tagName==="SELECT"?"change":"input",function(){setP(el.getAttribute("data-p"),el.type==="checkbox"?el.checked:el.value);if(el.type==="checkbox"||el.getAttribute("data-p")==="country")renderForm();});});
@@ -7950,15 +7952,15 @@ html.eg-has-vid .eg-vlink{display:flex}
   var C={uz:{what:"&#8505;&#65039; <b>EvropaGo agentlik emas.</b> Arizani o'zingiz berasiz &mdash; biz qayerga, qaysi hujjat bilan va qanday tartibda topshirishni ko'rsatamiz.",
              tgT:"Qanday to'lanadi:",tg:["Tugmani bosing &mdash; Telegram ochiladi","Karta raqamini olasiz","To'lab, chek rasmini yuborasiz","~5 daqiqada havola keladi"],
              click:"&#9889; To'lovdan keyin sahifa o'zi ochiladi (1&ndash;2 daqiqa)",
-             vl:"Qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video",demo:"&#9654;&#65039; Qanday foydalaniladi &mdash; 1 daqiqalik video",auth:"&#128100; Muallifdan qisqa video",demoT:"Qanday foydalaniladi",authT:"Muallifdan",more:"Boshqa imkoniyatlar",tools:"Qo'shimcha vositalar"},
+             vl:"Saytdan qanday foydalaniladi&nbsp;&mdash; 1&nbsp;daq.&nbsp;video",demo:"&#9654;&#65039; Qanday foydalaniladi &mdash; 1 daqiqalik video",auth:"&#128100; Muallifdan qisqa video",demoT:"Qanday foydalaniladi",authT:"Muallifdan",more:"Boshqa imkoniyatlar",tools:"Qo'shimcha vositalar"},
           ru:{what:"&#8505;&#65039; <b>EvropaGo &mdash; не агентство.</b> Вы подаёте сами &mdash; мы показываем, куда, с какими документами и в каком порядке.",
              tgT:"Как оплатить:",tg:["Нажмите кнопку &mdash; откроется Telegram","Получите номер карты","Оплатите и отправьте чек","Ссылка придёт за ~5 минут"],
              click:"&#9889; После оплаты доступ откроется сам (1&ndash;2 минуты)",
-             vl:"Как пользоваться&nbsp;&mdash; видео&nbsp;1&nbsp;мин",demo:"&#9654;&#65039; Как пользоваться &mdash; видео 1 мин",auth:"&#128100; Короткое видео от автора",demoT:"Как пользоваться",authT:"От автора",more:"Другие возможности",tools:"Полезные инструменты"},
+             vl:"Как пользоваться сайтом&nbsp;&mdash; видео&nbsp;1&nbsp;мин",demo:"&#9654;&#65039; Как пользоваться &mdash; видео 1 мин",auth:"&#128100; Короткое видео от автора",demoT:"Как пользоваться",authT:"От автора",more:"Другие возможности",tools:"Полезные инструменты"},
           en:{what:"&#8505;&#65039; <b>EvropaGo is not an agency.</b> You apply yourself &mdash; we show which site, which documents and in what order.",
              tgT:"How to pay:",tg:["Tap the button &mdash; Telegram opens","Get the card number","Pay and send the receipt","Link arrives in ~5 minutes"],
              click:"&#9889; After payment, access opens by itself (1&ndash;2 minutes)",
-             vl:"How it works&nbsp;&mdash; 1&#8209;min&nbsp;video",demo:"&#9654;&#65039; How it works &mdash; 1-minute video",auth:"&#128100; A short video from the founder",demoT:"How it works",authT:"From the founder",more:"More options",tools:"Useful tools"}};
+             vl:"How to use the site&nbsp;&mdash; 1&#8209;min&nbsp;video",demo:"&#9654;&#65039; How it works &mdash; 1-minute video",auth:"&#128100; A short video from the founder",demoT:"How it works",authT:"From the founder",more:"More options",tools:"Useful tools"}};
   function fill(){var t=C[L()];function set(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
     set("egWhat",t.what);set("egTgSteps","<b>"+t.tgT+"</b>"+t.tg.map(function(x,i){return "<div><i>"+(i+1)+"</i><span>"+x+"</span></div>";}).join(""));
     set("egClickNote",t.click);set("egDemoBtn",t.demo);set("egAuthBtn",t.auth);set("egMoreSummaryText",t.more);set("egMoreLbl",t.tools);
@@ -8024,72 +8026,80 @@ html.eg-has-vid .eg-vlink{display:flex}
 (function(){
   var home=document.getElementById('sc-welcome'),hero=home&&home.querySelector('.eg-hero'),canvas=document.getElementById('egParticles');
   if(!home||!hero||!canvas||!canvas.getContext)return;
-  var ctx=canvas.getContext('2d'),host=canvas.parentElement,points=[],w=0,h=0,dpr=1,raf=0,active=false,ready=false;
+  /* Premium zarrachalar: mayda nuqtalar shakl hosil qiladi (Yevropa xaritasi, EU yulduzlari, "24"),
+     doim suzib turadi, tarqalib aylanadi va keyingi shaklga yig'iladi. Sahifa pastga aylantirilsa tarqaladi. */
+  var ctx=canvas.getContext('2d'),host=canvas.parentElement,w=0,h=0,dpr=1,raf=0,active=false,ready=false;
   var pointer={x:-1000,y:-1000},reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var mobile=!!(window.matchMedia&&(window.matchMedia('(max-width: 640px)').matches||window.matchMedia('(pointer: coarse)').matches));
   var memory=Number(navigator.deviceMemory)||0,cores=Number(navigator.hardwareConcurrency)||0;
-  var veryLowPower=(memory>0&&memory<=2)||(cores>0&&cores<=2);
-  var lowPower=mobile||(memory>0&&memory<=4)||(cores>0&&cores<=4),staticMotion=reduced||veryLowPower;
-  var maxParticles=veryLowPower?58:(mobile?105:(lowPower?145:250));
-  var minParticles=veryLowPower?44:(mobile?65:(lowPower?95:150));
-  var maxDpr=veryLowPower?0.85:(mobile?1:(lowPower?1.1:1.35));
-  var frameInterval=lowPower?1000/24:1000/60,lastFrame=0;
-  function maskTargets(kind){
-    var off=document.createElement('canvas');off.width=Math.max(1,Math.round(w*dpr));off.height=Math.max(1,Math.round(h*dpr));
-    var c=off.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle='#fff';
-    if(kind==='number'){
-      c.font='800 '+Math.min(w*.56,176)+'px Manrope,system-ui,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('24',w*.5,h*.48);
-    }else{
-      function poly(a){c.beginPath();a.forEach(function(p,i){var x=p[0]*w,y=p[1]*h;if(i)c.lineTo(x,y);else c.moveTo(x,y);});c.closePath();c.fill();}
-      /* Stylized, deliberately illustrative Europe silhouette, with UK and Italy accents. */
+  var weak=(memory>0&&memory<=2)||(cores>0&&cores<=4);
+  var staticMotion=reduced;
+  var N=weak?700:(mobile?1150:1800);
+  var maxDpr=mobile?1.6:1.5;
+  var frameInterval=weak?1000/30:(mobile?1000/45:1000/60),lastFrame=0;
+  var P=[],NS=3,cx=0,cy=0,S=0,G=1500,HOLD=3600,E=1300,CYC=G+HOLD+E,T0=0;
+  var BUCKET=[[255,244,214,1],[240,212,156,.95],[218,182,112,.9],[170,232,205,.75]];
+  function ease(x){return x<=0?0:x>=1?1:x*x*(3-2*x);}
+  function shapePts(kind){
+    var off=document.createElement('canvas'),W=Math.max(2,Math.round(w)),H=Math.max(2,Math.round(h));off.width=W;off.height=H;
+    var c=off.getContext('2d');c.fillStyle='#fff';
+    var x0=cx-S/2,y0=cy-S/2;
+    function poly(a){c.beginPath();a.forEach(function(p,i){var x=x0+p[0]*S,y=y0+p[1]*S;if(i)c.lineTo(x,y);else c.moveTo(x,y);});c.closePath();c.fill();}
+    function star(x,y,r){c.beginPath();for(var i=0;i<10;i++){var a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.42:r;c.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);}c.closePath();c.fill();}
+    if(kind===0){
       poly([[.48,.10],[.58,.14],[.63,.23],[.60,.31],[.72,.34],[.76,.43],[.89,.47],[.81,.55],[.74,.58],[.69,.69],[.61,.68],[.58,.77],[.53,.70],[.49,.62],[.43,.65],[.40,.57],[.33,.61],[.27,.57],[.20,.58],[.16,.50],[.23,.44],[.21,.35],[.31,.35],[.36,.29],[.39,.21],[.45,.26],[.48,.10]]);
-      poly([[.29,.37],[.33,.36],[.35,.42],[.33,.48],[.30,.46],[.28,.41]]); // British Isles
-      poly([[.55,.69],[.58,.72],[.59,.78],[.62,.83],[.60,.88],[.57,.83],[.55,.77],[.53,.73]]); // Italy
-      poly([[.22,.64],[.30,.63],[.33,.67],[.31,.72],[.26,.71]]); // Iberian edge
-      poly([[.72,.21],[.75,.20],[.77,.24],[.74,.27]]); // eastern island accents
+      poly([[.29,.37],[.33,.36],[.35,.42],[.33,.48],[.30,.46],[.28,.41]]);
+      poly([[.55,.69],[.58,.72],[.59,.78],[.62,.83],[.60,.88],[.57,.83],[.55,.77],[.53,.73]]);
+      poly([[.22,.64],[.30,.63],[.33,.67],[.31,.72],[.26,.71]]);
+    }else if(kind===1){
+      for(var i=0;i<12;i++){var a=i*Math.PI/6;star(cx+Math.cos(a)*S*.36,cy+Math.sin(a)*S*.36,S*.075);}
+    }else{
+      c.font='900 '+Math.round(S*.66)+'px Manrope,system-ui,-apple-system,Segoe UI,Roboto,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('24',cx,cy+S*.03);
     }
-    var pixels=c.getImageData(0,0,off.width,off.height).data,step=Math.max(7,Math.round(5*dpr)),found=[];
-    for(var y=0;y<off.height;y+=step)for(var x=0;x<off.width;x+=step)if(pixels[(y*off.width+x)*4+3]>100)found.push({x:x/dpr,y:y/dpr});
-    if(!found.length)return [];
-    var count=Math.min(maxParticles,Math.max(minParticles,Math.round(w*h/(lowPower?700:360)))),out=[];
-    for(var i=0;i<count;i++)out.push(found[Math.floor((i+.5)*found.length/count)%found.length]);
+    var d=c.getImageData(0,0,W,H).data,found=[],step=2;
+    for(var y=0;y<H;y+=step)for(var x=0;x<W;x+=step)if(d[(y*W+x)*4+3]>110)found.push(x,y);
+    var out=new Float32Array(N*2),m=found.length/2;
+    for(var k=0;k<N;k++){var j=m?Math.floor(Math.random()*m):0;out[k*2]=(m?found[j*2]:cx)+(Math.random()-.5)*1.6;out[k*2+1]=(m?found[j*2+1]:cy)+(Math.random()-.5)*1.6;}
     return out;
   }
   function setup(){
     var r=host.getBoundingClientRect();if(r.width<30||r.height<30)return;
     w=r.width;h=r.height;dpr=Math.min(window.devicePixelRatio||1,maxDpr);
     canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
-    var a=maskTargets('number'),b=maskTargets('map'),n=Math.min(a.length,b.length);points=[];
-    for(var i=0;i<n;i++)points.push({a:a[i],b:b[i],r:.65+Math.random()*.9,phase:Math.random()*6.28,twinkle:.45+Math.random()*.55});
-    ready=true;
+    var wide=w>560;cx=wide?w*.70:w*.60;cy=wide?h*.50:h*.54;S=Math.min(wide?w*.42:w*.86,h*.92);
+    if(P.length!==N){P=[];for(var i=0;i<N;i++)P.push({ca:Math.random()*6.283,cr:.12+Math.pow(Math.random(),.7)*.95,cs:(.00018+Math.random()*.00034)*(Math.random()<.5?-1:1),
+      ph:Math.random()*6.283,fx:.0007+Math.random()*.0011,fy:.0006+Math.random()*.001,amp:1.1+Math.random()*2.2,sz:1.25+Math.random()*1.15,dl:Math.random(),b:Math.floor(Math.random()*BUCKET.length)});}
+    var T=[];for(var k=0;k<NS;k++)T.push(shapePts(k));
+    for(var i2=0;i2<N;i2++){var p=P[i2];p.t=[];for(var k2=0;k2<NS;k2++)p.t.push(T[k2][i2*2],T[k2][i2*2+1]);}
+    if(!T0)T0=performance.now();ready=true;
   }
-  function route(t,mix){
-    var p0={x:w*.20,y:h*.73},p1={x:w*.35,y:h*.35},p2={x:w*.62,y:h*.72},p3={x:w*.83,y:h*.39};
-    ctx.save();ctx.globalAlpha=.22+.5*mix;ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.bezierCurveTo(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y);ctx.strokeStyle='rgba(226,192,138,.72)';ctx.lineWidth=1.15;ctx.setLineDash([3,6]);ctx.stroke();ctx.setLineDash([]);
-    [p0,p3].forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,2.2,0,Math.PI*2);ctx.fillStyle='#E8CE96';ctx.fill();});
-    var u=staticMotion?.58:(t%5200)/5200,v=1-u;
-    var x=v*v*v*p0.x+3*v*v*u*p1.x+3*v*u*u*p2.x+u*u*u*p3.x;
-    var y=v*v*v*p0.y+3*v*v*u*p1.y+3*v*u*u*p2.y+u*u*u*p3.y;
-    ctx.beginPath();ctx.arc(x,y,2.1,0,Math.PI*2);ctx.fillStyle='#FFF1CC';ctx.shadowColor='#E2C08A';ctx.shadowBlur=12;ctx.fill();ctx.restore();
+  var X=null,Y=null,Bk=null;
+  function draw(now){
+    if(!ready)return;ctx.clearRect(0,0,w,h);
+    var t=staticMotion?0:now-T0,cyc=Math.floor(t/CYC),u=t-cyc*CYC,k=cyc%NS,form;
+    if(staticMotion)form=1;else if(u<G)form=u/G;else if(u<G+HOLD)form=1;else form=1-(u-G-HOLD)/E;
+    var hr=hero.getBoundingClientRect(),sd=Math.min(1,Math.max(0,-hr.top/(hr.height*.85)));
+    var R=Math.max(w,h)*.62,mx=pointer.x,my=pointer.y;
+    var glow=ctx.createRadialGradient(cx,cy,2,cx,cy,S*.75);glow.addColorStop(0,'rgba(64,146,109,'+(.16+.06*form).toFixed(3)+')');glow.addColorStop(1,'rgba(7,32,25,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
+    if(!X||X.length!==N){X=new Float32Array(N);Y=new Float32Array(N);}
+    for(var i=0;i<N;i++){var p=P[i];
+      var f=ease(form*1.45-p.dl*.45)*(1-sd);
+      var ang=p.ca+t*p.cs,rad=p.cr*R*(1+.35*sd);
+      var qx=cx+Math.cos(ang)*rad*1.05,qy=cy+Math.sin(ang)*rad*.62+Math.sin(t*.0007+p.ph)*7;
+      var tx=p.t[k*2],ty=p.t[k*2+1];
+      var wave=Math.sin(t*.0012+tx*.035+ty*.02)*1.3;
+      var fl=p.amp*(1.4-.5*f);
+      var x=qx+(tx-qx)*f+Math.sin(t*p.fx+p.ph)*fl,y=qy+(ty-qy)*f+Math.cos(t*p.fy+p.ph*1.3)*fl+wave*f;
+      if(mx>-500){var dx=x-mx,dy=y-my,d2=dx*dx+dy*dy;if(d2<5200&&d2>.01){var d=Math.sqrt(d2),fo=(1-d/72)*16;x+=dx/d*fo;y+=dy/d*fo;}}
+      X[i]=x;Y[i]=y;}
+    for(var b=0;b<BUCKET.length;b++){var c=BUCKET[b],al=c[3]*(staticMotion?1:(.72+.28*Math.sin(t*.0021+b*1.9)));
+      ctx.fillStyle='rgba('+c[0]+','+c[1]+','+c[2]+','+al.toFixed(3)+')';
+      for(var j=0;j<N;j++){var q=P[j];if(q.b!==b)continue;var s=q.sz;ctx.fillRect(X[j]-s/2,Y[j]-s/2,s,s);}}
   }
-  function draw(time){
-    if(!ready)return;ctx.clearRect(0,0,w,h);var phase=staticMotion?0:(time%18000),mix=0;
-    if(phase<3200)mix=phase/3200;else if(phase<7800)mix=1;else if(phase<11000)mix=1-(phase-7800)/3200;
-    mix=mix*mix*(3-2*mix);
-    var mx=pointer.x<0?w*.5:pointer.x,my=pointer.y<0?h*.5:pointer.y;
-    var halo=ctx.createRadialGradient(mx,my,2,mx,my,Math.max(w,h)*.62);halo.addColorStop(0,'rgba(64,146,109,.12)');halo.addColorStop(1,'rgba(7,32,25,0)');ctx.fillStyle=halo;ctx.fillRect(0,0,w,h);
-    route(time,mix);
-    for(var i=0;i<points.length;i++){
-      var p=points[i],x=p.a.x+(p.b.x-p.a.x)*mix,y=p.a.y+(p.b.y-p.a.y)*mix;
-      if(!staticMotion){x+=Math.sin(time*.0006+p.phase)*1.15;y+=Math.cos(time*.0005+p.phase)*1.15;}
-      var dx=x-pointer.x,dy=y-pointer.y,d=Math.sqrt(dx*dx+dy*dy);
-      if(!staticMotion&&d<78&&d>0){var force=(1-d/78)*9;x+=dx/d*force;y+=dy/d*force;}
-      var tw=staticMotion?1:(.72+.28*Math.sin(time*.002+p.phase));
-      ctx.beginPath();ctx.arc(x,y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(232,206,150,'+(p.twinkle*tw)+')';ctx.fill();
-    }
-  }
-  function loop(t){if(!active||document.hidden)return;t=t||performance.now();if(!lastFrame||t-lastFrame>=frameInterval){draw(t);lastFrame=t;}if(!staticMotion)raf=requestAnimationFrame(loop);}
+  function loop(t){raf=0;if(!active||document.hidden)return;t=t||performance.now();if(!lastFrame||t-lastFrame>=frameInterval){draw(t);lastFrame=t;}if(!staticMotion)raf=requestAnimationFrame(loop);}
   function start(){if(!ready)setup();if(!active||!ready)return;cancelAnimationFrame(raf);lastFrame=performance.now();draw(lastFrame);if(!staticMotion)raf=requestAnimationFrame(loop);}
+  hero.addEventListener('touchmove',function(e){var t=e.touches&&e.touches[0];if(!t)return;var r=host.getBoundingClientRect();pointer.x=t.clientX-r.left;pointer.y=t.clientY-r.top;},{passive:true});
+  hero.addEventListener('touchend',function(){pointer.x=-1000;pointer.y=-1000;},{passive:true});
   function reveal(scope){
     var els=scope.querySelectorAll('.eg-hero-copy,.eg-hero-stats,.eg-stat,#startBtn,#egMoreOptions,.eg-more-body .path-life,.eg-more-body .eg-vlink,.eg-more-body .eg-tools>button');
     if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('eg-visible');});return;}
@@ -8177,12 +8187,12 @@ html.eg-life-bg,html.eg-life-bg body{background:#0C1838!important;}
     if(P.length>n)P.length=n;
     while(P.length<n)P.push(mk(true));
   }
-  function mk(any){return {x:Math.random()*W,y:any?Math.random()*H:H+8,r:.8+Math.random()*1.5,vx:(Math.random()-.5)*.12,vy:-(.05+Math.random()*.16),ph:Math.random()*6.28,gold:Math.random()<.72};}
+  function mk(any){return {x:Math.random()*W,y:any?Math.random()*H:H+8,r:.8+Math.random()*1.5,vx:(Math.random()-.5)*.35,vy:-(.18+Math.random()*.42),ph:Math.random()*6.28,sw:.6+Math.random()*1.2,gold:Math.random()<.72};}
   function draw(t){
     ctx.clearRect(0,0,W,H);
     var i,j,a,b,dx,dy,d;
     for(i=0;i<P.length;i++){a=P[i];
-      if(!reduced){a.x+=a.vx;a.y+=a.vy;if(a.y<-8||a.x<-8||a.x>W+8){P[i]=mk(false);a=P[i];}}
+      if(!reduced){a.x+=a.vx+Math.sin(t*.0009+a.ph)*.28*a.sw;a.y+=a.vy;if(a.y<-8||a.x<-8||a.x>W+8){P[i]=mk(false);a=P[i];}}
       for(j=i+1;j<P.length;j++){b=P[j];dx=a.x-b.x;dy=a.y-b.y;if(dx>LINK||dx<-LINK||dy>LINK||dy<-LINK)continue;d=Math.sqrt(dx*dx+dy*dy);
         if(d<LINK){ctx.strokeStyle="rgba(212,175,106,"+(.22*(1-d/LINK)).toFixed(3)+")";ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}
     }
@@ -8193,7 +8203,7 @@ html.eg-life-bg,html.eg-life-bg body{background:#0C1838!important;}
       ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,6.283);ctx.fill();}
   }
   function loop(t){raf=0;if(!active||document.hidden)return;
-    if(!scrolling&&t-last>=STEP){last=t;draw(t);}
+    if(t-last>=STEP){last=t;draw(t);}
     raf=requestAnimationFrame(loop);}
   function start(){if(active)return;active=true;if(!W)size();cv.classList.add("on");
     if(reduced){draw(0);return;}last=0;if(!raf)raf=requestAnimationFrame(loop);}
@@ -8211,5 +8221,15 @@ html.eg-life-bg,html.eg-life-bg body{background:#0C1838!important;}
   lw=window.innerWidth;lh=window.innerHeight;size();sync();
 }catch(e){}})();
 </script>
+<style id="eg-hero-fx-css">
+/* Zarrachalar butun bosh kartani egallaydi (chapdagi chiziq yo'qoladi), matn ustida turadi */
+#sc-welcome .eg-hero{position:relative;overflow:hidden;}
+#sc-welcome .eg-hero-art{position:absolute!important;inset:0!important;width:100%!important;height:auto!important;opacity:1!important;z-index:0!important;pointer-events:none;border-radius:inherit;}
+#sc-welcome .eg-hero-art::after{background:linear-gradient(100deg,rgba(7,32,25,.45) 0%,rgba(7,32,25,.12) 45%,rgba(7,32,25,0) 70%)!important;}
+#sc-welcome .eg-hero-copy{position:relative;z-index:1;}
+#sc-welcome .eg-art-caption{z-index:2;}
+#sc-welcome .eg-vlink-home{display:flex!important;margin:12px 0 0;padding:13px 12px;font-size:14.5px;border-style:solid;border-color:rgba(212,175,106,.6);background:rgba(212,175,106,.10);}
+#sc-welcome .eg-more-body .eg-vlink{display:none!important;}
+</style>
 </body>
 </html>
